@@ -35,10 +35,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       // Ignora erro no localStorage
     }
 
-    if (theme === 'dark') {
+    const isDarkTheme = theme === 'dark';
+    if (isDarkTheme) {
       document.documentElement.classList.add('dark');
+      document.body?.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.body?.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
     }
   }, [theme]);
 

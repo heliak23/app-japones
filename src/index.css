@@ -42,7 +42,7 @@
   color-scheme: light;
 }
 
-.dark {
+.dark, :root.dark, html.dark, [data-theme="dark"] {
   /* Design Tokens - Dark Mode (Azul Grafite Profundo Sofisticado, sem preto absoluto) */
   --bg-primary: #0b0f19;        /* Fundo principal azul-grafite */
   --bg-secondary: #0f172a;      /* Superfície secundária (slate-900) */

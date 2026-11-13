@@ -24,7 +24,11 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       >
         <button
           type="button"
-          onClick={() => setTheme('light')}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setTheme('light');
+          }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
             !isDark
               ? 'bg-white text-amber-600 shadow-sm'
@@ -39,7 +43,11 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
 
         <button
           type="button"
-          onClick={() => setTheme('dark')}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setTheme('dark');
+          }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
             isDark
               ? 'bg-[#182238] text-indigo-300 shadow-sm border border-indigo-500/30'
@@ -58,12 +66,16 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   return (
     <button
       type="button"
-      onClick={toggleTheme}
-      className={`relative inline-flex items-center justify-center p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100/80 dark:bg-[#131b2e] hover:bg-slate-200/80 dark:hover:bg-[#182238] border border-slate-200 dark:border-slate-700/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 shadow-sm group ${className}`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleTheme();
+      }}
+      className={`relative inline-flex items-center justify-center p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100/80 dark:bg-[#131b2e] hover:bg-slate-200/80 dark:hover:bg-[#182238] border border-slate-200 dark:border-slate-700/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 shadow-sm group active:scale-95 cursor-pointer ${className}`}
       aria-label={isDark ? 'Mudar para tema claro (Light Mode)' : 'Mudar para tema escuro (Dark Mode)'}
       title={isDark ? 'Alternar para tema claro' : 'Alternar para tema escuro'}
     >
-      <div className="relative w-5 h-5 flex items-center justify-center">
+      <div className="relative w-5 h-5 flex items-center justify-center pointer-events-none">
         {isDark ? (
           <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
         ) : (
@@ -72,7 +84,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       </div>
 
       {showLabel && (
-        <span className="ml-2 text-xs font-semibold">
+        <span className="ml-2 text-xs font-semibold pointer-events-none">
           {isDark ? 'Modo Claro' : 'Modo Escuro'}
         </span>
       )}
