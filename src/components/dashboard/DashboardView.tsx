@@ -56,7 +56,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     <div className="space-y-10 pb-16">
       
       {/* Hero Banner Minimalista e Elegante */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-700/50">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-700/50 dark:border-slate-800">
         <div className="absolute top-0 right-0 -mt-12 -mr-12 w-80 h-80 rounded-full bg-brand-500/10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/3 -mb-12 w-64 h-64 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
 
@@ -93,7 +93,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <button
               onClick={() => onNavigate('practice')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 dark:bg-slate-800/90 dark:hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 dark:border-slate-600 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Zap className="w-4 h-4 text-indigo-400" />
               <span>Praticar Exercícios</span>
@@ -106,15 +106,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Seu Desempenho</h2>
-            <p className="text-xs text-slate-500">Métricas da sessão atual e histórico geral salvo no navegador</p>
+            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Seu Desempenho</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Métricas da sessão atual e histórico geral salvo no navegador</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            icon={<BookOpen className="w-6 h-6 text-brand-600" />}
-            iconBgColor="bg-brand-50"
+            icon={<BookOpen className="w-6 h-6 text-brand-600 dark:text-brand-400" />}
+            iconBgColor="bg-brand-50 dark:bg-brand-950/50"
             label="Total Estudado"
             value={`${studiedCount} / ${totalCharacters}`}
             badge={`${progressPercent}%`}
@@ -122,8 +122,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           />
 
           <StatCard
-            icon={<Target className="w-6 h-6 text-indigo-600" />}
-            iconBgColor="bg-indigo-50"
+            icon={<Target className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
+            iconBgColor="bg-indigo-50 dark:bg-indigo-950/50"
             label="Exercícios na Sessão"
             value={sessionMetrics.exercisesCompletedInCurrentSession}
             subtitle={
@@ -134,8 +134,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           />
 
           <StatCard
-            icon={<Trophy className="w-6 h-6 text-amber-600" />}
-            iconBgColor="bg-amber-50"
+            icon={<Trophy className="w-6 h-6 text-amber-600 dark:text-amber-400" />}
+            iconBgColor="bg-amber-50 dark:bg-amber-950/50"
             label="Aproveitamento Geral"
             value={globalAccuracy !== null ? `${globalAccuracy}%` : '—'}
             subtitle={
@@ -146,8 +146,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           />
 
           <StatCard
-            icon={<RotateCcw className="w-6 h-6 text-rose-600" />}
-            iconBgColor="bg-rose-50"
+            icon={<RotateCcw className="w-6 h-6 text-rose-600 dark:text-rose-400" />}
+            iconBgColor="bg-rose-50 dark:bg-rose-950/50"
             label="Revisão Pendente"
             value={charactersNeedingReview.length}
             badge={charactersNeedingReview.length > 0 ? 'Atenção' : 'Em dia'}
@@ -160,12 +160,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Barra de Progresso Geral */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div className="bg-white dark:bg-[#131b2e] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-semibold text-slate-800">
+            <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
               Progresso do Alfabeto Japonês Básico
             </span>
-            <span className="text-sm font-bold text-brand-600">{studiedCount} de 92 caracteres</span>
+            <span className="text-sm font-bold text-brand-600 dark:text-brand-400">{studiedCount} de 92 caracteres</span>
           </div>
           <ProgressBar current={studiedCount} total={totalCharacters} color="brand" size="md" showPercentage={false} />
         </div>
@@ -173,34 +173,34 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       {/* Acesso Rápido aos Dois Alfabetos */}
       <section className="space-y-4">
-        <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Alfabetos Japoneses</h2>
+        <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Alfabetos Japoneses</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Card Hiragana */}
-          <div className="group bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition-all">
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 text-brand-700 border border-brand-200">
+                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/50 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800/60">
                   Sistema Principal
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 mt-3 flex items-center gap-2">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
                   <span>Hiragana</span>
-                  <span className="font-jp text-lg text-slate-400 font-normal">ひらがな</span>
+                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">ひらがな</span>
                 </h3>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-brand-50 flex items-center justify-center text-3xl font-jp font-black text-brand-600">
+              <div className="w-16 h-16 rounded-2xl bg-brand-50 dark:bg-brand-950/60 flex items-center justify-center text-3xl font-jp font-black text-brand-600 dark:text-brand-400">
                 あ
               </div>
             </div>
 
-            <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Utilizado para palavras nativas japonesas, partículas gramaticais e desinências de verbos. É o primeiro alfabeto ensinado no Japão.
             </p>
 
-            <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>{hiraganaStudiedCount} de 46 caracteres estudados</span>
-              <span className="font-semibold text-slate-700">{Math.round((hiraganaStudiedCount / 46) * 100)}%</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((hiraganaStudiedCount / 46) * 100)}%</span>
             </div>
             <div className="mt-2">
               <ProgressBar current={hiraganaStudiedCount} total={46} color="brand" size="sm" showPercentage={false} />
@@ -209,7 +209,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => onNavigate('hiragana')}
-                className="flex-1 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
+                className="flex-1 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
               >
                 <span>Abrir Tabela e Flashcards</span>
                 <ArrowRight className="w-4 h-4" />
@@ -218,29 +218,29 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           {/* Card Katakana */}
-          <div className="group bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition-all">
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
                   Palavras Estrangeiras
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 mt-3 flex items-center gap-2">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
                   <span>Katakana</span>
-                  <span className="font-jp text-lg text-slate-400 font-normal">カタカナ</span>
+                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">カタカナ</span>
                 </h3>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center text-3xl font-jp font-black text-amber-600">
+              <div className="w-16 h-16 rounded-2xl bg-amber-50 dark:bg-amber-950/60 flex items-center justify-center text-3xl font-jp font-black text-amber-600 dark:text-amber-400">
                 ア
               </div>
             </div>
 
-            <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Utilizado para palavras importadas de outras línguas (como <em>kohii</em> / café, <em>terebi</em> / TV), nomes estrangeiros, onomatopeias e ênfase visual.
             </p>
 
-            <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>{katakanaStudiedCount} de 46 caracteres estudados</span>
-              <span className="font-semibold text-slate-700">{Math.round((katakanaStudiedCount / 46) * 100)}%</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((katakanaStudiedCount / 46) * 100)}%</span>
             </div>
             <div className="mt-2">
               <ProgressBar current={katakanaStudiedCount} total={46} color="amber" size="sm" showPercentage={false} />
@@ -264,12 +264,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Modalidades de Exercícios</h2>
-            <p className="text-xs text-slate-500">Pratique a leitura, audição, digitação e fixação na memória</p>
+            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Modalidades de Exercícios</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Pratique a leitura, audição, digitação e fixação na memória</p>
           </div>
           <button
             onClick={() => onNavigate('practice')}
-            className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+            className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1"
           >
             <span>Ver todos</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -284,18 +284,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               if (onStartExercise) onStartExercise('recognition');
               else onNavigate('practice');
             }}
-            className="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200/80 hover:border-indigo-300 hover:shadow-md transition-all group"
+            className="cursor-pointer bg-white dark:bg-[#131b2e] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-500 hover:shadow-md transition-all group"
           >
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
               <EyeIcon className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base group-hover:text-indigo-600 transition-colors">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
               1. Reconhecimento
             </h3>
-            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
               Veja o caractere japonês e escolha a alternativa correta em Romaji entre 4 opções.
             </p>
-            <div className="mt-4 flex items-center text-xs font-semibold text-indigo-600 gap-1">
+            <div className="mt-4 flex items-center text-xs font-semibold text-indigo-600 dark:text-indigo-400 gap-1">
               <span>Iniciar teste</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -307,18 +307,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               if (onStartExercise) onStartExercise('typing');
               else onNavigate('practice');
             }}
-            className="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200/80 hover:border-brand-300 hover:shadow-md transition-all group"
+            className="cursor-pointer bg-white dark:bg-[#131b2e] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-500 hover:shadow-md transition-all group"
           >
-            <div className="w-10 h-10 rounded-xl bg-rose-50 text-brand-600 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
               <KeyboardIcon className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base group-hover:text-brand-600 transition-colors">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
               2. Digitação
             </h3>
-            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
               Exibe o caractere japonês e você digita a romanização correta no teclado com validação inteligente.
             </p>
-            <div className="mt-4 flex items-center text-xs font-semibold text-brand-600 gap-1">
+            <div className="mt-4 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400 gap-1">
               <span>Iniciar teste</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -330,18 +330,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               if (onStartExercise) onStartExercise('conversion');
               else onNavigate('practice');
             }}
-            className="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200/80 hover:border-amber-300 hover:shadow-md transition-all group"
+            className="cursor-pointer bg-white dark:bg-[#131b2e] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-amber-300 dark:hover:border-amber-500 hover:shadow-md transition-all group"
           >
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
               <SwapIcon className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base group-hover:text-amber-600 transition-colors">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
               3. Conversão Romaji ➔ Kana
             </h3>
-            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
               Apresenta uma sílaba em Romaji para converter diretamente para Hiragana ou Katakana.
             </p>
-            <div className="mt-4 flex items-center text-xs font-semibold text-amber-600 gap-1">
+            <div className="mt-4 flex items-center text-xs font-semibold text-amber-600 dark:text-amber-400 gap-1">
               <span>Iniciar teste</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -353,18 +353,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               if (onStartExercise) onStartExercise('alphabet_id');
               else onNavigate('practice');
             }}
-            className="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200/80 hover:border-teal-300 hover:shadow-md transition-all group"
+            className="cursor-pointer bg-white dark:bg-[#131b2e] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-teal-300 dark:hover:border-teal-500 hover:shadow-md transition-all group"
           >
-            <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
               <HelpCircle className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base group-hover:text-teal-600 transition-colors">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
               4. Identificação do Alfabeto
             </h3>
-            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
               Identifique rapidamente se o caractere apresentado é Hiragana ou Katakana.
             </p>
-            <div className="mt-4 flex items-center text-xs font-semibold text-teal-600 gap-1">
+            <div className="mt-4 flex items-center text-xs font-semibold text-teal-600 dark:text-teal-400 gap-1">
               <span>Iniciar teste</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -376,20 +376,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               if (onStartExercise) onStartExercise('review_random');
               else onNavigate('practice');
             }}
-            className="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200/80 hover:border-purple-300 hover:shadow-md transition-all group sm:col-span-2 lg:col-span-2"
+            className="cursor-pointer bg-white dark:bg-[#131b2e] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md transition-all group sm:col-span-2 lg:col-span-2"
           >
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <Brain className="w-5 h-5" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-slate-900 text-base group-hover:text-purple-600 transition-colors">
+                <h3 className="font-bold text-slate-900 dark:text-white text-base group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   5. Revisão Geral Aleatória
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                   Desafio misto com perguntas aleatórias de todos os grupos estudados para fixação definitiva na memória de longo prazo.
                 </p>
-                <div className="mt-3 flex items-center text-xs font-semibold text-purple-600 gap-1">
+                <div className="mt-3 flex items-center text-xs font-semibold text-purple-600 dark:text-purple-400 gap-1">
                   <span>Iniciar maratona mista</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
@@ -401,42 +401,42 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       </section>
 
       {/* Dicas de Pronúncia em Português Brasileiro (Didática Diferencial) */}
-      <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+      <section className="bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
             <Volume2 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Dicas Fonéticas para Brasileiros</h2>
-            <p className="text-xs text-slate-500">O japonês é muito fácil de pronunciar para quem fala português brasileiro</p>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Dicas Fonéticas para Brasileiros</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">O japonês é muito fácil de pronunciar para quem fala português brasileiro</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <h4 className="font-bold text-sm text-slate-800">Vogais Puras (A, I, U, E, O)</h4>
-            <p className="text-xs text-slate-600 mt-1">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#0f172a] border border-slate-100 dark:border-slate-800">
+            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200">Vogais Puras (A, I, U, E, O)</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
               São abertas e curtas, idênticas às do português (ex.: o <strong>U</strong> nunca vira biquinho francês nem "iu").
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <h4 className="font-bold text-sm text-slate-800">O som do "R" (ら, り, る...)</h4>
-            <p className="text-xs text-slate-600 mt-1">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#0f172a] border border-slate-100 dark:border-slate-800">
+            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200">O som do "R" (ら, り, る...)</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
               Sempre vibrado com a ponta da língua, como em <em>a<strong>r</strong>a<strong>r</strong>a</em> ou <em>ca<strong>r</strong>o</em> (nunca como o "r" de rato).
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <h4 className="font-bold text-sm text-slate-800">O som do "H" (は, へ, ほ...)</h4>
-            <p className="text-xs text-slate-600 mt-1">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#0f172a] border border-slate-100 dark:border-slate-800">
+            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200">O som do "H" (は, へ, ほ...)</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
               Aspirado como no inglês <em>house</em>, muito similar ao "r" carioca ou mineiro em <em><strong>r</strong>ua</em>.
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <h4 className="font-bold text-sm text-slate-800">O som do "CH" e "SH"</h4>
-            <p className="text-xs text-slate-600 mt-1">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#0f172a] border border-slate-100 dark:border-slate-800">
+            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200">O som do "CH" e "SH"</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
               <strong>CHI</strong> soa como "tch" em <em>tchau</em>; <strong>SHI</strong> soa como "ch" em <em>chave</em>.
             </p>
           </div>

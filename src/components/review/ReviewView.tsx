@@ -52,17 +52,17 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
     <div className="space-y-8 pb-16">
       
       {/* Banner Principal da Revisão */}
-      <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm space-y-4">
+      <section className="bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200 mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 mb-2">
               <RotateCcw className="w-3.5 h-3.5" />
               Sistema de Fixação e Dificuldades
             </div>
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Revisão Inteligente
             </h1>
-            <p className="text-slate-600 text-sm max-w-xl mt-1">
+            <p className="text-slate-600 dark:text-slate-300 text-sm max-w-xl mt-1">
               Reforce os caracteres onde você teve mais erros nos testes e consolide a memória de longo prazo.
             </p>
           </div>
@@ -82,7 +82,7 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
             {studiedCharIds.length > 0 ? (
               <button
                 onClick={() => onStartStudiedSession(studiedCharIds)}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs transition-all hover:scale-[1.02]"
               >
                 <Layers className="w-4 h-4" />
                 <span>Revisar Estudados ({studiedCharIds.length})</span>
@@ -93,32 +93,32 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
       </section>
 
       {/* Diagnóstico de Caracteres com Dificuldade */}
-      <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm space-y-6">
+      <section className="bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-6 transition-colors">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                 Caracteres que Precisam de Reforço
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Ranqueados automaticamente com base na frequência de erros
               </p>
             </div>
           </div>
 
-          <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-700">
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">
             {difficultStats.length} encontrados
           </span>
         </div>
 
         {difficultStats.length === 0 ? (
-          <div className="py-12 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 space-y-2">
+          <div className="py-12 text-center bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 space-y-2 transition-colors">
             <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto" />
-            <h3 className="font-bold text-slate-800 text-base">Tudo em dia!</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base">Tudo em dia!</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
               Você ainda não registrou erros nos exercícios ou acertou todos os caracteres recentemente.
             </p>
           </div>
@@ -135,27 +135,27 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
               return (
                 <div
                   key={stat.characterId}
-                  className="p-4 rounded-2xl bg-white border border-rose-200/80 hover:border-rose-400 hover:shadow-md transition-all flex items-center justify-between group"
+                  className="p-4 rounded-2xl bg-white dark:bg-[#182238] border border-rose-200/80 dark:border-rose-900/60 hover:border-rose-400 dark:hover:border-rose-500 hover:shadow-md transition-all flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center font-jp text-3xl font-black text-slate-900 group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-[#0f172a] flex items-center justify-center font-jp text-3xl font-black text-slate-900 dark:text-slate-100 group-hover:scale-105 transition-transform">
                       {char.character}
                     </div>
 
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="font-extrabold text-sm text-slate-900 uppercase">
+                        <span className="font-extrabold text-sm text-slate-900 dark:text-white uppercase">
                           {char.romaji}
                         </span>
                         <span
-                          className={`text-[10px] font-bold px-1.5 py-0.2 rounded ${
-                            isHira ? 'bg-rose-50 text-brand-700' : 'bg-amber-50 text-amber-800'
+                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                            isHira ? 'bg-rose-50 dark:bg-rose-950/60 text-brand-700 dark:text-brand-300' : 'bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300'
                           }`}
                         >
                           {isHira ? 'Hira' : 'Kata'}
                         </span>
                       </div>
-                      <p className="text-[11px] text-rose-600 font-semibold mt-0.5">
+                      <p className="text-[11px] text-rose-600 dark:text-rose-400 font-semibold mt-0.5">
                         {stat.incorrect} erro(s) em {stat.attempts} testes ({accuracy}% acerto)
                       </p>
                     </div>
@@ -163,11 +163,11 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
 
                   <button
                     onClick={() => playKana(char.character)}
-                    className="p-2 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+                    className="p-2 rounded-xl text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     title="Ouvir som"
                   >
                     {isPlaying && currentText === char.character ? (
-                      <VolumeX className="w-4 h-4 text-brand-600 animate-pulse" />
+                      <VolumeX className="w-4 h-4 text-brand-600 dark:text-brand-400 animate-pulse" />
                     ) : (
                       <Volume2 className="w-4 h-4" />
                     )}
@@ -180,29 +180,29 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
       </section>
 
       {/* Histórico Recente de Sessões de Exercícios */}
-      <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm space-y-4">
+      <section className="bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Histórico de Exercícios Salvos</h2>
-              <p className="text-xs text-slate-500">Últimas sessões concluídas no seu dispositivo</p>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Histórico de Exercícios Salvos</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Últimas sessões concluídas no seu dispositivo</p>
             </div>
           </div>
 
-          <span className="text-xs font-semibold text-slate-500">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
             {history.length} sessões registradas
           </span>
         </div>
 
         {history.length === 0 ? (
-          <div className="py-8 text-center text-xs text-slate-400">
+          <div className="py-8 text-center text-xs text-slate-400 dark:text-slate-500">
             Nenhuma sessão de exercícios concluída até o momento.
           </div>
         ) : (
-          <div className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-96 overflow-y-auto">
             {history.map((item, idx) => {
               const date = new Date(item.completedAt);
               const formattedDate = date.toLocaleDateString('pt-BR', {
@@ -220,30 +220,32 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
                   <div className="flex items-center gap-3">
                     <div
                       className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs ${
-                        isGood ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
+                        isGood
+                          ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200/50 dark:border-emerald-800/50'
+                          : 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200/50 dark:border-rose-800/50'
                       }`}
                     >
                       {item.percentage}%
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-slate-800 capitalize">
+                      <h4 className="font-bold text-slate-800 dark:text-slate-200 capitalize">
                         {item.exerciseType === 'recognition' && '1. Reconhecimento de Caracteres'}
                         {item.exerciseType === 'typing' && '2. Exercício de Digitação'}
                         {item.exerciseType === 'conversion' && '3. Conversão Romaji ➔ Kana'}
                         {item.exerciseType === 'alphabet_id' && '4. Identificação do Alfabeto'}
                         {item.exerciseType === 'review_random' && '5. Revisão Geral Aleatória'}
                       </h4>
-                      <p className="text-[11px] text-slate-400 mt-0.5">{formattedDate}</p>
+                      <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">{formattedDate}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-slate-600 sm:self-auto self-end">
+                  <div className="flex items-center gap-4 text-slate-600 dark:text-slate-400 sm:self-auto self-end">
                     <span>
-                      <strong className="text-emerald-600">{item.correctCount}</strong> acertos /{' '}
-                      <strong className="text-rose-600">{item.incorrectCount}</strong> erros
+                      <strong className="text-emerald-600 dark:text-emerald-400">{item.correctCount}</strong> acertos /{' '}
+                      <strong className="text-rose-600 dark:text-rose-400">{item.incorrectCount}</strong> erros
                     </span>
-                    <span className="font-extrabold text-slate-900 bg-slate-100 px-2.5 py-1 rounded-full">
+                    <span className="font-extrabold text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 border border-transparent dark:border-slate-700/60 px-2.5 py-1 rounded-full">
                       +{item.score} pts
                     </span>
                   </div>

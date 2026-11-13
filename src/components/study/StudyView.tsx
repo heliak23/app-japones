@@ -74,22 +74,22 @@ export const StudyView: React.FC<StudyViewProps> = ({
     <div className="space-y-8 pb-16">
       
       {/* Banner do Alfabeto */}
-      <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm">
+      <section className="bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-sm transition-colors">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-50 text-brand-700 border border-brand-200">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800/60">
               <Sparkles className="w-3.5 h-3.5" />
               <span>{isHiragana ? 'Alfabeto Nativo' : 'Alfabeto de Estrangeirismos'}</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
               <span>{isHiragana ? 'Hiragana' : 'Katakana'}</span>
-              <span className="font-jp text-2xl text-slate-400 font-normal">
+              <span className="font-jp text-2xl text-slate-400 dark:text-slate-500 font-normal">
                 {isHiragana ? 'ひらがな' : 'カタカナ'}
               </span>
             </h1>
 
-            <p className="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
               {isHiragana
                 ? 'Composto por 46 caracteres básicos curvilíneos. Utilizado para escrever todas as palavras de origem puramente japonesa e as partículas gramaticais.'
                 : 'Composto por 46 caracteres básicos angulares e retos. Utilizado para palavras emprestadas de outras línguas (como televisão, café), nomes estrangeiros e onomatopeias.'}
@@ -97,13 +97,13 @@ export const StudyView: React.FC<StudyViewProps> = ({
           </div>
 
           {/* Card de Progresso do Alfabeto Atual */}
-          <div className="w-full lg:w-72 bg-slate-50 p-5 rounded-2xl border border-slate-200/80 shrink-0">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+          <div className="w-full lg:w-72 bg-slate-50 dark:bg-[#0f172a] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shrink-0 transition-colors">
+            <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
               <span>Progresso</span>
-              <span className="text-brand-600">{studiedInThisAlphabet.length} / 46</span>
+              <span className="text-brand-600 dark:text-brand-400">{studiedInThisAlphabet.length} / 46</span>
             </div>
-            <div className="text-2xl font-black text-slate-900 mb-2">
-              {progressPercent}% <span className="text-xs font-normal text-slate-400">concluído</span>
+            <div className="text-2xl font-black text-slate-900 dark:text-white mb-2">
+              {progressPercent}% <span className="text-xs font-normal text-slate-400 dark:text-slate-500">concluído</span>
             </div>
             <ProgressBar
               current={studiedInThisAlphabet.length}
@@ -116,7 +116,7 @@ export const StudyView: React.FC<StudyViewProps> = ({
             {onNavigateToPractice && (
               <button
                 onClick={onNavigateToPractice}
-                className="w-full mt-4 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
+                className="w-full mt-4 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Fazer Exercícios deste Alfabeto</span>
               </button>
@@ -129,13 +129,13 @@ export const StudyView: React.FC<StudyViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         
         {/* Alternador de Modo de Visualização */}
-        <div className="inline-flex p-1 bg-slate-200/70 rounded-2xl self-start">
+        <div className="inline-flex p-1 bg-slate-200/70 dark:bg-slate-800/80 rounded-2xl self-start transition-colors">
           <button
             onClick={() => setViewMode('table')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
               viewMode === 'table'
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-[#131b2e] text-slate-900 dark:text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Table className="w-4 h-4" />
@@ -146,8 +146,8 @@ export const StudyView: React.FC<StudyViewProps> = ({
             onClick={() => setViewMode('cards')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
               viewMode === 'cards'
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-[#131b2e] text-slate-900 dark:text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Grid className="w-4 h-4" />
@@ -158,8 +158,8 @@ export const StudyView: React.FC<StudyViewProps> = ({
             onClick={() => setViewMode('flashcards')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
               viewMode === 'flashcards'
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-[#131b2e] text-slate-900 dark:text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Layers className="w-4 h-4" />
@@ -170,11 +170,11 @@ export const StudyView: React.FC<StudyViewProps> = ({
         {/* Filtro por Família/Grupo (habilitado em cards e flashcards) */}
         {viewMode !== 'table' && (
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-slate-400" />
+            <Filter className="w-4 h-4 text-slate-400 dark:text-slate-500" />
             <select
               value={selectedGroup}
               onChange={(e) => setSelectedGroup(e.target.value as KanaGroupId | 'all')}
-              className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="all">Todas as 11 Famílias (46 caracteres)</option>
               {KANA_GROUPS.map((g) => (
@@ -209,12 +209,12 @@ export const StudyView: React.FC<StudyViewProps> = ({
               if (groupChars.length === 0) return null;
 
               return (
-                <div key={group.id} className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-slate-100 pb-3 gap-1">
-                    <h3 className="font-extrabold text-lg text-slate-900">
+                <div key={group.id} className="bg-white dark:bg-[#131b2e] rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-slate-100 dark:border-slate-800 pb-3 gap-1">
+                    <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">
                       {group.name}
                     </h3>
-                    <p className="text-xs text-slate-500">{group.description}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{group.description}</p>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">

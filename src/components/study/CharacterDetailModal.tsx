@@ -55,9 +55,9 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
   const themeBg = isHiragana ? 'from-rose-500 to-brand-600' : 'from-amber-500 to-orange-600';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
       <div 
-        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden"
+        className="relative w-full max-w-lg bg-white dark:bg-[#131b2e] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Topo com gradiente */}
@@ -87,14 +87,14 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
           <div className="text-center">
             {/* Caractere Gigante */}
             <div className="relative inline-block my-2">
-              <span className="font-jp text-8xl sm:text-9xl font-black text-slate-900 tracking-tight select-none">
+              <span className="font-jp text-8xl sm:text-9xl font-black text-slate-900 dark:text-slate-100 tracking-tight select-none">
                 {character.character}
               </span>
             </div>
 
             {/* Romaji */}
             <div className="mt-1">
-              <span className="text-3xl font-extrabold text-brand-600 uppercase tracking-widest">
+              <span className="text-3xl font-extrabold text-brand-600 dark:text-brand-400 uppercase tracking-widest">
                 {character.romaji}
               </span>
             </div>
@@ -106,12 +106,12 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
                 className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm transition-all shadow-sm ${
                   isPlaying
                     ? 'bg-brand-600 text-white animate-pulse'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                    : 'bg-slate-100 dark:bg-[#182238] hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700'
                 }`}
               >
-                {isPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-brand-600" />}
+                {isPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-brand-600 dark:text-brand-400" />}
                 <span>{isPlaying ? 'Reproduzindo...' : 'Ouvir Pronúncia'}</span>
-                <kbd className="hidden sm:inline-block text-[10px] bg-white/70 px-1.5 py-0.5 rounded font-mono text-slate-500">
+                <kbd className="hidden sm:inline-block text-[10px] bg-white/70 dark:bg-black/40 px-1.5 py-0.5 rounded font-mono text-slate-500 dark:text-slate-400">
                   Espaço
                 </kbd>
               </button>
@@ -119,26 +119,26 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
           </div>
 
           {/* Pronúncia para Brasileiros */}
-          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/80">
-            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+          <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800">
+            <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
               Pronúncia em Português (PT-BR)
             </h4>
-            <p className="text-base font-semibold text-slate-900">
+            <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
               {character.ptPronunciation}
             </p>
           </div>
 
           {/* Dica Mnemônica */}
           {character.mnemonicNote && (
-            <div className="bg-amber-50/80 rounded-2xl p-4 border border-amber-200/80 flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-amber-100 text-amber-700 shrink-0">
+            <div className="bg-amber-50/80 dark:bg-amber-950/30 rounded-2xl p-4 border border-amber-200/80 dark:border-amber-900/50 flex items-start gap-3">
+              <div className="p-2 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 shrink-0">
                 <Lightbulb className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-0.5">
+                <h4 className="text-xs font-bold text-amber-900 dark:text-amber-200 uppercase tracking-wider mb-0.5">
                   Dica de Memorização
                 </h4>
-                <p className="text-sm text-amber-800 leading-relaxed">
+                <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
                   {character.mnemonicNote}
                 </p>
               </div>
@@ -146,11 +146,11 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
           )}
 
           {/* Navegação entre Caracteres */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+          <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
             <button
               onClick={onPrev}
               disabled={!hasPrev}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>Anterior</span>
@@ -159,7 +159,7 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
             <button
               onClick={onNext}
               disabled={!hasNext}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
               <span>Próximo</span>
               <ChevronRight className="w-4 h-4" />
@@ -170,4 +170,3 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
     </div>
   );
 };
-

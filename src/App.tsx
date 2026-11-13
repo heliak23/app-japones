@@ -41,7 +41,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800 selection:bg-brand-100 selection:text-brand-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] flex flex-col text-slate-800 dark:text-slate-100 selection:bg-brand-100 selection:text-brand-900 dark:selection:bg-brand-900/50 dark:selection:text-brand-200 transition-colors duration-200">
       {/* Navbar Superior & Navegação Móvel */}
       <Navbar 
         activeTab={activeTab} 
@@ -104,13 +104,13 @@ export function App() {
       </main>
 
       {/* Rodapé Elegante */}
-      <footer className="border-t border-slate-200 bg-white py-6 mt-auto text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] py-6 mt-auto text-center text-xs text-slate-500 dark:text-slate-400 transition-colors duration-200">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2 font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
             <span>NihonGo! • Modo 100% Offline e Seguro no seu Navegador</span>
           </div>
-          <div className="text-slate-400">
+          <div className="text-slate-400 dark:text-slate-500">
             Hiragana & Katakana para Falantes de Português Brasileiro (PT-BR)
           </div>
         </div>
