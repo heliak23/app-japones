@@ -23,6 +23,7 @@ interface ExerciseSelectorProps {
   ) => void;
   studiedCharacterIds: string[];
   initialType?: ExerciseType;
+  initialAlphabet?: 'all' | AlphabetType;
   onNavigateToStudy?: (alphabet: 'hiragana' | 'katakana') => void;
 }
 
@@ -82,10 +83,11 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
   onStart,
   studiedCharacterIds,
   initialType = 'recognition',
+  initialAlphabet = 'all',
   onNavigateToStudy,
 }) => {
   const [selectedType, setSelectedType] = useState<ExerciseType>(initialType);
-  const [selectedAlphabet, setSelectedAlphabet] = useState<'all' | AlphabetType>('all');
+  const [selectedAlphabet, setSelectedAlphabet] = useState<'all' | AlphabetType>(initialAlphabet);
   const [questionCount, setQuestionCount] = useState<number>(10);
   const [scopeMode, setScopeMode] = useState<'only_studied' | 'all'>(
     studiedCharacterIds.length > 0 ? 'only_studied' : 'all'

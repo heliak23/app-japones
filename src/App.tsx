@@ -6,14 +6,17 @@ import { StudyView } from './components/study/StudyView';
 import { PracticeContainer } from './components/practice/PracticeContainer';
 import { ReviewView } from './components/review/ReviewView';
 import type { ExerciseType } from './types/exercise';
-import type { KanaCharacter } from './types/kana';
+import type { AlphabetType, KanaCharacter } from './types/kana';
 import { KanaDataset } from './data/kanaDataset';
 import { useLearningProgress } from './hooks/useLearningProgress';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [selectedPracticeType, setSelectedPracticeType] = useState<ExerciseType | undefined>(undefined);
+  const [selectedPracticeAlphabet, setSelectedPracticeAlphabet] = useState<'all' | AlphabetType | undefined>(undefined);
   const [targetReviewChars, setTargetReviewChars] = useState<KanaCharacter[] | undefined>(undefined);
+  const [practiceAutoStart, setPracticeAutoStart] = useState<boolean>(false);
+  const [practiceSessionKey, setPracticeSessionKey] = useState<number>(0);
   
   const {
     learningState,
@@ -27,10 +30,35 @@ export function App() {
     resetProgress,
   } = useLearningProgress();
 
-  const handleStartExercise = (exerciseType?: string) => {
-    setTargetReviewChars(undefined);
-    setSelectedPracticeType((exerciseType as ExerciseType) || undefined);
+  // Navegação para a aba de exercícios
+  const handleOpenPractice = (options?: {
+    type?: ExerciseType;
+    alphabet?: 'all' | AlphabetType;
+    targetChars?: KanaCharacter[];
+    autoStart?: boolean;
+  }) => {
+    setSelectedPracticeType(options?.type);
+    setSelectedPracticeAlphabet(options?.alphabet);
+    setTargetReviewChars(options?.targetChars);
+    setPracticeAutoStart(options?.autoStart ?? false);
+    setPracticeSessionKey((prev) => prev + 1);
     setActiveTab('practice');
+  };
+
+  // Troca de aba global (Navbar, atalhos, etc.)
+  const handleSelectTab = (tab: ActiveTab) => {
+    if (tab === 'practice') {
+      // Quando o usuário clica em "Exercícios" na Navbar ou menu,
+      // SEMPRE abrimos a tela para o usuário escolher a modalidade do exercício!
+      handleOpenPractice();
+    } else {
+      // Ao trocar para outra aba, limpamos os estados residuais de exercícios anteriores
+      setSelectedPracticeType(undefined);
+      setSelectedPracticeAlphabet(undefined);
+      setTargetReviewChars(undefined);
+      setPracticeAutoStart(false);
+      setActiveTab(tab);
+    }
   };
 
   const handleStartTargetedReview = (characterIds: string[]) => {
@@ -38,9 +66,11 @@ export function App() {
       .map((id) => KanaDataset.getById(id))
       .filter((c): c is KanaCharacter => !!c);
 
-    setTargetReviewChars(chars);
-    setSelectedPracticeType('review_random');
-    setActiveTab('practice');
+    handleOpenPractice({
+      type: 'review_random',
+      targetChars: chars,
+      autoStart: true,
+    });
   };
 
   return (
@@ -48,7 +78,7 @@ export function App() {
       {/* Navbar Superior & Navegação Móvel */}
       <Navbar 
         activeTab={activeTab} 
-        onSelectTab={setActiveTab} 
+        onSelectTab={handleSelectTab} 
         studiedCount={learningState.studiedCharacterIds.length}
         totalCount={92}
         onResetProgress={resetProgress}
@@ -59,8 +89,8 @@ export function App() {
         
         {activeTab === 'dashboard' && (
           <DashboardView
-            onNavigate={setActiveTab}
-            onStartExercise={handleStartExercise}
+            onNavigate={handleSelectTab}
+            onStartExercise={(type) => handleOpenPractice({ type: type as ExerciseType })}
             learningState={learningState}
             sessionMetrics={sessionMetrics}
           />
@@ -74,7 +104,7 @@ export function App() {
             onUnmarkStudied={unmarkAsStudied}
             onToggleStudied={toggleStudied}
             onSetMultipleStudied={setMultipleStudied}
-            onNavigateToPractice={() => handleStartExercise('recognition')}
+            onNavigateToPractice={() => handleOpenPractice({ alphabet: 'hiragana' })}
           />
         )}
 
@@ -86,19 +116,21 @@ export function App() {
             onUnmarkStudied={unmarkAsStudied}
             onToggleStudied={toggleStudied}
             onSetMultipleStudied={setMultipleStudied}
-            onNavigateToPractice={() => handleStartExercise('recognition')}
+            onNavigateToPractice={() => handleOpenPractice({ alphabet: 'katakana' })}
           />
         )}
 
         {activeTab === 'practice' && (
           <PracticeContainer
-            key={`${selectedPracticeType || 'default'}_${targetReviewChars?.length || 0}`}
+            key={`practice_${practiceSessionKey}`}
             initialType={selectedPracticeType}
+            initialAlphabet={selectedPracticeAlphabet}
+            autoStart={practiceAutoStart}
             targetCharacters={targetReviewChars}
             studiedCharacterIds={learningState.studiedCharacterIds}
             onSaveSummary={saveSummary}
             onRecordAnswer={recordAnswer}
-            onNavigateToStudy={(alphabet) => setActiveTab(alphabet)}
+            onNavigateToStudy={(alphabet) => handleSelectTab(alphabet)}
           />
         )}
 

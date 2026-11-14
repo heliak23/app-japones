@@ -10,6 +10,8 @@ import { KanaDataset } from '../../data/kanaDataset';
 
 interface PracticeContainerProps {
   initialType?: ExerciseType;
+  initialAlphabet?: 'all' | AlphabetType;
+  autoStart?: boolean;
   targetCharacters?: KanaCharacter[];
   studiedCharacterIds: string[];
   onSaveSummary: (summary: ExerciseSessionSummary) => void;
@@ -21,17 +23,29 @@ type PracticeState = 'selecting' | 'running' | 'summary';
 
 export const PracticeContainer: React.FC<PracticeContainerProps> = ({
   initialType,
+  initialAlphabet,
+  autoStart = false,
   targetCharacters,
   studiedCharacterIds,
   onSaveSummary,
   onRecordAnswer,
   onNavigateToStudy,
 }) => {
+  // Somente inicia rodando direto se autoStart for explicitamente true.
+  // Caso contrário, o usuário sempre vê a tela para escolher a modalidade de exercício.
+  const shouldAutoStart = Boolean(
+    autoStart && (initialType || (targetCharacters && targetCharacters.length > 0))
+  );
+
   const [state, setState] = useState<PracticeState>(
-    initialType || (targetCharacters && targetCharacters.length > 0) ? 'running' : 'selecting'
+    shouldAutoStart ? 'running' : 'selecting'
   );
 
   const [currentQuestions, setCurrentQuestions] = useState<ExerciseQuestion[]>(() => {
+    if (!shouldAutoStart) {
+      return [];
+    }
+
     if (targetCharacters && targetCharacters.length > 0) {
       return ExerciseGenerator.generateSession(
         'recognition',
@@ -41,7 +55,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
       );
     }
     return initialType
-      ? ExerciseGenerator.generateSession(initialType, 'all', 10)
+      ? ExerciseGenerator.generateSession(initialType, initialAlphabet || 'all', 10)
       : [];
   });
 
@@ -58,7 +72,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
     onlyStudied: boolean;
   }>({
     type: initialType || 'recognition',
-    alphabet: 'all',
+    alphabet: initialAlphabet || 'all',
     count: 10,
     onlyStudied: targetCharacters && targetCharacters.length > 0 ? true : false,
   });
@@ -172,7 +186,8 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
         <ExerciseSelector
           onStart={handleStart}
           studiedCharacterIds={studiedCharacterIds}
-          initialType={lastConfig.type}
+          initialType={initialType || lastConfig.type}
+          initialAlphabet={initialAlphabet || lastConfig.alphabet}
           onNavigateToStudy={onNavigateToStudy}
         />
       )}

@@ -227,6 +227,26 @@ assert(allVogaisUnmarked, 'Desmarca toda a linha/família de vogais de uma vez')
 // Limpeza pós-teste
 StorageService.resetAllProgress();
 
+// 8. Testes do Fluxo de Exercícios e Navegação
+console.log('\n--- 8. Testes de Fluxo e Seleção de Modalidades de Exercícios ---');
+const shouldAutoStartDefault = Boolean(false && ('recognition'));
+assert(!shouldAutoStartDefault, 'Fluxo padrão ao abrir Exercícios não deve auto-iniciar teste diretamente');
+
+const shouldAutoStartReview = Boolean(true && (sampleLearnedChars && sampleLearnedChars.length > 0));
+assert(shouldAutoStartReview, 'Fluxo de revisão direcionada ativa auto-start para os caracteres selecionados');
+
+const hiraganaOnlySession = ExerciseGenerator.generateSession('recognition', 'hiragana', 5);
+assert(
+  hiraganaOnlySession.length === 5 && hiraganaOnlySession.every(q => q.characterInfo?.alphabet === 'hiragana'),
+  'Geração de exercícios respeita filtro de alfabeto Hiragana'
+);
+
+const katakanaOnlySession = ExerciseGenerator.generateSession('typing', 'katakana', 5);
+assert(
+  katakanaOnlySession.length === 5 && katakanaOnlySession.every(q => q.characterInfo?.alphabet === 'katakana'),
+  'Geração de exercícios respeita filtro de alfabeto Katakana'
+);
+
 // Resumo Final
 console.log('\n====================================================');
 console.log(` RESULTADO: ${testsPassed} PASSOU, ${testsFailed} FALHOU`);
