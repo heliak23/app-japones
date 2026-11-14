@@ -29,7 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       {/* Header Fixo Principal */}
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-sm transition-colors duration-200">
+      <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-sm transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           
           {/* Logo / Marca */}
@@ -251,8 +251,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </header>
 
-      {/* Barra de Navegação Inferior Móvel Rápida (Estilo App Nativo para Smartphones) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-3 flex justify-around items-center md:hidden shadow-lg transition-colors duration-200">
+      {/* Barra de Navegação Inferior Móvel Rápida (Estilo App Nativo para Smartphones com suporte a Safe Area iOS) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] px-3 flex justify-around items-center md:hidden shadow-lg transition-colors duration-200">
         <button
           onClick={() => handleTabChange('dashboard')}
           className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
