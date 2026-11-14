@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { AlphabetType, KanaCharacter } from '../../types/kana';
 import type { ExerciseType, ExerciseQuestion, UserAnswerResult, ExerciseSessionSummary } from '../../types/exercise';
 import { ExerciseGenerator } from '../../services/exerciseGenerator';
@@ -61,6 +61,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<UserAnswerResult[]>([]);
+  const resultsRef = useRef<UserAnswerResult[]>([]);
   const [score, setScore] = useState(0);
   const [activeSessionSummary, setActiveSessionSummary] = useState<ExerciseSessionSummary | null>(null);
 
@@ -99,6 +100,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
     const questions = ExerciseGenerator.generateSession(type, alphabet, count, targets);
     setCurrentQuestions(questions);
     setCurrentIndex(0);
+    resultsRef.current = [];
     setResults([]);
     setScore(0);
     setActiveSessionSummary(null);
@@ -106,7 +108,8 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
   };
 
   const handleAnswer = (result: UserAnswerResult) => {
-    setResults((prev) => [...prev, result]);
+    resultsRef.current = [...resultsRef.current, result];
+    setResults(resultsRef.current);
 
     if (result.isCorrect) {
       setScore((prev) => prev + 10);
@@ -126,10 +129,12 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
   };
 
   const finishSession = () => {
+    const finalResults = resultsRef.current.length > 0 ? resultsRef.current : results;
     const totalQuestions = currentQuestions.length;
-    const correctCount = results.filter((r) => r.isCorrect).length;
+    const correctCount = finalResults.filter((r) => r.isCorrect).length;
     const incorrectCount = totalQuestions - correctCount;
     const percentage = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+    const finalScore = correctCount * 10;
 
     const summary: ExerciseSessionSummary = {
       exerciseType: lastConfig.type,
@@ -137,8 +142,8 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
       correctCount,
       incorrectCount,
       percentage,
-      score,
-      results,
+      score: finalScore,
+      results: finalResults,
       completedAt: new Date().toISOString(),
     };
 
@@ -171,6 +176,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
 
     setCurrentQuestions(questions);
     setCurrentIndex(0);
+    resultsRef.current = [];
     setResults([]);
     setScore(0);
     setState('running');

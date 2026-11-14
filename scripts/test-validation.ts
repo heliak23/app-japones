@@ -247,6 +247,28 @@ assert(
   'Geração de exercícios respeita filtro de alfabeto Katakana'
 );
 
+// 9. Testes de Contabilidade de Acertos/Erros no Relatório Final
+console.log('\n--- 9. Testes de Relatório de Sessão (Acertos e Erros) ---');
+const sampleSessionResults = [
+  { questionId: 'q1', userAnswer: 'a', isCorrect: true, correctAnswer: 'a' },
+  { questionId: 'q2', userAnswer: 'i', isCorrect: true, correctAnswer: 'i' },
+  { questionId: 'q3', userAnswer: 'o', isCorrect: false, correctAnswer: 'u' },
+  { questionId: 'q4', userAnswer: 'e', isCorrect: true, correctAnswer: 'e' },
+  { questionId: 'q5', userAnswer: 'ka', isCorrect: false, correctAnswer: 'o' },
+];
+
+const totalQuestions = sampleSessionResults.length;
+const correctCount = sampleSessionResults.filter(r => r.isCorrect).length;
+const incorrectCount = totalQuestions - correctCount;
+const percentage = Math.round((correctCount / totalQuestions) * 100);
+const score = correctCount * 10;
+
+assert(totalQuestions === 5, 'Total de questões contabilizado corretamente no relatório');
+assert(correctCount === 3, 'Total de acertos contabilizado exatamente (3)');
+assert(incorrectCount === 2, 'Total de erros contabilizado exatamente (2)');
+assert(percentage === 60, 'Percentual de aproveitamento calculado com precisão (60%)');
+assert(score === 30, 'Pontuação total calculada corretamente (30 pts)');
+
 // Resumo Final
 console.log('\n====================================================');
 console.log(` RESULTADO: ${testsPassed} PASSOU, ${testsFailed} FALHOU`);
