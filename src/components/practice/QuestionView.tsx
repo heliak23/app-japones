@@ -30,16 +30,37 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
   const [hasAnswered, setHasAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isAdvancingRef = useRef(false);
 
-  // Reseta estado local ao trocar de questão
+  const focusInput = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  };
+
+  const handleNext = () => {
+    if (isAdvancingRef.current) return;
+    isAdvancingRef.current = true;
+    onNextQuestion();
+  };
+
+  // Mantém e seleciona o input sempre focado ao entrar ou mudar de questão
   useEffect(() => {
+    isAdvancingRef.current = false;
     setTypedAnswer('');
     setSelectedOption(null);
     setHasAnswered(false);
     setIsCorrect(false);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+
+    focusInput();
+    const rafId = requestAnimationFrame(focusInput);
+    const timer = setTimeout(focusInput, 50);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timer);
+    };
   }, [question.id]);
 
   // Teclas de atalho para respostas e avanço
@@ -48,7 +69,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
       if (hasAnswered) {
         if (e.key === 'Enter') {
           e.preventDefault();
-          onNextQuestion();
+          handleNext();
         }
         return;
       }
@@ -59,6 +80,13 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
         if (keyNum >= 1 && keyNum <= question.options.length) {
           e.preventDefault();
           handleSelectOption(question.options[keyNum - 1]);
+        }
+      } else {
+        // Para digitação: se a tecla for uma letra e o input estiver desfocado, refoca imediatamente
+        if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+          if (document.activeElement !== inputRef.current) {
+            inputRef.current?.focus();
+          }
         }
       }
     };
@@ -106,7 +134,11 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
   const handleTypeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (hasAnswered || !typedAnswer.trim()) return;
+    if (hasAnswered) {
+      handleNext();
+      return;
+    }
+    if (!typedAnswer.trim()) return;
 
     const correct = evaluateAnswer(typedAnswer);
     setIsCorrect(correct);
@@ -139,7 +171,17 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
       <ProgressBar current={currentIndex + 1} total={totalQuestions} color="indigo" size="sm" showPercentage={false} />
 
       {/* Card da Pergunta */}
-      <div className="bg-white dark:bg-[#131b2e] rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-3 sm:space-y-5 transition-colors">
+      <div 
+        onClick={(e) => {
+          if (!hasAnswered && (!question.options || question.options.length === 0)) {
+            const target = e.target as HTMLElement;
+            if (!target.closest('button')) {
+              focusInput();
+            }
+          }
+        }}
+        className="bg-white dark:bg-[#131b2e] rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-3 sm:space-y-5 transition-colors"
+      >
         
         {/* Enunciado e Prompt */}
         <div className="text-center space-y-0.5">
@@ -159,7 +201,10 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
           {/* Botão de Áudio */}
           <button
-            onClick={() => onPlayAudio(question.displayTarget)}
+            onClick={() => {
+              onPlayAudio(question.displayTarget);
+              setTimeout(focusInput, 50);
+            }}
             className={`mt-1.5 sm:mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-white dark:bg-[#182238] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-sm ${
               isPlayingAudio ? 'animate-pulse text-brand-600 dark:text-brand-400' : ''
             }`}
@@ -212,7 +257,8 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
               <input
                 ref={inputRef}
                 type="text"
-                disabled={hasAnswered}
+                autoFocus
+                readOnly={hasAnswered}
                 value={typedAnswer}
                 onChange={(e) => setTypedAnswer(e.target.value)}
                 placeholder="Digite a romanização (ex: ka, shi)..."
@@ -244,8 +290,8 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
           <div className="space-y-2.5 animate-fadeIn">
             {/* Botão de Avanço Rápido - Posicionado MAIS PARA CIMA para dinamismo imediato sem scroll */}
             <button
-              onClick={onNextQuestion}
-              autoFocus
+              type="button"
+              onClick={handleNext}
               className={`w-full py-3.5 px-4 rounded-xl sm:rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer ${
                 isCorrect
                   ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-950/20'
