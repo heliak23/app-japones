@@ -14,6 +14,7 @@ Desenvolvido para funcionar completamente no lado do cliente (Client-Side), sem 
 - **Vite:** Build rápido e otimizado.
 - **WanaKana (`wanakana`):** Manipulação, conversão e validação inteligente de caracteres japoneses.
 - **Web Speech API:** Síntese de voz nativa japonesa (`ja-JP`) para pronúncia em áudio offline.
+- **PWA (Progressive Web App):** Suporte nativo para instalação em dispositivos móveis (iOS e Android), ícones dedicados em alta resolução e modo *Standalone* (tela cheia sem barra do navegador).
 - **Lucide React:** Ícones modernos e acessíveis.
 
 ---
@@ -86,12 +87,38 @@ npm install
 # 2. Iniciar servidor de desenvolvimento
 npm run dev
 
-# 3. Executar a suíte de testes automatizada (26 testes)
+# 3. Executar a suíte de testes automatizada (34 testes)
 npm test
 
 # 4. Gerar build de produção
 npm run build
 ```
+
+---
+
+## 📲 Instalação como App no Celular (PWA)
+
+O aplicativo foi desenvolvido como um **Progressive Web App (PWA)**. Você pode "instalá-lo" diretamente no seu celular sem precisar baixar nada da App Store ou Play Store. Ele se comportará como um **aplicativo nativo**: ganha ícone próprio na tela inicial e abre em **tela cheia** (sem a barra de endereços do navegador).
+
+### 🍏 No iPhone (iOS)
+> **Importante:** No iOS, o recurso de atalho como app nativo deve ser feito pelo **Safari**.
+
+1. Acesse o site do projeto pelo navegador **Safari**.
+2. Toque no botão de **Compartilhar** (ícone do quadrado com a seta apontando para cima `⎋` na barra inferior).
+3. Role as opções para baixo e toque em **"Adicionar à Tela de Início"** (*Add to Home Screen*).
+4. O app já virá identificado como **Japonezando** com o ícone oficial `あ`. Toque em **Adicionar** no canto superior direito.
+5. Pronto! O ícone estará na tela inicial do seu iPhone e abrirá em tela cheia com adaptação para o Notch/Dynamic Island e barra de gestos do iOS.
+
+### 🤖 No Celular Android
+No Android, o PWA funciona na maioria dos navegadores (Google Chrome, Samsung Internet, Edge, Opera, etc.):
+
+- **Instalação Automática:** Ao entrar no site pelo Chrome, o próprio navegador costuma exibir um banner no rodapé: *"Instalar aplicativo"* ou *"Adicionar Japonezando à tela inicial"*. Basta tocar em **Instalar**.
+- **Instalação Manual:**
+  1. Abra o site no **Google Chrome** (ou navegador de preferência).
+  2. Toque no menu de **três pontinhos (⋮)** no canto superior direito.
+  3. Selecione a opção **"Instalar aplicativo"** (ou *"Adicionar à tela inicial"*).
+  4. Confirme tocando em **"Instalar"**.
+  5. O aplicativo será adicionado tanto à sua **tela de início** quanto à sua **gaveta de aplicativos** do Android.
 
 ---
 
