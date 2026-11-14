@@ -8,6 +8,7 @@ interface CharacterCardProps {
   isPlaying?: boolean;
   onPlayAudio: (e: React.MouseEvent, char: string) => void;
   onSelect: (char: KanaCharacter) => void;
+  onToggleStudied?: (characterId: string) => void;
 }
 
 export const CharacterCard: React.FC<CharacterCardProps> = ({
@@ -16,6 +17,7 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
   isPlaying = false,
   onPlayAudio,
   onSelect,
+  onToggleStudied,
 }) => {
   const isHiragana = character.alphabet === 'hiragana';
   const accentColor = isHiragana ? 'hover:border-brand-400 dark:hover:border-brand-500' : 'hover:border-amber-400 dark:hover:border-amber-500';
@@ -31,11 +33,27 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
           {character.romaji}
         </span>
         <div className="flex items-center gap-1.5">
-          {isStudied && (
+          {onToggleStudied ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleStudied(character.id);
+              }}
+              title={isStudied ? 'Clique para desmarcar' : 'Marcar como estudado'}
+              className="p-1 rounded-lg text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
+            >
+              {isStudied ? (
+                <CheckCircle className="w-4 h-4 fill-emerald-100 dark:fill-emerald-950/60" />
+              ) : (
+                <span className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600 block opacity-40 group-hover:opacity-100" />
+              )}
+            </button>
+          ) : isStudied ? (
             <span title="Caractere já estudado" className="flex items-center text-emerald-600 dark:text-emerald-400">
               <CheckCircle className="w-4 h-4 fill-emerald-100 dark:fill-emerald-950/60" />
             </span>
-          )}
+          ) : null}
           <button
             onClick={(e) => onPlayAudio(e, character.character)}
             title="Ouvir pronúncia"

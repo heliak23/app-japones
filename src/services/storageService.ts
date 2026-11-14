@@ -63,6 +63,62 @@ export const StorageService = {
     return state;
   },
 
+  unmarkCharacterAsStudied(characterId: string): UserLearningState {
+    const state = this.getState();
+    const index = state.studiedCharacterIds.indexOf(characterId);
+    if (index !== -1) {
+      state.studiedCharacterIds.splice(index, 1);
+      this.saveState(state);
+    }
+    return state;
+  },
+
+  toggleCharacterStudied(characterId: string): UserLearningState {
+    const state = this.getState();
+    const index = state.studiedCharacterIds.indexOf(characterId);
+    if (index !== -1) {
+      state.studiedCharacterIds.splice(index, 1);
+    } else {
+      state.studiedCharacterIds.push(characterId);
+      this.incrementSessionStudied();
+    }
+    this.saveState(state);
+    return state;
+  },
+
+  setMultipleCharactersStudied(characterIds: string[], studied: boolean): UserLearningState {
+    const state = this.getState();
+    let changed = false;
+    if (studied) {
+      let newlyAdded = 0;
+      for (const id of characterIds) {
+        if (!state.studiedCharacterIds.includes(id)) {
+          state.studiedCharacterIds.push(id);
+          newlyAdded++;
+          changed = true;
+        }
+      }
+      if (newlyAdded > 0) {
+        const session = this.getSessionMetrics();
+        session.studiedInCurrentSession += newlyAdded;
+        try {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        } catch {}
+      }
+    } else {
+      const idsToRemove = new Set(characterIds);
+      const prevLength = state.studiedCharacterIds.length;
+      state.studiedCharacterIds = state.studiedCharacterIds.filter((id) => !idsToRemove.has(id));
+      if (state.studiedCharacterIds.length !== prevLength) {
+        changed = true;
+      }
+    }
+    if (changed) {
+      this.saveState(state);
+    }
+    return state;
+  },
+
   recordCharacterAnswer(characterId: string, isCorrect: boolean): UserLearningState {
     const state = this.getState();
     const existing = state.characterStats[characterId] || {

@@ -122,7 +122,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 pb-12">
+    <div className="max-w-2xl mx-auto space-y-3 sm:space-y-6 pb-6 sm:pb-12">
       
       {/* Topo: Progresso e Pontuação */}
       <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
@@ -139,28 +139,28 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
       <ProgressBar current={currentIndex + 1} total={totalQuestions} color="indigo" size="sm" showPercentage={false} />
 
       {/* Card da Pergunta */}
-      <div className="bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-md space-y-6 transition-colors">
+      <div className="bg-white dark:bg-[#131b2e] rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-3 sm:space-y-5 transition-colors">
         
         {/* Enunciado e Prompt */}
-        <div className="text-center space-y-1">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+        <div className="text-center space-y-0.5">
+          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             {question.title}
           </span>
-          <h2 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-slate-100">
+          <h2 className="text-sm sm:text-lg font-bold text-slate-800 dark:text-slate-100">
             {question.prompt}
           </h2>
         </div>
 
         {/* Alvo Central (Caractere ou Palavra) */}
-        <div className="text-center py-4 bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col items-center justify-center relative transition-colors">
-          <span className="font-jp text-6xl sm:text-7xl font-black text-slate-900 dark:text-slate-100 tracking-wide select-none">
+        <div className="text-center py-2 sm:py-3.5 bg-slate-50 dark:bg-[#0f172a] rounded-xl sm:rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col items-center justify-center relative transition-colors">
+          <span className="font-jp text-5xl sm:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-wide select-none">
             {question.displayTarget}
           </span>
 
           {/* Botão de Áudio */}
           <button
             onClick={() => onPlayAudio(question.displayTarget)}
-            className={`mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-[#182238] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-sm ${
+            className={`mt-1.5 sm:mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-white dark:bg-[#182238] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-sm ${
               isPlayingAudio ? 'animate-pulse text-brand-600 dark:text-brand-400' : ''
             }`}
           >
@@ -171,7 +171,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
         {/* Área de Resposta: Múltipla Escolha */}
         {question.options && question.options.length > 0 && (
-          <div className="grid grid-cols-2 gap-3 pt-2">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-1">
             {question.options.map((option, idx) => {
               const isSelected = selectedOption === option;
               let btnStyle = 'bg-slate-50 dark:bg-[#182238] hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-700';
@@ -192,13 +192,13 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                   type="button"
                   disabled={hasAnswered}
                   onClick={() => handleSelectOption(option)}
-                  className={`p-4 rounded-2xl border text-base sm:text-lg font-bold transition-all flex items-center justify-between ${btnStyle}`}
+                  className={`py-2.5 sm:py-3.5 px-3 sm:px-4 rounded-xl sm:rounded-2xl border text-sm sm:text-base font-bold transition-all flex items-center justify-between ${btnStyle}`}
                 >
                   <span className="font-mono text-xs opacity-60 bg-black/10 dark:bg-white/10 px-2 py-0.5 rounded">
                     {idx + 1}
                   </span>
                   <span className="font-jp capitalize">{option}</span>
-                  <span className="w-5" />
+                  <span className="w-4 sm:w-5" />
                 </button>
               );
             })}
@@ -207,7 +207,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
         {/* Área de Resposta: Digitação */}
         {(!question.options || question.options.length === 0) && (
-          <form onSubmit={handleTypeSubmit} className="space-y-4 pt-2">
+          <form onSubmit={handleTypeSubmit} className="space-y-3 pt-1">
             <div className="relative">
               <input
                 ref={inputRef}
@@ -215,8 +215,8 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                 disabled={hasAnswered}
                 value={typedAnswer}
                 onChange={(e) => setTypedAnswer(e.target.value)}
-                placeholder="Digite a romanização aqui (ex: ka, shi, a)..."
-                className={`w-full px-5 py-4 rounded-2xl border text-lg font-bold text-center transition-colors focus:outline-none focus:ring-4 ${
+                placeholder="Digite a romanização (ex: ka, shi)..."
+                className={`w-full px-4 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl border text-base sm:text-lg font-bold text-center transition-colors focus:outline-none focus:ring-4 ${
                   hasAnswered
                     ? isCorrect
                       ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-900 dark:text-emerald-100 ring-emerald-200 dark:ring-emerald-900/40'
@@ -230,7 +230,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
               <button
                 type="submit"
                 disabled={!typedAnswer.trim()}
-                className="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-extrabold text-sm flex items-center justify-center gap-2 transition-colors shadow-md shadow-indigo-950/20"
+                className="w-full py-3 rounded-xl sm:rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-extrabold text-sm flex items-center justify-center gap-2 transition-colors shadow-md shadow-indigo-950/20"
               >
                 <span>Confirmar Resposta</span>
                 <CornerDownLeft className="w-4 h-4" />
@@ -239,56 +239,65 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
           </form>
         )}
 
-        {/* Banner de Feedback Imediato */}
+        {/* Bloco de Ação Rápida & Feedback Imediato */}
         {hasAnswered && (
-          <div
-            className={`p-5 rounded-2xl border animate-fadeIn transition-colors ${
-              isCorrect
-                ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/80 text-emerald-900 dark:text-emerald-100'
-                : 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/80 text-rose-900 dark:text-rose-100'
-            }`}
-          >
-            <div className="flex items-start gap-3">
-              <div className="shrink-0 mt-0.5">
-                {isCorrect ? (
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                ) : (
-                  <XCircle className="w-6 h-6 text-rose-600 dark:text-rose-400" />
-                )}
-              </div>
+          <div className="space-y-2.5 animate-fadeIn">
+            {/* Botão de Avanço Rápido - Posicionado MAIS PARA CIMA para dinamismo imediato sem scroll */}
+            <button
+              onClick={onNextQuestion}
+              autoFocus
+              className={`w-full py-3.5 px-4 rounded-xl sm:rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer ${
+                isCorrect
+                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-950/20'
+                  : 'bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white shadow-slate-950/20'
+              }`}
+            >
+              <span>Próxima Pergunta</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <kbd className="hidden sm:inline-block text-[10px] bg-white/20 dark:bg-white/10 px-2 py-0.5 rounded font-mono ml-2">
+                Enter ↵
+              </kbd>
+            </button>
 
-              <div className="flex-1 space-y-1">
-                <h4 className="font-extrabold text-base">
-                  {isCorrect ? 'Excelente! Resposta correta!' : 'Quase lá! Resposta incorreta.'}
-                </h4>
-                
-                {!isCorrect && (
-                  <p className="text-xs font-semibold text-rose-700 dark:text-rose-300">
-                    A resposta correta esperada é:{' '}
-                    <span className="font-mono text-sm underline font-bold uppercase">
-                      {question.correctAnswer}
+            {/* Banner de Feedback e Explicação */}
+            <div
+              className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border text-xs transition-colors ${
+                isCorrect
+                  ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/80 text-emerald-900 dark:text-emerald-100'
+                  : 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/80 text-rose-900 dark:text-rose-100'
+              }`}
+            >
+              <div className="flex items-start gap-2.5">
+                <div className="shrink-0 mt-0.5">
+                  {isCorrect ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  ) : (
+                    <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                  )}
+                </div>
+
+                <div className="flex-1 space-y-1 min-w-0">
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    <span className="font-extrabold text-xs sm:text-sm">
+                      {isCorrect ? 'Excelente! Resposta correta!' : 'Quase lá! Resposta incorreta.'}
                     </span>
-                  </p>
-                )}
+                    {!isCorrect && (
+                      <span className="font-semibold text-rose-700 dark:text-rose-300">
+                        Esperado:{' '}
+                        <span className="font-mono text-xs sm:text-sm font-black underline uppercase">
+                          {question.correctAnswer}
+                        </span>
+                      </span>
+                    )}
+                  </div>
 
-                <p className="text-xs leading-relaxed text-slate-700 dark:text-slate-300 pt-1">
-                  {question.explanation}
-                </p>
+                  {question.explanation && (
+                    <p className="text-[11px] sm:text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+                      {question.explanation}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-
-            {/* Botão de Avanço */}
-            <div className="mt-4 pt-3 border-t border-black/10 dark:border-white/10 flex justify-end">
-              <button
-                onClick={onNextQuestion}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs transition-colors shadow-sm"
-              >
-                <span>Próxima Pergunta</span>
-                <ArrowRight className="w-4 h-4" />
-                <kbd className="hidden sm:inline-block text-[10px] bg-white/20 dark:bg-white/10 px-1.5 py-0.5 rounded font-mono">
-                  Enter
-                </kbd>
-              </button>
             </div>
           </div>
         )}

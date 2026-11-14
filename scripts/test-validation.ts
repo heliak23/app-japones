@@ -3,7 +3,33 @@ import { KATAKANA_CHARACTERS } from '../src/data/katakanaData';
 import { KanaDataset } from '../src/data/kanaDataset';
 import { WanakanaService } from '../src/services/wanakanaService';
 import { ExerciseGenerator } from '../src/services/exerciseGenerator';
+import { StorageService } from '../src/services/storageService';
 import * as wanakana from 'wanakana';
+
+// Mock simples para LocalStorage/SessionStorage em ambiente Node de teste se não existirem
+if (typeof globalThis.localStorage === 'undefined') {
+  const store = new Map<string, string>();
+  globalThis.localStorage = {
+    getItem: (key: string) => store.get(key) || null,
+    setItem: (key: string, val: string) => store.set(key, String(val)),
+    removeItem: (key: string) => store.delete(key),
+    clear: () => store.clear(),
+    key: (i: number) => Array.from(store.keys())[i] || null,
+    length: 0,
+  } as Storage;
+}
+
+if (typeof globalThis.sessionStorage === 'undefined') {
+  const sessionStore = new Map<string, string>();
+  globalThis.sessionStorage = {
+    getItem: (key: string) => sessionStore.get(key) || null,
+    setItem: (key: string, val: string) => sessionStore.set(key, String(val)),
+    removeItem: (key: string) => sessionStore.delete(key),
+    clear: () => sessionStore.clear(),
+    key: (i: number) => Array.from(sessionStore.keys())[i] || null,
+    length: 0,
+  } as Storage;
+}
 
 let testsPassed = 0;
 let testsFailed = 0;
@@ -170,6 +196,36 @@ assert(
   allTypingFromLearned,
   'Exercício de digitação utiliza exclusivamente os caracteres aprendidos'
 );
+
+// 7. Testes de Seleção e Marcação em Massa (StorageService)
+console.log('\n--- 7. Testes de Seleção em Linha e Individual (StorageService) ---');
+StorageService.resetAllProgress();
+
+// Marcar um por um
+StorageService.markCharacterAsStudied('hira_a');
+assert(StorageService.getState().studiedCharacterIds.includes('hira_a'), 'Marca caractere individualmente como estudado');
+
+// Toggle para desmarcar
+StorageService.toggleCharacterStudied('hira_a');
+assert(!StorageService.getState().studiedCharacterIds.includes('hira_a'), 'Alterna (toggle) caractere para desmarcado');
+
+// Toggle para marcar novamente
+StorageService.toggleCharacterStudied('hira_a');
+assert(StorageService.getState().studiedCharacterIds.includes('hira_a'), 'Alterna (toggle) caractere para marcado');
+
+// Marcar toda a família de uma vez (A, I, U, E, O)
+const vogaisIds = ['hira_a', 'hira_i', 'hira_u', 'hira_e', 'hira_o'];
+StorageService.setMultipleCharactersStudied(vogaisIds, true);
+const allVogaisMarked = vogaisIds.every((id) => StorageService.getState().studiedCharacterIds.includes(id));
+assert(allVogaisMarked, 'Marca toda a linha/família de vogais de uma vez (A I U E O)');
+
+// Desmarcar toda a família de uma vez
+StorageService.setMultipleCharactersStudied(vogaisIds, false);
+const allVogaisUnmarked = vogaisIds.every((id) => !StorageService.getState().studiedCharacterIds.includes(id));
+assert(allVogaisUnmarked, 'Desmarca toda a linha/família de vogais de uma vez');
+
+// Limpeza pós-teste
+StorageService.resetAllProgress();
 
 // Resumo Final
 console.log('\n====================================================');

@@ -19,6 +19,9 @@ export function App() {
     learningState,
     sessionMetrics,
     markAsStudied,
+    unmarkAsStudied,
+    toggleStudied,
+    setMultipleStudied,
     saveSummary,
     recordAnswer,
     resetProgress,
@@ -52,7 +55,7 @@ export function App() {
       />
 
       {/* Conteúdo Dinâmico por Aba */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-24 md:pb-8">
         
         {activeTab === 'dashboard' && (
           <DashboardView
@@ -68,6 +71,9 @@ export function App() {
             alphabet="hiragana"
             studiedIds={learningState.studiedCharacterIds}
             onMarkStudied={markAsStudied}
+            onUnmarkStudied={unmarkAsStudied}
+            onToggleStudied={toggleStudied}
+            onSetMultipleStudied={setMultipleStudied}
             onNavigateToPractice={() => handleStartExercise('recognition')}
           />
         )}
@@ -77,6 +83,9 @@ export function App() {
             alphabet="katakana"
             studiedIds={learningState.studiedCharacterIds}
             onMarkStudied={markAsStudied}
+            onUnmarkStudied={unmarkAsStudied}
+            onToggleStudied={toggleStudied}
+            onSetMultipleStudied={setMultipleStudied}
             onNavigateToPractice={() => handleStartExercise('recognition')}
           />
         )}

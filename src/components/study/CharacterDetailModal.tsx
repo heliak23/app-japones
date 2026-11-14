@@ -11,6 +11,7 @@ interface CharacterDetailModalProps {
   hasNext?: boolean;
   isStudied: boolean;
   onMarkStudied: (characterId: string) => void;
+  onToggleStudied?: (characterId: string) => void;
   onPlayAudio: (char: string) => void;
   isPlaying?: boolean;
 }
@@ -24,15 +25,17 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
   hasNext = true,
   isStudied,
   onMarkStudied,
+  onToggleStudied,
   onPlayAudio,
   isPlaying = false,
 }) => {
-  // Marca como estudado automaticamente ao abrir para estudo
+  // Marca como estudado automaticamente ao abrir um novo caractere para estudo
   useEffect(() => {
     if (character && !isStudied) {
       onMarkStudied(character.id);
     }
-  }, [character, isStudied, onMarkStudied]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [character?.id]);
 
   // Teclas de atalho para navegação
   useEffect(() => {
@@ -55,23 +58,37 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
   const themeBg = isHiragana ? 'from-rose-500 to-brand-600' : 'from-amber-500 to-orange-600';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
       <div 
-        className="relative w-full max-w-lg bg-white dark:bg-[#131b2e] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors"
+        className="relative w-full max-w-lg max-h-[94vh] flex flex-col bg-white dark:bg-[#131b2e] rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Topo com gradiente */}
-        <div className={`p-6 bg-gradient-to-r ${themeBg} text-white flex items-center justify-between`}>
-          <div className="flex items-center gap-2">
+        <div className={`p-4 sm:p-6 bg-gradient-to-r ${themeBg} text-white flex items-center justify-between shrink-0`}>
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs uppercase font-extrabold tracking-wider bg-white/20 px-2.5 py-1 rounded-full">
               {character.alphabet === 'hiragana' ? 'Hiragana (ひらがな)' : 'Katakana (カタカナ)'}
             </span>
-            {isStudied && (
+            {onToggleStudied ? (
+              <button
+                type="button"
+                onClick={() => onToggleStudied(character.id)}
+                title={isStudied ? 'Clique para desmarcar como estudado' : 'Clique para marcar como estudado'}
+                className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold transition-all cursor-pointer ${
+                  isStudied
+                    ? 'bg-emerald-500/40 hover:bg-emerald-500/60 text-emerald-100 border border-emerald-300/40'
+                    : 'bg-white/20 hover:bg-white/30 text-white border border-white/30'
+                }`}
+              >
+                <CheckCircle2 className={`w-3.5 h-3.5 ${isStudied ? 'text-emerald-200 fill-emerald-500/40' : 'text-white'}`} />
+                <span>{isStudied ? 'Estudado (clique p/ desmarcar)' : 'Marcar como Estudado'}</span>
+              </button>
+            ) : isStudied ? (
               <span className="inline-flex items-center gap-1 text-xs bg-emerald-500/30 text-emerald-100 px-2 py-0.5 rounded-full font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-200" />
                 Estudado
               </span>
-            )}
+            ) : null}
           </div>
           <button
             onClick={onClose}
@@ -83,7 +100,7 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
         </div>
 
         {/* Corpo com Caractere em Destaque */}
-        <div className="p-6 sm:p-8 space-y-6">
+        <div className="p-5 sm:p-8 space-y-5 sm:space-y-6 overflow-y-auto">
           <div className="text-center">
             {/* Caractere Gigante */}
             <div className="relative inline-block my-2">

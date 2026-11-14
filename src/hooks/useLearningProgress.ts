@@ -19,6 +19,24 @@ export function useLearningProgress() {
     setSessionMetrics(StorageService.getSessionMetrics());
   }, []);
 
+  const unmarkAsStudied = useCallback((characterId: string) => {
+    const updated = StorageService.unmarkCharacterAsStudied(characterId);
+    setLearningState({ ...updated });
+    setSessionMetrics(StorageService.getSessionMetrics());
+  }, []);
+
+  const toggleStudied = useCallback((characterId: string) => {
+    const updated = StorageService.toggleCharacterStudied(characterId);
+    setLearningState({ ...updated });
+    setSessionMetrics(StorageService.getSessionMetrics());
+  }, []);
+
+  const setMultipleStudied = useCallback((characterIds: string[], studied: boolean) => {
+    const updated = StorageService.setMultipleCharactersStudied(characterIds, studied);
+    setLearningState({ ...updated });
+    setSessionMetrics(StorageService.getSessionMetrics());
+  }, []);
+
   const saveSummary = useCallback((summary: ExerciseSessionSummary) => {
     const updated = StorageService.saveExerciseSummary(summary);
     setLearningState({ ...updated });
@@ -53,6 +71,9 @@ export function useLearningProgress() {
     learningState,
     sessionMetrics,
     markAsStudied,
+    unmarkAsStudied,
+    toggleStudied,
+    setMultipleStudied,
     saveSummary,
     recordAnswer,
     getNeedingReview,

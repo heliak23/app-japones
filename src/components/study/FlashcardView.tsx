@@ -89,7 +89,7 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
       {/* Cartão Flip Central */}
       <div
         onClick={handleFlip}
-        className="cursor-pointer min-h-[380px] sm:min-h-[420px] bg-white dark:bg-[#131b2e] rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group select-none"
+        className="cursor-pointer min-h-[360px] sm:min-h-[420px] bg-white dark:bg-[#131b2e] rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group select-none"
       >
         {/* Barra superior do cartão */}
         <div className="flex items-center justify-between">
@@ -149,8 +149,8 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
 
         {/* Rodapé do Cartão */}
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
-          <span>{isFlipped ? 'Clique para ocultar' : 'Clique no cartão para virar'}</span>
-          <span className="font-mono">Pressione Espaço para girar</span>
+          <span>{isFlipped ? 'Toque para ocultar' : 'Toque no cartão para virar'}</span>
+          <span className="font-mono hidden sm:inline">Pressione Espaço para girar</span>
         </div>
       </div>
 
