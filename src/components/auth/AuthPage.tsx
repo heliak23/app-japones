@@ -4,14 +4,12 @@ import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../services/supabaseClient';
 import { ThemeToggle } from '../common/ThemeToggle';
 
-interface AuthPageProps {
-  onContinueAsGuest?: () => void;
-}
+export const AuthPage: React.FC = () => {
+  const { signInWithEmail, signUpWithEmail, recoveryError } = useAuth();
 
-export const AuthPage: React.FC<AuthPageProps> = ({ onContinueAsGuest }) => {
-  const { signInWithEmail, signUpWithEmail } = useAuth();
-
-  const [activeTab, setActiveTab] = useState<'login' | 'register' | 'recovery'>('login');
+  const [activeTab, setActiveTab] = useState<'login' | 'register' | 'recovery'>(
+    recoveryError ? 'recovery' : 'login'
+  );
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,7 +17,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onContinueAsGuest }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(recoveryError || null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const translateAuthError = (message: string): string => {
@@ -141,15 +139,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onContinueAsGuest }) => {
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          {onContinueAsGuest && (
-            <button
-              onClick={onContinueAsGuest}
-              className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
-            >
-              <span>Entrar como visitante</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          )}
         </div>
       </header>
 
@@ -435,18 +424,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onContinueAsGuest }) => {
                   </button>
                 )}
 
-                {/* Opção de Convidado / Visitante */}
-                <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex flex-col items-center gap-2.5">
-                  {onContinueAsGuest && (
-                    <button
-                      type="button"
-                      onClick={onContinueAsGuest}
-                      className="text-xs text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors font-medium underline underline-offset-4"
-                    >
-                      Continuar como Visitante (sem salvar na nuvem)
-                    </button>
-                  )}
-
+                {/* Informação do Banco Supabase */}
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex flex-col items-center gap-2">
                   <div className="flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-500">
                     <Database className="w-3.5 h-3.5 text-emerald-500" />
                     <span>Autenticação segura via <strong>Supabase PostgreSQL</strong></span>

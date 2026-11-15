@@ -6,11 +6,56 @@ import { CloudSyncService } from '../services/cloudSyncService';
 import { StorageService } from '../services/storageService';
 import { AuthContext } from './authContextDef';
 
+const getInitialRecoveryState = (): { isRecovery: boolean; error: string | null } => {
+  if (typeof window === 'undefined') {
+    return { isRecovery: false, error: null };
+  }
+  try {
+    const hash = window.location.hash;
+    const search = window.location.search;
+
+    if (hash.includes('error=') || search.includes('error=')) {
+      const rawParams = hash.includes('error=') ? hash.replace(/^#/, '') : search.replace(/^\?/, '');
+      const params = new URLSearchParams(rawParams);
+      const errorCode = params.get('error_code');
+      const errorDesc = params.get('error_description');
+
+      // Limpa os parâmetros de erro da URL para não poluir o navegador
+      if (window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+
+      if (errorCode === 'otp_expired' || errorDesc?.toLowerCase().includes('expired')) {
+        return { isRecovery: false, error: 'O link de recuperação de senha expirou. Por favor, solicite um novo e-mail.' };
+      }
+      if (errorDesc) {
+        return { isRecovery: false, error: decodeURIComponent(errorDesc.replace(/\+/g, ' ')) };
+      }
+      return { isRecovery: false, error: 'Falha ao validar link de recuperação. Por favor, tente novamente.' };
+    }
+
+    if (hash.includes('type=recovery') || search.includes('type=recovery')) {
+      return { isRecovery: true, error: null };
+    }
+  } catch (e) {
+    console.warn('Erro ao verificar parâmetros de recuperação na URL:', e);
+  }
+
+  return { isRecovery: false, error: null };
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [initialRecovery] = useState(getInitialRecoveryState);
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState<boolean>(initialRecovery.isRecovery);
+  const [recoveryError, setRecoveryError] = useState<string | null>(initialRecovery.error);
+
+  const clearRecoveryError = useCallback(() => {
+    setRecoveryError(null);
+  }, []);
 
   // Busca ou cria o perfil no banco de dados do Supabase
   const fetchProfile = useCallback(async (userId: string, email?: string): Promise<UserProfile | null> => {
@@ -101,9 +146,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     });
 
-    // Escuta mudanças de autenticação (login, logout, refresh de token)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+    // Escuta mudanças de autenticação (login, logout, refresh de token, PASSWORD_RECOVERY)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
       if (!mounted) return;
+
+      if (event === 'PASSWORD_RECOVERY') {
+        setIsPasswordRecovery(true);
+      }
+
       setSession(newSession);
       setUser(newSession?.user ?? null);
 
@@ -122,6 +172,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       subscription.unsubscribe();
     };
   }, [fetchProfile, syncOnLogin]);
+
+  const updatePassword = async (newPassword: string): Promise<{ error: Error | null }> => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) {
+        return { error: new Error(error.message) };
+      }
+
+      setIsPasswordRecovery(false);
+
+      // Limpa os parâmetros de hash/query da URL
+      if (window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+
+      return { error: null };
+    } catch (err: unknown) {
+      return {
+        error: err instanceof Error ? err : new Error('Falha ao atualizar a senha.'),
+      };
+    }
+  };
 
   const signInWithEmail = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -175,6 +250,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         session,
         profile,
         loading,
+        isPasswordRecovery,
+        recoveryError,
+        setIsPasswordRecovery,
+        clearRecoveryError,
+        updatePassword,
         signInWithEmail,
         signUpWithEmail,
         signOut,

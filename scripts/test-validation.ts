@@ -297,6 +297,39 @@ assert(StorageService.getState().characterStats['hira_i']?.needsReview === false
 // Limpeza
 StorageService.resetAllProgress();
 
+// 11. Validações das Regras de Autenticação, Banco e Recuperação de Senha
+console.log('\n--- 11. Validação das Regras de Autenticação, Supabase e Recuperação de Senha ---');
+
+// Regra 1: Validação de Senha para Recuperação (mínimo 6 caracteres e confirmação idêntica)
+const validateNewPassword = (pass: string, confirm: string) => {
+  if (pass.length < 6) return 'A senha deve ter no mínimo 6 caracteres';
+  if (pass !== confirm) return 'As senhas não coincidem';
+  return 'valid';
+};
+
+assert(validateNewPassword('12345', '12345') === 'A senha deve ter no mínimo 6 caracteres', 'Rejeita nova senha com menos de 6 caracteres');
+assert(validateNewPassword('senhaSegura123', 'senhaDiferente456') === 'As senhas não coincidem', 'Rejeita quando confirmação não confere com a nova senha');
+assert(validateNewPassword('senhaSegura123', 'senhaSegura123') === 'valid', 'Aceita senha válida com confirmação idêntica');
+
+// Regra 2: Detecção de parâmetros de recuperação na URL (hash de recovery e detecção de erro de link expirado)
+const parseRecoveryUrl = (hash: string) => {
+  if (hash.includes('error=')) {
+    const params = new URLSearchParams(hash.replace(/^#/, ''));
+    const isExpired = params.get('error_code') === 'otp_expired' || params.get('error_description')?.includes('expired');
+    return { isRecovery: false, isExpired: !!isExpired };
+  }
+  if (hash.includes('type=recovery')) {
+    return { isRecovery: true, isExpired: false };
+  }
+  return { isRecovery: false, isExpired: false };
+};
+
+const recoveryTest1 = parseRecoveryUrl('#access_token=xyz&type=recovery&refresh_token=abc');
+assert(recoveryTest1.isRecovery === true && recoveryTest1.isExpired === false, 'Detecta com sucesso o evento de recuperação via hash type=recovery');
+
+const recoveryTest2 = parseRecoveryUrl('#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired');
+assert(recoveryTest2.isRecovery === false && recoveryTest2.isExpired === true, 'Detecta corretamente link de recuperação expirado do Supabase');
+
 // Resumo Final
 console.log('\n====================================================');
 console.log(` RESULTADO: ${testsPassed} PASSOU, ${testsFailed} FALHOU`);

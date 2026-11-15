@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Trash2 } from 'lucide-react';
+import { BookOpen, Sparkles, RotateCcw, Home, Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';
 import { AuthModal } from '../auth/AuthModal';
@@ -11,8 +11,7 @@ interface NavbarProps {
   onSelectTab: (tab: ActiveTab) => void;
   studiedCount: number;
   totalCount?: number;
-  onResetProgress?: () => void;
-  onOpenAuthPage?: () => void;
+  onOpenChangePassword?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -20,20 +19,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectTab,
   studiedCount,
   totalCount = 92,
-  onResetProgress,
-  onOpenAuthPage,
+  onOpenChangePassword,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
 
   const handleOpenAuth = (tab: 'login' | 'register' = 'login') => {
-    if (onOpenAuthPage) {
-      onOpenAuthPage();
-    } else {
-      setAuthModalTab(tab);
-      setAuthModalOpen(true);
-    }
+    setAuthModalTab(tab);
+    setAuthModalOpen(true);
   };
 
   const handleTabChange = (tab: ActiveTab) => {
@@ -141,22 +135,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <ThemeToggle />
 
             {/* Menu do Usuário / Autenticação Supabase */}
-            <UserMenu onOpenAuthModal={handleOpenAuth} />
-
-            {onResetProgress && (
-              <button
-                onClick={() => {
-                  if (window.confirm('Deseja realmente reiniciar todo o progresso dos estudos neste navegador?')) {
-                    onResetProgress();
-                  }
-                }}
-                title="Reiniciar progresso salvo"
-                className="p-2 text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors"
-                aria-label="Reiniciar progresso salvo"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            )}
+            <UserMenu
+              onOpenAuthModal={handleOpenAuth}
+              onOpenChangePassword={onOpenChangePassword}
+            />
           </div>
 
           {/* Área de Ações Mobile (Progresso, Seletor de Tema e Hambúrguer) */}
@@ -185,6 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <UserMenu
               isMobileDrawer
               onOpenAuthModal={handleOpenAuth}
+              onOpenChangePassword={onOpenChangePassword}
               onMobileClose={() => setMobileMenuOpen(false)}
             />
             <button
@@ -254,23 +237,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
               <ThemeToggle variant="segmented" />
             </div>
-
-            {onResetProgress && (
-              <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-                <button
-                  onClick={() => {
-                    if (window.confirm('Deseja realmente reiniciar todo o progresso dos estudos?')) {
-                      onResetProgress();
-                      setMobileMenuOpen(false);
-                    }
-                  }}
-                  className="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Limpar todo o progresso local</span>
-                </button>
-              </div>
-            )}
           </div>
         )}
       </header>

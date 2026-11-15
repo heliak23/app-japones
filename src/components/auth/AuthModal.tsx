@@ -363,16 +363,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </button>
           )}
 
-          {/* Rodapé do Modal com Informações do Banco e Guest Mode */}
+          {/* Rodapé do Modal com Informações do Banco */}
           <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex flex-col items-center gap-2">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
-            >
-              Continuar como Convidado (progresso salvo apenas neste navegador)
-            </button>
-
             <div className="flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-500">
               <Database className="w-3 h-3 text-emerald-500" />
               <span>Autenticação & Banco de Dados via <strong>Supabase</strong></span>

@@ -11,10 +11,11 @@ import { KanaDataset } from './data/kanaDataset';
 import { useLearningProgress } from './hooks/useLearningProgress';
 import { useAuth } from './hooks/useAuth';
 import { AuthPage } from './components/auth/AuthPage';
+import { ResetPasswordModal } from './components/auth/ResetPasswordModal';
 
 export function App() {
-  const { user, loading } = useAuth();
-  const [isGuest, setIsGuest] = useState(false);
+  const { user, loading, isPasswordRecovery, setIsPasswordRecovery } = useAuth();
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [selectedPracticeType, setSelectedPracticeType] = useState<ExerciseType | undefined>(undefined);
@@ -33,7 +34,6 @@ export function App() {
     saveSummary,
     recordAnswer,
     dismissReview,
-    resetProgress,
   } = useLearningProgress();
 
   // 1. Tela de Carregamento inicial enquanto o Supabase verifica a sessão
@@ -50,9 +50,9 @@ export function App() {
     );
   }
 
-  // 2. Se NÃO estiver autenticado e NÃO estiver no modo visitante, exibe a Página de Login / Cadastro
-  if (!user && !isGuest) {
-    return <AuthPage onContinueAsGuest={() => setIsGuest(true)} />;
+  // 2. Se NÃO estiver autenticado, exibe a Página de Login / Cadastro obrigatória
+  if (!user) {
+    return <AuthPage />;
   }
 
   // Navegação para a aba de exercícios
@@ -106,8 +106,7 @@ export function App() {
         onSelectTab={handleSelectTab} 
         studiedCount={learningState.studiedCharacterIds.length}
         totalCount={KanaDataset.getAll().length}
-        onResetProgress={resetProgress}
-        onOpenAuthPage={() => setIsGuest(false)}
+        onOpenChangePassword={() => setChangePasswordOpen(true)}
       />
 
       {/* Conteúdo Dinâmico por Aba */}
@@ -183,6 +182,16 @@ export function App() {
           </div>
         </div>
       </footer>
+
+      {/* Modal de Redefinição de Senha (Fluxo Esqueci Senha ou Alteração de Senha) */}
+      <ResetPasswordModal
+        isOpen={isPasswordRecovery || changePasswordOpen}
+        isMandatory={isPasswordRecovery}
+        onClose={() => {
+          setIsPasswordRecovery(false);
+          setChangePasswordOpen(false);
+        }}
+      />
     </div>
   );
 }
