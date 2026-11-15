@@ -47,6 +47,10 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
       clearTimeout(autoAdvanceTimerRef.current);
       autoAdvanceTimerRef.current = null;
     }
+    const isTyping = !question.options || question.options.length === 0;
+    if (!isTyping && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     onNextQuestion();
   };
 
@@ -62,19 +66,36 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
     setHasAnswered(false);
     setIsCorrect(false);
 
-    focusInput();
-    const rafId = requestAnimationFrame(focusInput);
-    const timer = setTimeout(focusInput, 50);
+    const isTyping = !question.options || question.options.length === 0;
+
+    if (!isTyping) {
+      // Garante que nenhum elemento anterior retenha foco em telas touch
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    } else {
+      // No modo digitação, garante foco contínuo para manter o teclado aberto no celular
+      focusInput();
+      const rafId = requestAnimationFrame(focusInput);
+      const timer = setTimeout(focusInput, 30);
+
+      return () => {
+        cancelAnimationFrame(rafId);
+        clearTimeout(timer);
+        if (autoAdvanceTimerRef.current) {
+          clearTimeout(autoAdvanceTimerRef.current);
+          autoAdvanceTimerRef.current = null;
+        }
+      };
+    }
 
     return () => {
-      cancelAnimationFrame(rafId);
-      clearTimeout(timer);
       if (autoAdvanceTimerRef.current) {
         clearTimeout(autoAdvanceTimerRef.current);
         autoAdvanceTimerRef.current = null;
       }
     };
-  }, [question.id]);
+  }, [question.id, currentIndex]);
 
   // Teclas de atalho para respostas e avanço
   useEffect(() => {
@@ -131,6 +152,9 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
   const handleSelectOption = (option: string) => {
     if (hasAnswered || isAdvancingRef.current) return;
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     setSelectedOption(option);
     const correct = evaluateAnswer(option);
     setIsCorrect(correct);
@@ -160,6 +184,9 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
       return;
     }
     if (!typedAnswer.trim()) return;
+
+    // Mantém o input focado no evento síncrono do usuário para preservar o teclado mobile
+    inputRef.current?.focus();
 
     const correct = evaluateAnswer(typedAnswer);
     setIsCorrect(correct);
@@ -247,23 +274,23 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
             {question.options.map((option, idx) => {
               const isSelected = selectedOption === option;
               const isCorrectOption = option.toLowerCase() === question.correctAnswer.toLowerCase();
-              let btnStyle = 'bg-slate-50 dark:bg-[#182238] hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 active:scale-[0.99] cursor-pointer';
+              let btnStyle = 'bg-slate-50 dark:bg-[#182238] hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 active:scale-[0.99] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500';
 
               if (hasAnswered) {
                 if (isCorrectOption) {
                   // Mantém a cor verde se o usuário apertar a opção certa (ou indica qual era a certa se errou)
-                  btnStyle = 'bg-emerald-500 text-white border-emerald-600 shadow-lg shadow-emerald-500/25 ring-2 ring-emerald-300 dark:ring-emerald-500/50 scale-[1.02] font-black';
+                  btnStyle = 'bg-emerald-500 text-white border-emerald-600 shadow-lg shadow-emerald-500/25 ring-2 ring-emerald-300 dark:ring-emerald-500/50 scale-[1.02] font-black focus:outline-none';
                 } else if (isSelected && !isCorrect) {
                   // Se o usuário errar, mantém a cor vermelha na opção clicada
-                  btnStyle = 'bg-rose-500 text-white border-rose-600 shadow-lg shadow-rose-500/25 ring-2 ring-rose-300 dark:ring-rose-500/50 scale-[1.02] font-black';
+                  btnStyle = 'bg-rose-500 text-white border-rose-600 shadow-lg shadow-rose-500/25 ring-2 ring-rose-300 dark:ring-rose-500/50 scale-[1.02] font-black focus:outline-none';
                 } else {
-                  btnStyle = 'bg-slate-100 dark:bg-slate-800/60 text-slate-400 dark:text-slate-600 border-slate-200 dark:border-slate-800 opacity-40 cursor-default';
+                  btnStyle = 'bg-slate-100 dark:bg-slate-800/60 text-slate-400 dark:text-slate-600 border-slate-200 dark:border-slate-800 opacity-40 cursor-default focus:outline-none';
                 }
               }
 
               return (
                 <button
-                  key={option}
+                  key={`${question.id}-${idx}-${option}`}
                   type="button"
                   disabled={hasAnswered}
                   onClick={() => handleSelectOption(option)}
@@ -299,9 +326,26 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                 ref={inputRef}
                 type="text"
                 autoFocus
-                readOnly={hasAnswered}
+                autoCapitalize="none"
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+                inputMode="text"
                 value={typedAnswer}
-                onChange={(e) => setTypedAnswer(e.target.value)}
+                onChange={(e) => {
+                  if (hasAnswered) return;
+                  setTypedAnswer(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (hasAnswered) {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleNext();
+                    } else {
+                      e.preventDefault();
+                    }
+                  }
+                }}
                 placeholder="Digite a romanização (ex: ka, shi)..."
                 className={`w-full px-4 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl border text-base sm:text-lg font-bold text-center transition-colors focus:outline-none focus:ring-4 ${
                   hasAnswered
@@ -317,6 +361,8 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
               <button
                 type="submit"
                 disabled={!typedAnswer.trim()}
+                onMouseDown={(e) => e.preventDefault()}
+                onTouchStart={() => inputRef.current?.focus()}
                 className="w-full py-3 rounded-xl sm:rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-extrabold text-sm flex items-center justify-center gap-2 transition-colors shadow-md shadow-indigo-950/20 cursor-pointer"
               >
                 <span>Confirmar Resposta</span>
