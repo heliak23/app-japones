@@ -330,6 +330,21 @@ assert(recoveryTest1.isRecovery === true && recoveryTest1.isExpired === false, '
 const recoveryTest2 = parseRecoveryUrl('#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired');
 assert(recoveryTest2.isRecovery === false && recoveryTest2.isExpired === true, 'Detecta corretamente link de recuperação expirado do Supabase');
 
+// Regra 3: Validação do fluxo de Alteração de Senha (solicita senha atual, nova senha e confirmação)
+const validateChangePassword = (currentPass: string, newPass: string, confirmPass: string) => {
+  if (!currentPass || !currentPass.trim()) return 'A senha atual é obrigatória';
+  if (newPass.length < 6) return 'A nova senha deve ter no mínimo 6 caracteres';
+  if (newPass !== confirmPass) return 'As senhas não coincidem';
+  if (currentPass === newPass) return 'A nova senha não pode ser igual à senha atual';
+  return 'valid';
+};
+
+assert(validateChangePassword('', 'novaSenha123', 'novaSenha123') === 'A senha atual é obrigatória', 'Rejeita alteração de senha sem preencher a senha atual');
+assert(validateChangePassword('senhaAntiga123', '12345', '12345') === 'A nova senha deve ter no mínimo 6 caracteres', 'Rejeita nova senha curta na alteração de senha');
+assert(validateChangePassword('senhaAntiga123', 'novaSenha123', 'outraSenha456') === 'As senhas não coincidem', 'Rejeita quando confirmação não confere na alteração de senha');
+assert(validateChangePassword('mesmaSenha123', 'mesmaSenha123', 'mesmaSenha123') === 'A nova senha não pode ser igual à senha atual', 'Rejeita quando nova senha é idêntica à senha atual');
+assert(validateChangePassword('senhaAntiga123', 'novaSenha456', 'novaSenha456') === 'valid', 'Aceita alteração de senha válida com senha atual, nova senha e confirmação correta');
+
 // Resumo Final
 console.log('\n====================================================');
 console.log(` RESULTADO: ${testsPassed} PASSOU, ${testsFailed} FALHOU`);

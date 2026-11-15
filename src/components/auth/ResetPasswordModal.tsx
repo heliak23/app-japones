@@ -13,11 +13,14 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
   onClose,
   isMandatory = false,
 }) => {
-  const { updatePassword } = useAuth();
+  const { updatePassword, changePassword } = useAuth();
 
+  const [currentPassword, setCurrentPassword] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -29,6 +32,11 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     setErrorMessage(null);
     setSuccessMessage(null);
 
+    if (!isMandatory && !currentPassword.trim()) {
+      setErrorMessage('Por favor, digite sua senha atual.');
+      return;
+    }
+
     if (password.length < 6) {
       setErrorMessage('A nova senha deve ter no mínimo 6 caracteres.');
       return;
@@ -39,9 +47,17 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
       return;
     }
 
+    if (!isMandatory && currentPassword === password) {
+      setErrorMessage('A nova senha não pode ser igual à senha atual.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const { error } = await updatePassword(password);
+      const { error } = !isMandatory
+        ? await changePassword(currentPassword, password)
+        : await updatePassword(password);
+
       if (error) {
         if (error.message.toLowerCase().includes('same_password')) {
           setErrorMessage('A nova senha não pode ser igual à senha anterior.');
@@ -49,7 +65,12 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           setErrorMessage(error.message || 'Falha ao atualizar a senha.');
         }
       } else {
-        setSuccessMessage('Senha alterada com sucesso! Você já pode utilizar sua nova senha.');
+        setSuccessMessage(
+          isMandatory
+            ? 'Senha redefinida com sucesso! Você já pode utilizar sua nova senha.'
+            : 'Senha alterada com sucesso! Você já pode utilizar sua nova senha.'
+        );
+        setCurrentPassword('');
         setPassword('');
         setConfirmPassword('');
         setTimeout(() => {
@@ -65,8 +86,12 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
 
   const handleClose = () => {
     if (loading) return;
+    setCurrentPassword('');
     setPassword('');
     setConfirmPassword('');
+    setShowCurrentPassword(false);
+    setShowPassword(false);
+    setShowConfirmPassword(false);
     setErrorMessage(null);
     setSuccessMessage(null);
     onClose();
@@ -95,12 +120,12 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           </div>
 
           <h3 className="text-xl font-black tracking-tight">
-            Redefinir Senha
+            {isMandatory ? 'Redefinir Senha' : 'Alterar Senha'}
           </h3>
           <p className="text-xs text-white/80 mt-1 leading-relaxed">
             {isMandatory 
               ? 'Você acessou o link de recuperação. Digite e confirme sua nova senha para continuar estudando com segurança.'
-              : 'Digite sua nova senha abaixo para atualizar suas credenciais de acesso.'}
+              : 'Digite sua senha atual e a nova senha para atualizar suas credenciais de acesso.'}
           </p>
         </div>
 
@@ -117,6 +142,36 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
             <div className="flex items-start gap-2.5 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs">
               <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{successMessage}</span>
+            </div>
+          )}
+
+          {/* Campo Senha Atual (exibido apenas ao alterar senha logado) */}
+          {!isMandatory && (
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Senha Atual
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type={showCurrentPassword ? 'text' : 'password'}
+                  required
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="••••••••"
+                  disabled={loading || !!successMessage}
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all disabled:opacity-60"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  tabIndex={-1}
+                  aria-label={showCurrentPassword ? 'Ocultar senha atual' : 'Mostrar senha atual'}
+                >
+                  {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
           )}
 
@@ -142,6 +197,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                 tabIndex={-1}
+                aria-label={showPassword ? 'Ocultar nova senha' : 'Mostrar nova senha'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -156,15 +212,24 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showConfirmPassword ? 'text' : 'password'}
                 required
                 minLength={6}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 disabled={loading || !!successMessage}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all disabled:opacity-60"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all disabled:opacity-60"
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                tabIndex={-1}
+                aria-label={showConfirmPassword ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
@@ -178,10 +243,10 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Salvando nova senha...</span>
+                  <span>{isMandatory ? 'Salvando nova senha...' : 'Atualizando senha...'}</span>
                 </>
               ) : (
-                <span>Salvar Nova Senha</span>
+                <span>{isMandatory ? 'Salvar Nova Senha' : 'Atualizar Senha'}</span>
               )}
             </button>
 

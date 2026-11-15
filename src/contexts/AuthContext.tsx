@@ -198,6 +198,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const changePassword = async (
+    currentPassword: string,
+    newPassword: string
+  ): Promise<{ error: Error | null }> => {
+    try {
+      if (!user?.email) {
+        return { error: new Error('Usuário não autenticado.') };
+      }
+
+      // 1. Re-autentica com a senha antiga para validar que a senha atual está correta
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword,
+      });
+
+      if (signInError) {
+        const msg = signInError.message.toLowerCase();
+        if (msg.includes('invalid login credentials') || msg.includes('invalid_grant')) {
+          return { error: new Error('A senha atual está incorreta. Verifique e tente novamente.') };
+        }
+        return { error: new Error(signInError.message || 'Falha ao verificar a senha atual.') };
+      }
+
+      // 2. Atualiza para a nova senha
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (updateError) {
+        if (updateError.message.toLowerCase().includes('same_password')) {
+          return { error: new Error('A nova senha não pode ser igual à senha anterior.') };
+        }
+        return { error: new Error(updateError.message || 'Falha ao atualizar a senha.') };
+      }
+
+      return { error: null };
+    } catch (err: unknown) {
+      return {
+        error: err instanceof Error ? err : new Error('Falha ao processar alteração de senha.'),
+      };
+    }
+  };
+
   const signInWithEmail = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -255,6 +298,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsPasswordRecovery,
         clearRecoveryError,
         updatePassword,
+        changePassword,
         signInWithEmail,
         signUpWithEmail,
         signOut,

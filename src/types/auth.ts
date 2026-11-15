@@ -19,6 +19,7 @@ export interface AuthContextType {
   setIsPasswordRecovery: (isRecovery: boolean) => void;
   clearRecoveryError: () => void;
   updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<{ error: Error | null }>;
   signInWithEmail: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUpWithEmail: (email: string, password: string, displayName?: string) => Promise<{ error: Error | null; user?: User | null }>;
   signOut: () => Promise<void>;
