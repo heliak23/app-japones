@@ -1,23 +1,27 @@
 import type { UserLearningState, CharacterProgressStat, CurrentSessionMetrics } from '../types/progress';
 import type { ExerciseSessionSummary } from '../types/exercise';
+import { StreakService } from './streakService';
 
 const STORAGE_KEY = 'nihongo_learning_data_v1';
 const SESSION_KEY = 'nihongo_session_metrics_v1';
 
-const defaultState: UserLearningState = {
-  studiedCharacterIds: [],
-  characterStats: {},
-  history: [],
-  totalExercisesCompleted: 0,
-  totalCorrect: 0,
-  totalIncorrect: 0,
-  preferences: {
-    audioEnabled: true,
-    autoPlayAudio: false,
-    speechRate: 0.85,
-    preferredAlphabetFilter: 'all',
-  },
-};
+function createDefaultState(): UserLearningState {
+  return {
+    studiedCharacterIds: [],
+    characterStats: {},
+    history: [],
+    totalExercisesCompleted: 0,
+    totalCorrect: 0,
+    totalIncorrect: 0,
+    streak: StreakService.getDefaultStreak(),
+    preferences: {
+      audioEnabled: true,
+      autoPlayAudio: false,
+      speechRate: 0.85,
+      preferredAlphabetFilter: 'all',
+    },
+  };
+}
 
 const defaultSession: CurrentSessionMetrics = {
   studiedInCurrentSession: 0,
@@ -29,19 +33,25 @@ export const StorageService = {
   getState(): UserLearningState {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return defaultState;
+      if (!raw) return createDefaultState();
       const parsed = JSON.parse(raw);
+      const def = createDefaultState();
       return {
-        ...defaultState,
+        ...def,
         ...parsed,
+        streak: {
+          ...def.streak,
+          ...(parsed.streak || {}),
+          activeDates: Array.isArray(parsed.streak?.activeDates) ? parsed.streak.activeDates : [],
+        },
         preferences: {
-          ...defaultState.preferences,
+          ...def.preferences,
           ...(parsed.preferences || {}),
         },
       };
     } catch (e) {
       console.error('Erro ao ler do LocalStorage:', e);
-      return defaultState;
+      return createDefaultState();
     }
   },
 
@@ -53,12 +63,39 @@ export const StorageService = {
     }
   },
 
+  checkAndUpdateStreak(now: Date = new Date()): {
+    state: UserLearningState;
+    isNewDay: boolean;
+    isConsecutive: boolean;
+    streakIncreased: boolean;
+  } {
+    const state = this.getState();
+    const result = StreakService.calculateStreakOnAccess(state.streak, now);
+
+    if (result.isNewDay || result.streak.lastActiveDate !== state.streak.lastActiveDate || result.streak.currentStreak !== state.streak.currentStreak) {
+      state.streak = result.streak;
+      this.saveState(state);
+    }
+
+    return {
+      state,
+      isNewDay: result.isNewDay,
+      isConsecutive: result.isConsecutive,
+      streakIncreased: result.streakIncreased,
+    };
+  },
+
   markCharacterAsStudied(characterId: string): UserLearningState {
     const state = this.getState();
+    const streakResult = StreakService.calculateStreakOnAccess(state.streak);
+    state.streak = streakResult.streak;
+
     if (!state.studiedCharacterIds.includes(characterId)) {
       state.studiedCharacterIds.push(characterId);
       this.saveState(state);
       this.incrementSessionStudied();
+    } else {
+      this.saveState(state);
     }
     return state;
   },
@@ -75,6 +112,9 @@ export const StorageService = {
 
   toggleCharacterStudied(characterId: string): UserLearningState {
     const state = this.getState();
+    const streakResult = StreakService.calculateStreakOnAccess(state.streak);
+    state.streak = streakResult.streak;
+
     const index = state.studiedCharacterIds.indexOf(characterId);
     if (index !== -1) {
       state.studiedCharacterIds.splice(index, 1);
@@ -89,13 +129,17 @@ export const StorageService = {
   setMultipleCharactersStudied(characterIds: string[], studied: boolean): UserLearningState {
     const state = this.getState();
     let changed = false;
+
     if (studied) {
+      const streakResult = StreakService.calculateStreakOnAccess(state.streak);
+      state.streak = streakResult.streak;
+      changed = true;
+
       let newlyAdded = 0;
       for (const id of characterIds) {
         if (!state.studiedCharacterIds.includes(id)) {
           state.studiedCharacterIds.push(id);
           newlyAdded++;
-          changed = true;
         }
       }
       if (newlyAdded > 0) {
@@ -121,6 +165,9 @@ export const StorageService = {
 
   recordCharacterAnswer(characterId: string, isCorrect: boolean): UserLearningState {
     const state = this.getState();
+    const streakResult = StreakService.calculateStreakOnAccess(state.streak);
+    state.streak = streakResult.streak;
+
     const existing = state.characterStats[characterId] || {
       characterId,
       attempts: 0,
@@ -161,6 +208,9 @@ export const StorageService = {
 
   saveExerciseSummary(summary: ExerciseSessionSummary): UserLearningState {
     const state = this.getState();
+    const streakResult = StreakService.calculateStreakOnAccess(state.streak);
+    state.streak = streakResult.streak;
+
     state.history.unshift(summary);
     if (state.history.length > 50) {
       state.history = state.history.slice(0, 50);

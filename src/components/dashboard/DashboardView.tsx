@@ -5,6 +5,7 @@ import { StatCard } from '../common/StatCard';
 import { ProgressBar } from '../common/ProgressBar';
 import { KanaDataset } from '../../data/kanaDataset';
 import { useAuth } from '../../hooks/useAuth';
+import { StreakWidget } from './StreakWidget';
 import {
   Sparkles,
   BookOpen,
@@ -16,6 +17,7 @@ import {
   Target,
   Brain,
   HelpCircle,
+  Flame,
 } from 'lucide-react';
 
 interface DashboardViewProps {
@@ -39,6 +41,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const totalKatakana = KanaDataset.getKatakana().length;
   const studiedCount = learningState.studiedCharacterIds.length;
   const progressPercent = Math.min(100, Math.round((studiedCount / totalCharacters) * 100));
+
+  const currentStreak = learningState.streak?.currentStreak || 0;
+  const maxStreak = Math.max(learningState.streak?.maxStreak || 0, currentStreak);
 
   // Contagem de Hiragana vs Katakana estudados
   const hiraganaStudiedCount = learningState.studiedCharacterIds.filter((id) => id.startsWith('hira_')).length;
@@ -109,16 +114,32 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </section>
 
+      {/* Widget Interativo da Ofensiva / Dias Seguidos (Streak) */}
+      <StreakWidget streak={learningState.streak} />
+
       {/* Indicadores de Progresso da Sessão Atual e Geral */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Seu Desempenho</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Métricas da sessão atual e histórico geral salvo no navegador</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Métricas da ofensiva, sessão atual e histórico geral sincronizado</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <StatCard
+            icon={<Flame className="w-6 h-6 text-orange-600 dark:text-orange-400" />}
+            iconBgColor="bg-orange-50 dark:bg-orange-950/50"
+            label="Ofensiva Atual"
+            value={`${currentStreak} ${currentStreak === 1 ? 'dia' : 'dias'}`}
+            badge={`Recorde: ${maxStreak}d`}
+            subtitle={
+              currentStreak > 0
+                ? `${learningState.streak?.activeDates?.length || 1} dias totais registrados`
+                : 'Entre todo dia para evoluir'
+            }
+          />
+
           <StatCard
             icon={<BookOpen className="w-6 h-6 text-brand-600 dark:text-brand-400" />}
             iconBgColor="bg-brand-50 dark:bg-brand-950/50"

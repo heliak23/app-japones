@@ -106,6 +106,7 @@ export function App() {
         onSelectTab={handleSelectTab} 
         studiedCount={learningState.studiedCharacterIds.length}
         totalCount={KanaDataset.getAll().length}
+        streak={learningState.streak}
         onOpenChangePassword={() => setChangePasswordOpen(true)}
       />
 

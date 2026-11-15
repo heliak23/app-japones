@@ -7,7 +7,9 @@ import { CloudSyncService } from '../services/cloudSyncService';
 
 export function useLearningProgress() {
   const { user } = useAuth();
-  const [learningState, setLearningState] = useState<UserLearningState>(() => StorageService.getState());
+  const [learningState, setLearningState] = useState<UserLearningState>(() => {
+    return StorageService.checkAndUpdateStreak().state;
+  });
   const [sessionMetrics, setSessionMetrics] = useState<CurrentSessionMetrics>(() => StorageService.getSessionMetrics());
 
   // Salva no Supabase se houver usuário autenticado
@@ -89,6 +91,15 @@ export function useLearningProgress() {
       CloudSyncService.saveCloudLearningState(user.id, emptyState);
     }
   }, [refresh, user]);
+
+  // Sincroniza streak inicial com a nuvem na inicialização do usuário autenticado
+  const hasSyncedInitialStreak = useRef(false);
+  useEffect(() => {
+    if (user && !hasSyncedInitialStreak.current) {
+      hasSyncedInitialStreak.current = true;
+      syncToCloud(learningState);
+    }
+  }, [user, syncToCloud, learningState]);
 
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent | Event) => {

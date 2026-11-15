@@ -11,6 +11,13 @@ export interface CharacterProgressStat {
   needsReview: boolean;
 }
 
+export interface StreakInfo {
+  currentStreak: number;
+  maxStreak: number;
+  lastActiveDate: string | null; // Data local no formato 'YYYY-MM-DD'
+  activeDates: string[]; // Lista de datas ordenadas 'YYYY-MM-DD'
+}
+
 export interface UserLearningState {
   studiedCharacterIds: string[];
   characterStats: Record<string, CharacterProgressStat>;
@@ -18,6 +25,7 @@ export interface UserLearningState {
   totalExercisesCompleted: number;
   totalCorrect: number;
   totalIncorrect: number;
+  streak: StreakInfo;
   preferences: {
     audioEnabled: boolean;
     autoPlayAudio: boolean;

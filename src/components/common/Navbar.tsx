@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, RotateCcw, Home, Menu, X } from 'lucide-react';
+import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Flame } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';
 import { AuthModal } from '../auth/AuthModal';
+import type { StreakInfo } from '../../types/progress';
 
 export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'practice' | 'review';
 
@@ -11,6 +12,7 @@ interface NavbarProps {
   onSelectTab: (tab: ActiveTab) => void;
   studiedCount: number;
   totalCount?: number;
+  streak?: StreakInfo;
   onOpenChangePassword?: () => void;
 }
 
@@ -19,11 +21,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectTab,
   studiedCount,
   totalCount = 92,
+  streak,
   onOpenChangePassword,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
+
+  const currentStreak = streak?.currentStreak ?? 0;
+  const maxStreak = Math.max(streak?.maxStreak ?? 0, currentStreak);
 
   const handleOpenAuth = (tab: 'login' | 'register' = 'login') => {
     setAuthModalTab(tab);
@@ -124,8 +130,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Progresso Desktop + Alternador de Tema + Reset */}
+          {/* Ofensiva + Progresso Desktop + Alternador de Tema + UserMenu */}
           <div className="hidden md:flex items-center gap-2.5">
+            {/* Badge de Ofensiva / Dias Seguidos */}
+            <div
+              onClick={() => handleTabChange('dashboard')}
+              role="button"
+              tabIndex={0}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 border border-orange-200/80 dark:border-orange-800/80 text-xs font-bold text-orange-700 dark:text-orange-300 hover:scale-105 cursor-pointer transition-all shadow-sm group select-none"
+              title={`Ofensiva de estudos: ${currentStreak} ${currentStreak === 1 ? 'dia seguido' : 'dias seguidos'} (Recorde pessoal: ${maxStreak}d)`}
+            >
+              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500 group-hover:scale-110 transition-transform" />
+              <span>{currentStreak} {currentStreak === 1 ? 'dia' : 'dias'}</span>
+            </div>
+
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-[#131b2e] border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors">
               <BookOpen className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
               <span>{studiedCount} / {totalCount} estudados</span>
@@ -136,13 +154,26 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Menu do Usuário / Autenticação Supabase */}
             <UserMenu
+              streak={streak}
               onOpenAuthModal={handleOpenAuth}
               onOpenChangePassword={onOpenChangePassword}
             />
           </div>
 
-          {/* Área de Ações Mobile (Progresso, Seletor de Tema e Hambúrguer) */}
-          <div className="flex items-center gap-2 md:hidden">
+          {/* Área de Ações Mobile (Ofensiva, Progresso, Seletor de Tema e Hambúrguer) */}
+          <div className="flex items-center gap-1.5 md:hidden">
+            {/* Badge de Ofensiva Mobile */}
+            <div
+              onClick={() => handleTabChange('dashboard')}
+              role="button"
+              tabIndex={0}
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-50 dark:bg-orange-950/50 text-xs font-bold text-orange-700 dark:text-orange-300 border border-orange-200/80 dark:border-orange-800/80 cursor-pointer select-none"
+              title={`Ofensiva: ${currentStreak} dias`}
+            >
+              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500" />
+              <span>{currentStreak}d</span>
+            </div>
+
             <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#131b2e] text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">
               <span className="text-brand-600 dark:text-brand-400">{studiedCount}</span>/{totalCount}
             </div>
@@ -165,6 +196,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 pt-3 pb-6 space-y-2 shadow-lg animate-fadeIn transition-colors">
             {/* Status / Ações de Autenticação Mobile */}
             <UserMenu
+              streak={streak}
               isMobileDrawer
               onOpenAuthModal={handleOpenAuth}
               onOpenChangePassword={onOpenChangePassword}

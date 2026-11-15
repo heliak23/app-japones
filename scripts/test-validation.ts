@@ -4,6 +4,7 @@ import { KanaDataset } from '../src/data/kanaDataset';
 import { WanakanaService } from '../src/services/wanakanaService';
 import { ExerciseGenerator } from '../src/services/exerciseGenerator';
 import { StorageService } from '../src/services/storageService';
+import { StreakService } from '../src/services/streakService';
 import * as wanakana from 'wanakana';
 
 // Mock simples para LocalStorage/SessionStorage em ambiente Node de teste se não existirem
@@ -344,6 +345,91 @@ assert(validateChangePassword('senhaAntiga123', '12345', '12345') === 'A nova se
 assert(validateChangePassword('senhaAntiga123', 'novaSenha123', 'outraSenha456') === 'As senhas não coincidem', 'Rejeita quando confirmação não confere na alteração de senha');
 assert(validateChangePassword('mesmaSenha123', 'mesmaSenha123', 'mesmaSenha123') === 'A nova senha não pode ser igual à senha atual', 'Rejeita quando nova senha é idêntica à senha atual');
 assert(validateChangePassword('senhaAntiga123', 'novaSenha456', 'novaSenha456') === 'valid', 'Aceita alteração de senha válida com senha atual, nova senha e confirmação correta');
+
+// 12. Validação da Ofensiva e Dias Seguidos (Streak System)
+console.log('\n--- 12. Validação da Ofensiva e Dias Seguidos (Streak System) ---');
+
+// Teste 1: Formato de data local e cálculo de diferença de dias
+const dateA = '2026-11-14';
+const dateB = '2026-11-15';
+const dateC = '2026-11-17';
+assert(StreakService.getDayDifference(dateA, dateB) === 1, 'Cálculo de 1 dia de diferença consecutivo (2026-11-14 -> 2026-11-15)');
+assert(StreakService.getDayDifference(dateA, dateC) === 3, 'Cálculo de 3 dias de diferença (2026-11-14 -> 2026-11-17)');
+assert(StreakService.getDayDifference(dateB, dateB) === 0, 'Diferença de dias para mesma data deve ser 0');
+
+// Teste 2: Primeiro acesso histórico
+const firstAccessDate = new Date(2026, 10, 10); // 2026-11-10
+const firstResult = StreakService.calculateStreakOnAccess(undefined, firstAccessDate);
+assert(firstResult.streak.currentStreak === 1, 'Primeiro acesso inicia com 1 dia de sequência');
+assert(firstResult.streak.maxStreak === 1, 'Recorde inicial estabelecido como 1 dia');
+assert(firstResult.streak.lastActiveDate === '2026-11-10', 'Data do primeiro acesso registrada corretamente');
+assert(firstResult.streak.activeDates.includes('2026-11-10'), 'Data do primeiro acesso adicionada à lista de dias ativos');
+assert(firstResult.isNewDay === true, 'Primeiro acesso sinaliza isNewDay = true');
+
+// Teste 3: Acesso consecutivo no dia seguinte (dia 11)
+const secondAccessDate = new Date(2026, 10, 11);
+const secondResult = StreakService.calculateStreakOnAccess(firstResult.streak, secondAccessDate);
+assert(secondResult.streak.currentStreak === 2, 'Acesso consecutivo no dia seguinte incrementa sequência para 2 dias');
+assert(secondResult.streak.maxStreak === 2, 'Recorde atualizado para 2 dias');
+assert(secondResult.streak.lastActiveDate === '2026-11-11', 'Última data ativa atualizada para 2026-11-11');
+assert(secondResult.isConsecutive === true, 'Sinaliza isConsecutive = true para dias seguidos');
+
+// Teste 4: Múltiplos acessos no mesmo dia não devem duplicar contagem
+const sameDayResult = StreakService.calculateStreakOnAccess(secondResult.streak, secondAccessDate);
+assert(sameDayResult.streak.currentStreak === 2, 'Segundo acesso no mesmo dia mantém streak em 2');
+assert(sameDayResult.isNewDay === false, 'Acesso no mesmo dia não sinaliza isNewDay');
+assert(sameDayResult.streak.activeDates.filter(d => d === '2026-11-11').length === 1, 'Não duplica a mesma data na lista de dias ativos');
+
+// Teste 5: Quebra de sequência (usuário faltou no dia 12 e voltou no dia 13)
+const missedDayAccess = new Date(2026, 10, 13);
+const resetResult = StreakService.calculateStreakOnAccess(secondResult.streak, missedDayAccess);
+assert(resetResult.streak.currentStreak === 1, 'Pular 1 ou mais dias quebra a sequência e recomeça em 1');
+assert(resetResult.streak.maxStreak === 2, 'Recorde histórico anterior (2) é preservado após quebra de sequência');
+assert(resetResult.streak.lastActiveDate === '2026-11-13', 'Data atualizada para o novo dia');
+
+// Teste 6: Reconstrução determinística de streak a partir de histórico de datas
+const testDates = ['2026-11-01', '2026-11-02', '2026-11-03', '2026-11-05', '2026-11-06', '2026-11-07', '2026-11-08'];
+const refForTest = new Date(2026, 10, 8); // 2026-11-08
+const computed = StreakService.computeStreakFromDates(testDates, refForTest);
+assert(computed.currentStreak === 4, 'computeStreakFromDates calcula corretamente 4 dias seguidos (05, 06, 07, 08)');
+assert(computed.maxStreak === 4, 'computeStreakFromDates calcula o recorde histórico corretamente');
+
+// Teste 7: Mesclagem inteligente entre dados Locais e da Nuvem (Supabase)
+const localStreak = {
+  currentStreak: 2,
+  maxStreak: 5,
+  lastActiveDate: '2026-11-14',
+  activeDates: ['2026-11-13', '2026-11-14'],
+};
+const cloudStreak = {
+  currentStreak: 3,
+  maxStreak: 7,
+  lastActiveDate: '2026-11-15',
+  activeDates: ['2026-11-13', '2026-11-14', '2026-11-15'],
+};
+const mergedStreak = StreakService.mergeStreakInfos(localStreak, cloudStreak, new Date(2026, 10, 15));
+assert(mergedStreak.currentStreak === 3, 'Mesclagem local + nuvem calcula streak consecutivo correto (3)');
+assert(mergedStreak.maxStreak === 7, 'Mesclagem preserva o maior recorde histórico entre as duas fontes (7)');
+assert(mergedStreak.activeDates.length === 3, 'Datas ativas combinadas sem duplicatas');
+
+// Teste 8: Status dos 7 dias da semana (getWeekStatus)
+const weekStatus = StreakService.getWeekStatus(['2026-11-15'], new Date(2026, 10, 15));
+assert(weekStatus.length === 7, 'Semana possui exatamente 7 dias mapeados (Seg a Dom)');
+assert(weekStatus.some(d => d.isToday), 'Identifica corretamente o dia de hoje na semana');
+const todayInWeek = weekStatus.find(d => d.isToday);
+assert(todayInWeek?.isCompleted === true, 'Marca dia de hoje como concluído quando presente na lista');
+
+// Teste 9: Integração de streak com StorageService
+StorageService.resetAllProgress();
+const initialStorage = StorageService.getState();
+assert(initialStorage.streak && initialStorage.streak.currentStreak === 0, 'StorageService inicializa com streak padrão zerado');
+
+// Simula check-in diário
+const checkIn = StorageService.checkAndUpdateStreak();
+assert(checkIn.state.streak.currentStreak === 1, 'checkAndUpdateStreak registra primeiro acesso no storage com 1 dia');
+assert(StorageService.getState().streak.currentStreak === 1, 'Streak persistido com sucesso no LocalStorage');
+
+StorageService.resetAllProgress();
 
 // Resumo Final
 console.log('\n====================================================');

@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { LogIn, LogOut, Cloud, ChevronDown, Sparkles, KeyRound } from 'lucide-react';
+import { LogIn, LogOut, Cloud, ChevronDown, Sparkles, KeyRound, Flame } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import type { StreakInfo } from '../../types/progress';
 
 interface UserMenuProps {
   onOpenAuthModal: (tab?: 'login' | 'register') => void;
   onOpenChangePassword?: () => void;
   isMobileDrawer?: boolean;
   onMobileClose?: () => void;
+  streak?: StreakInfo;
 }
 
 export const UserMenu: React.FC<UserMenuProps> = ({
@@ -14,6 +16,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({
   onOpenChangePassword,
   isMobileDrawer = false,
   onMobileClose,
+  streak,
 }) => {
   const { user, profile, loading, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -86,6 +89,8 @@ export const UserMenu: React.FC<UserMenuProps> = ({
   // Autenticado
   const displayName = profile?.display_name || user.email?.split('@')[0] || 'Estudante';
   const initial = displayName.charAt(0).toUpperCase();
+  const currentStreak = streak?.currentStreak ?? 0;
+  const maxStreak = Math.max(streak?.maxStreak ?? 0, currentStreak);
 
   if (isMobileDrawer) {
     return (
@@ -102,6 +107,17 @@ export const UserMenu: React.FC<UserMenuProps> = ({
               {user.email}
             </div>
           </div>
+        </div>
+
+        {/* Indicador de Ofensiva no Mobile Drawer */}
+        <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 text-xs font-bold border border-orange-200/60 dark:border-orange-800/60">
+          <div className="flex items-center gap-1.5">
+            <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
+            <span>{currentStreak} {currentStreak === 1 ? 'dia de ofensiva' : 'dias de ofensiva'}</span>
+          </div>
+          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">
+            Recorde: {maxStreak}d
+          </span>
         </div>
 
         <div className="flex items-center gap-2 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1.5 rounded-lg border border-emerald-200/50 dark:border-emerald-800/50">
@@ -166,8 +182,19 @@ export const UserMenu: React.FC<UserMenuProps> = ({
             </div>
           </div>
 
+          {/* Indicador de Ofensiva / Dias Seguidos */}
+          <div className="px-3 py-2 flex items-center justify-between text-orange-600 dark:text-orange-400 font-semibold bg-orange-50/70 dark:bg-orange-950/30 rounded-xl mx-2 my-1.5 border border-orange-200/60 dark:border-orange-800/40">
+            <div className="flex items-center gap-1.5">
+              <Flame className="w-4 h-4 fill-orange-500 text-orange-500" />
+              <span>{currentStreak} {currentStreak === 1 ? 'dia de ofensiva' : 'dias de ofensiva'}</span>
+            </div>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">
+              Recorde: {maxStreak}d
+            </span>
+          </div>
+
           {/* Status da Nuvem */}
-          <div className="px-4 py-2.5 flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50/50 dark:bg-emerald-950/20 my-1">
+          <div className="px-4 py-2 flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50/50 dark:bg-emerald-950/20 my-1">
             <Cloud className="w-4 h-4 shrink-0" />
             <span className="text-[11px]">Sincronização na nuvem ativa</span>
           </div>

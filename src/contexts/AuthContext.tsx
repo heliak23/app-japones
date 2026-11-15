@@ -102,8 +102,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Sincroniza progresso de aprendizado ao autenticar
   const syncOnLogin = useCallback(async (userId: string) => {
     try {
+      // Registra acesso do dia e atualiza ofensiva/streak antes de sincronizar
+      const { state: localState } = StorageService.checkAndUpdateStreak();
       const cloudState = await CloudSyncService.fetchCloudLearningState(userId);
-      const localState = StorageService.getState();
 
       if (cloudState) {
         // Mescla dados locais e nuvem para nunca perder o que foi feito em modo visitante
