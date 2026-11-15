@@ -1,11 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Fallback com as credenciais públicas padrão do projeto caso a Vercel ou o ambiente não tenha o .env carregado
+const DEFAULT_SUPABASE_URL = 'https://wexifvscjrdzejzadift.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndleGlmdnNjanJkemVqemFkaWZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3NjI1MzUsImV4cCI6MjExMDMzODUzNX0.iOvGKBkdL2L96ixLQb_ZkWXmGMxJqlD-nGv7eapjNKY';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn(
-    'Configurações do Supabase ausentes no arquivo .env. Verifique VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+
+if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+  console.info(
+    'Utilizando credenciais de fallback para o Supabase. Configure VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no painel da Vercel para isolamento.'
   );
 }
 
