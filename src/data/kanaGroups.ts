@@ -67,6 +67,36 @@ export const KANA_GROUPS: KanaGroupInfo[] = [
     description: 'A única consoante isolada do japonês. Som nasal profundo no final de sílabas.',
     rowLabel: 'N Final',
   },
+  {
+    id: 'g',
+    name: 'Linha G (Ga, Gi, Gu, Ge, Go) • Dakuon',
+    description: 'Variação sonora da linha K com dakuten (゛). Som de "gato", "guitarra", "guri", "guerra", "gota".',
+    rowLabel: 'G',
+  },
+  {
+    id: 'z',
+    name: 'Linha Z (Za, Ji, Zu, Ze, Zo) • Dakuon',
+    description: 'Variação sonora da linha S com dakuten (゛). O som "JI" é pronunciado como o "j" ou "dj" suave em "dia".',
+    rowLabel: 'Z',
+  },
+  {
+    id: 'd',
+    name: 'Linha D (Da, Ji, Zu, De, Do) • Dakuon',
+    description: 'Variação sonora da linha T com dakuten (゛). "JI" (ぢ) e "ZU" (づ) possuem o mesmo som prático de じ e ず.',
+    rowLabel: 'D',
+  },
+  {
+    id: 'b',
+    name: 'Linha B (Ba, Bi, Bu, Be, Bo) • Dakuon',
+    description: 'Variação sonora da linha H com dakuten (゛). Consoante B idêntica ao português de "bola" e "barco".',
+    rowLabel: 'B',
+  },
+  {
+    id: 'p',
+    name: 'Linha P (Pa, Pi, Pu, Pe, Po) • Handakuon',
+    description: 'Variação meio-sonora da linha H com handakuten (゜). Consoante P explosiva como em "pato" e "pipoca".',
+    rowLabel: 'P',
+  },
 ];
 
 export const GROUP_MAP: Record<KanaGroupId, KanaGroupInfo> = KANA_GROUPS.reduce(

@@ -11,7 +11,12 @@ export type KanaGroupId =
   | 'y'
   | 'r'
   | 'w'
-  | 'n_final';
+  | 'n_final'
+  | 'g'
+  | 'z'
+  | 'd'
+  | 'b'
+  | 'p';
 
 export interface KanaGroupInfo {
   id: KanaGroupId;

@@ -137,9 +137,8 @@ export const StorageService = {
     if (isCorrect) {
       existing.correct += 1;
       existing.consecutiveSuccess += 1;
-      if (existing.consecutiveSuccess >= 2) {
-        existing.needsReview = false;
-      }
+      // Ao acertar, o erro é considerado superado e sai da fila de revisão
+      existing.needsReview = false;
     } else {
       existing.incorrect += 1;
       existing.consecutiveSuccess = 0;
@@ -148,6 +147,15 @@ export const StorageService = {
 
     state.characterStats[characterId] = existing;
     this.saveState(state);
+    return state;
+  },
+
+  dismissCharacterReview(characterId: string): UserLearningState {
+    const state = this.getState();
+    if (state.characterStats[characterId]) {
+      state.characterStats[characterId].needsReview = false;
+      this.saveState(state);
+    }
     return state;
   },
 
@@ -162,29 +170,23 @@ export const StorageService = {
     state.totalCorrect += summary.correctCount;
     state.totalIncorrect += summary.incorrectCount;
 
+    // Assegura que o estado needsReview reflita a última resposta de cada caractere
+    // evitando duplicar attempts/correct/incorrect que já foram computados em recordCharacterAnswer
     summary.results.forEach((res) => {
       if (res.characterId) {
-        const charStat = state.characterStats[res.characterId] || {
-          characterId: res.characterId,
-          attempts: 0,
-          correct: 0,
-          incorrect: 0,
-          lastStudiedAt: Date.now(),
-          consecutiveSuccess: 0,
-          needsReview: false,
-        };
-        charStat.attempts += 1;
-        charStat.lastStudiedAt = Date.now();
-        if (res.isCorrect) {
-          charStat.correct += 1;
-          charStat.consecutiveSuccess += 1;
-          if (charStat.consecutiveSuccess >= 2) charStat.needsReview = false;
+        if (!state.characterStats[res.characterId]) {
+          state.characterStats[res.characterId] = {
+            characterId: res.characterId,
+            attempts: 1,
+            correct: res.isCorrect ? 1 : 0,
+            incorrect: res.isCorrect ? 0 : 1,
+            lastStudiedAt: Date.now(),
+            consecutiveSuccess: res.isCorrect ? 1 : 0,
+            needsReview: !res.isCorrect,
+          };
         } else {
-          charStat.incorrect += 1;
-          charStat.consecutiveSuccess = 0;
-          charStat.needsReview = true;
+          state.characterStats[res.characterId].needsReview = !res.isCorrect;
         }
-        state.characterStats[res.characterId] = charStat;
       }
     });
 
@@ -196,8 +198,8 @@ export const StorageService = {
   getCharactersNeedingReview(): CharacterProgressStat[] {
     const state = this.getState();
     return Object.values(state.characterStats)
-      .filter((stat) => stat.needsReview || (stat.attempts > 0 && stat.incorrect / stat.attempts >= 0.4))
-      .sort((a, b) => (b.incorrect / (b.attempts || 1)) - (a.incorrect / (a.attempts || 1)));
+      .filter((stat) => stat.needsReview)
+      .sort((a, b) => b.incorrect - a.incorrect);
   },
 
   getSessionMetrics(): CurrentSessionMetrics {

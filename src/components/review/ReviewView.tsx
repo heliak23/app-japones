@@ -6,6 +6,7 @@ import {
   RotateCcw,
   AlertTriangle,
   CheckCircle2,
+  Check,
   Volume2,
   VolumeX,
   Play,
@@ -17,21 +18,23 @@ interface ReviewViewProps {
   learningState: UserLearningState;
   onStartReviewSession: (characterIds: string[]) => void;
   onStartStudiedSession: (characterIds: string[]) => void;
+  onDismissReview?: (characterId: string) => void;
 }
 
 export const ReviewView: React.FC<ReviewViewProps> = ({
   learningState,
   onStartReviewSession,
   onStartStudiedSession,
+  onDismissReview,
 }) => {
   const { playKana, isPlaying, currentText } = useAudio();
 
   // Coleta os caracteres com estatísticas registradas
   const characterStatsList = Object.values(learningState.characterStats);
 
-  // Caracteres com dificuldade (marcados para revisão ou com erro >= 40%)
+  // Caracteres com pendência de revisão (erros recentes não superados)
   const difficultStats = characterStatsList
-    .filter((stat) => stat.incorrect > 0)
+    .filter((stat) => stat.needsReview)
     .sort((a, b) => {
       // Prioriza caracteres com mais erros absolutos e menor taxa de acerto
       const rateA = a.correct / (a.attempts || 1);
@@ -63,7 +66,7 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
               Revisão Inteligente
             </h1>
             <p className="text-slate-600 dark:text-slate-300 text-sm max-w-xl mt-1">
-              Reforce os caracteres onde você teve mais erros nos testes e consolide a memória de longo prazo.
+              Reforce os caracteres onde você errou nos testes. Assim que você praticar e acertar, eles saem automaticamente da fila de revisão!
             </p>
           </div>
 
@@ -101,16 +104,16 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                Caracteres que Precisam de Reforço
+                Erros Pendentes de Revisão
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Ranqueados automaticamente com base na frequência de erros
+                Caracteres com erros recentes (ao praticar e acertar, eles saem automaticamente da lista)
               </p>
             </div>
           </div>
 
           <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">
-            {difficultStats.length} encontrados
+            {difficultStats.length} pendentes
           </span>
         </div>
 
@@ -119,7 +122,7 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
             <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto" />
             <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base">Tudo em dia!</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-              Você ainda não registrou erros nos exercícios ou acertou todos os caracteres recentemente.
+              Você não possui erros pendentes de revisão. Se errar alguma questão nos exercícios, ela aparecerá aqui para você praticar.
             </p>
           </div>
         ) : (
@@ -161,17 +164,29 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => playKana(char.character)}
-                    className="p-2 rounded-xl text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                    title="Ouvir som"
-                  >
-                    {isPlaying && currentText === char.character ? (
-                      <VolumeX className="w-4 h-4 text-brand-600 dark:text-brand-400 animate-pulse" />
-                    ) : (
-                      <Volume2 className="w-4 h-4" />
+                  <div className="flex items-center gap-1">
+                    {onDismissReview && (
+                      <button
+                        onClick={() => onDismissReview(stat.characterId)}
+                        className="p-2 rounded-xl text-slate-400 dark:text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
+                        title="Marcar como superado (remover da fila de erros)"
+                      >
+                        <Check className="w-4 h-4" />
+                      </button>
                     )}
-                  </button>
+
+                    <button
+                      onClick={() => playKana(char.character)}
+                      className="p-2 rounded-xl text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      title="Ouvir som"
+                    >
+                      {isPlaying && currentText === char.character ? (
+                        <VolumeX className="w-4 h-4 text-brand-600 dark:text-brand-400 animate-pulse" />
+                      ) : (
+                        <Volume2 className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               );
             })}

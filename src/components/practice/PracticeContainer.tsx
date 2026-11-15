@@ -200,6 +200,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
 
       {state === 'running' && currentQuestions.length > 0 && (
         <QuestionView
+          key={currentQuestions[currentIndex].id}
           question={currentQuestions[currentIndex]}
           currentIndex={currentIndex}
           totalQuestions={currentQuestions.length}

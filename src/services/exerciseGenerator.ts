@@ -74,10 +74,12 @@ export const ExerciseGenerator = {
     const globalPool = KanaDataset.getAll();
 
     return selected.map((char, index) => {
-      // Gera 3 opções distratoras da mesma família ou do dataset geral para garantir 4 opções
-      const otherChars = globalPool.filter((c) => c.romaji !== char.romaji);
-      const shuffledOthers = [...otherChars].sort(() => 0.5 - Math.random());
-      const distractorOptions = shuffledOthers.slice(0, 3).map((c) => c.romaji);
+      // Gera 3 opções distratoras únicas do dataset geral para garantir 4 opções distintas
+      const uniqueOtherRomajis = Array.from(
+        new Set(globalPool.filter((c) => c.romaji !== char.romaji).map((c) => c.romaji))
+      );
+      const shuffledOthers = uniqueOtherRomajis.sort(() => 0.5 - Math.random());
+      const distractorOptions = shuffledOthers.slice(0, 3);
 
       // Embaralha as 4 opções
       const options = [...distractorOptions, char.romaji].sort(() => 0.5 - Math.random());
@@ -104,12 +106,14 @@ export const ExerciseGenerator = {
     const selected = this.pickCharacters(pool, count);
 
     return selected.map((char, index) => {
-      // Aceita variações fonéticas comuns (ex: shi/si, tsu/tu, chi/ti, fu/hu)
+      // Aceita variações fonéticas comuns (ex: shi/si, tsu/tu, chi/ti, fu/hu, ji/zi/di, zu/du)
       const acceptableAnswers = [char.romaji];
       if (char.romaji === 'shi') acceptableAnswers.push('si');
       if (char.romaji === 'chi') acceptableAnswers.push('ti');
       if (char.romaji === 'tsu') acceptableAnswers.push('tu');
       if (char.romaji === 'fu') acceptableAnswers.push('hu');
+      if (char.romaji === 'ji') acceptableAnswers.push('zi', 'di', 'dji');
+      if (char.romaji === 'zu') acceptableAnswers.push('du', 'dzu');
 
       return {
         id: `typ_${index}_${char.id}_${Math.random().toString(36).substring(7)}`,
@@ -144,12 +148,16 @@ export const ExerciseGenerator = {
       const targetAlphabet = char.alphabet;
       const expectedKana = char.character;
 
-      // 4 opções de caracteres
-      const distractors = globalPool
-        .filter((c) => c.character !== expectedKana && c.alphabet === targetAlphabet)
+      // 4 opções de caracteres únicos
+      const distractors = Array.from(
+        new Set(
+          globalPool
+            .filter((c) => c.character !== expectedKana && c.alphabet === targetAlphabet)
+            .map((c) => c.character)
+        )
+      )
         .sort(() => 0.5 - Math.random())
-        .slice(0, 3)
-        .map((c) => c.character);
+        .slice(0, 3);
 
       const options = [...distractors, expectedKana].sort(() => 0.5 - Math.random());
 

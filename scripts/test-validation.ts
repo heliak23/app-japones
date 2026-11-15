@@ -49,8 +49,8 @@ console.log(' INICIANDO SUÍTE DE TESTES E VALIDAÇÃO AUTOMATIZADA ');
 console.log('====================================================\n');
 
 // 1. Validação do Hiragana
-console.log('--- 1. Validação dos 46 Caracteres de Hiragana ---');
-assert(HIRAGANA_CHARACTERS.length === 46, 'Total de caracteres do Hiragana deve ser exatamente 46');
+console.log('--- 1. Validação dos 71 Caracteres de Hiragana (Gojūon & Dakuon) ---');
+assert(HIRAGANA_CHARACTERS.length === 71, 'Total de caracteres do Hiragana deve ser exatamente 71 (46 básicos + 25 dakuon/handakuon)');
 
 const hiraIds = new Set<string>();
 let hiraAllValid = true;
@@ -74,12 +74,12 @@ for (const char of HIRAGANA_CHARACTERS) {
   }
 }
 if (hiraAllValid) {
-  assert(true, 'Todos os 46 Hiraganas possuem IDs únicos, campos preenchidos e são reconhecidos pelo WanaKana');
+  assert(true, 'Todos os 71 Hiraganas possuem IDs únicos, campos preenchidos e são reconhecidos pelo WanaKana');
 }
 
 // 2. Validação do Katakana
-console.log('\n--- 2. Validação dos 46 Caracteres de Katakana ---');
-assert(KATAKANA_CHARACTERS.length === 46, 'Total de caracteres do Katakana deve ser exatamente 46');
+console.log('\n--- 2. Validação dos 71 Caracteres de Katakana (Gojūon & Dakuon) ---');
+assert(KATAKANA_CHARACTERS.length === 71, 'Total de caracteres do Katakana deve ser exatamente 71 (46 básicos + 25 dakuon/handakuon)');
 
 const kataIds = new Set<string>();
 let kataAllValid = true;
@@ -103,13 +103,13 @@ for (const char of KATAKANA_CHARACTERS) {
   }
 }
 if (kataAllValid) {
-  assert(true, 'Todos os 46 Katakanas possuem IDs únicos, campos preenchidos e são reconhecidos pelo WanaKana');
+  assert(true, 'Todos os 71 Katakanas possuem IDs únicos, campos preenchidos e são reconhecidos pelo WanaKana');
 }
 
-// 3. Validação do Dataset Geral (92 caracteres)
+// 3. Validação do Dataset Geral (142 caracteres)
 console.log('\n--- 3. Validação do Dataset Geral ---');
-assert(KanaDataset.getAll().length === 92, 'Total de caracteres agregados deve ser 92 (46 + 46)');
-assert(KanaDataset.getGroups().length === 11, 'Total de grupos pedagógicos deve ser 11');
+assert(KanaDataset.getAll().length === 142, 'Total de caracteres agregados deve ser 142 (71 Hiragana + 71 Katakana)');
+assert(KanaDataset.getGroups().length === 16, 'Total de grupos pedagógicos deve ser 16 (11 Gojūon + 5 Dakuon/Handakuon)');
 
 // 4. Testes do WanakanaService e Validações Fonéticas
 console.log('\n--- 4. Testes do WanakanaService e Fonética PT-BR ---');
@@ -229,10 +229,13 @@ StorageService.resetAllProgress();
 
 // 8. Testes do Fluxo de Exercícios e Navegação
 console.log('\n--- 8. Testes de Fluxo e Seleção de Modalidades de Exercícios ---');
-const shouldAutoStartDefault = Boolean(false && ('recognition'));
+const defaultAutoStart = false;
+const defaultInitialType = 'recognition';
+const shouldAutoStartDefault = Boolean(defaultAutoStart && defaultInitialType);
 assert(!shouldAutoStartDefault, 'Fluxo padrão ao abrir Exercícios não deve auto-iniciar teste diretamente');
 
-const shouldAutoStartReview = Boolean(true && (sampleLearnedChars && sampleLearnedChars.length > 0));
+const reviewAutoStart = true;
+const shouldAutoStartReview = Boolean(reviewAutoStart && (sampleLearnedChars && sampleLearnedChars.length > 0));
 assert(shouldAutoStartReview, 'Fluxo de revisão direcionada ativa auto-start para os caracteres selecionados');
 
 const hiraganaOnlySession = ExerciseGenerator.generateSession('recognition', 'hiragana', 5);
@@ -268,6 +271,31 @@ assert(correctCount === 3, 'Total de acertos contabilizado exatamente (3)');
 assert(incorrectCount === 2, 'Total de erros contabilizado exatamente (2)');
 assert(percentage === 60, 'Percentual de aproveitamento calculado com precisão (60%)');
 assert(score === 30, 'Pontuação total calculada corretamente (30 pts)');
+
+// 10. Testes de Ciclo de Vida de Revisão de Erros
+console.log('\n--- 10. Testes de Ciclo de Vida de Revisão de Erros (Entrada e Saída) ---');
+StorageService.resetAllProgress();
+
+// Passo 1: Usuário erra o caractere 'hira_a'
+StorageService.recordCharacterAnswer('hira_a', false);
+let stateReview = StorageService.getState();
+assert(stateReview.characterStats['hira_a']?.needsReview === true, 'Caractere entra na lista de revisão ao ser errada');
+assert(StorageService.getCharactersNeedingReview().some(c => c.characterId === 'hira_a'), 'getCharactersNeedingReview lista o caractere errado');
+
+// Passo 2: Usuário revisa e acerta o caractere 'hira_a'
+StorageService.recordCharacterAnswer('hira_a', true);
+stateReview = StorageService.getState();
+assert(stateReview.characterStats['hira_a']?.needsReview === false, 'Caractere sai da lista de revisão imediatamente ao ser acertado');
+assert(!StorageService.getCharactersNeedingReview().some(c => c.characterId === 'hira_a'), 'getCharactersNeedingReview não lista mais o caractere superado');
+
+// Passo 3: Remoção/Descarte manual da revisão
+StorageService.recordCharacterAnswer('hira_i', false);
+assert(StorageService.getState().characterStats['hira_i']?.needsReview === true, 'Caractere hira_i entra na revisão após erro');
+StorageService.dismissCharacterReview('hira_i');
+assert(StorageService.getState().characterStats['hira_i']?.needsReview === false, 'Caractere hira_i sai da revisão após descarte manual (dismiss)');
+
+// Limpeza
+StorageService.resetAllProgress();
 
 // Resumo Final
 console.log('\n====================================================');

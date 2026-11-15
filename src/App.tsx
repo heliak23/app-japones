@@ -27,6 +27,7 @@ export function App() {
     setMultipleStudied,
     saveSummary,
     recordAnswer,
+    dismissReview,
     resetProgress,
   } = useLearningProgress();
 
@@ -80,7 +81,7 @@ export function App() {
         activeTab={activeTab} 
         onSelectTab={handleSelectTab} 
         studiedCount={learningState.studiedCharacterIds.length}
-        totalCount={92}
+        totalCount={KanaDataset.getAll().length}
         onResetProgress={resetProgress}
       />
 
@@ -139,6 +140,7 @@ export function App() {
             learningState={learningState}
             onStartReviewSession={handleStartTargetedReview}
             onStartStudiedSession={handleStartTargetedReview}
+            onDismissReview={dismissReview}
           />
         )}
 

@@ -19,20 +19,29 @@ Desenvolvido para funcionar completamente no lado do cliente (Client-Side), sem 
 
 ---
 
-## 📚 Escopo Pedagógico (92 Caracteres Básicos)
+## 📚 Escopo Pedagógico Completo (142 Caracteres)
 
-O aplicativo abrange todos os 46 caracteres básicos do **Hiragana** e os 46 do **Katakana**, divididos em 11 famílias fonéticas:
+O aplicativo abrange todos os 71 caracteres do **Hiragana** e 71 do **Katakana** (46 básicos do Gojūon + 25 de modificações fonéticas Dakuon e Handakuon), divididos em 16 famílias fonéticas:
+
+### Gojūon (Sons Básicos - 46 Caracteres):
 1. **Vogais Puras:** あ/ア (a), い/イ (i), う/ウ (u), え/エ (e), お/オ (o)
-2. **Linha K:** か/カ (ka), き/キ (ki), く/ク (ku), け/ケ (ke), こ/コ (ko)
+2. **Linha K:** か/カ (ka), き/キ (ki), く/ク (ku), ke/ケ (ke), こ/コ (ko)
 3. **Linha S:** さ/サ (sa), し/シ (shi), す/ス (su), せ/セ (se), そ/ソ (so)
 4. **Linha T:** た/タ (ta), ち/チ (chi), つ/ツ (tsu), て/テ (te), と/ト (to)
 5. **Linha N:** な/ナ (na), に/ニ (ni), ぬ/ヌ (nu), ね/ネ (ne), の/ノ (no)
 6. **Linha H:** は/ハ (ha), ひ/ヒ (hi), ふ/フ (fu), へ/ヘ (he), ほ/ホ (ho)
-7. **Linha M:** ま/マ (ma), み/ミ (mi),む/ム (mu), め/メ (me), も/モ (mo)
+7. **Linha M:** ま/マ (ma), み/ミ (mi), む/ム (mu), め/メ (me), も/モ (mo)
 8. **Linha Y:** や/ヤ (ya), ゆ/ユ (yu), よ/ヨ (yo)
 9. **Linha R:** ら/ラ (ra), り/リ (ri), る/ル (ru), れ/レ (re), ろ/ロ (ro)
 10. **Linha W:** わ/ワ (wa), を/ヲ (wo)
 11. **Caractere Final:** ん/ン (n)
+
+### Dakuon & Handakuon (Sons Modificados - 25 Caracteres):
+12. **Linha G (Dakuon K + ゛):** が/ガ (ga), ぎ/ギ (gi), ぐ/グ (gu), げ/ゲ (ge), ご/ゴ (go)
+13. **Linha Z (Dakuon S + ゛):** ざ/ザ (za), じ/ジ (ji), ず/ズ (zu), ぜ/ゼ (ze), ぞ/ゾ (zo)
+14. **Linha D (Dakuon T + ゛):** だ/ダ (da), ぢ/ヂ (ji), づ/ヅ (zu), で/デ (de), ど/ド (do)
+15. **Linha B (Dakuon H + ゛):** ば/バ (ba), び/ビ (bi), ぶ/ブ (bu), べ/ベ (be), ぼ/ボ (bo)
+16. **Linha P (Handakuon H + ゜):** ぱ/パ (pa), ぴ/ピ (pi), ぷ/プ (pu), ぺ/ペ (pe), ぽ/ポ (po)
 
 Cada caractere possui:
 - Caractere japonês em fonte de alta legibilidade (`Noto Sans JP`).

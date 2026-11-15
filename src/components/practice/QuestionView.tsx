@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import type { ExerciseQuestion, UserAnswerResult } from '../../types/exercise';
 import { ProgressBar } from '../common/ProgressBar';
 import { Volume2, CheckCircle2, XCircle, CornerDownLeft } from 'lucide-react';
@@ -33,14 +33,14 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
   const isAdvancingRef = useRef(false);
   const autoAdvanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const focusInput = () => {
+  const focusInput = useCallback(() => {
     if (inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();
     }
-  };
+  }, []);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (isAdvancingRef.current) return;
     isAdvancingRef.current = true;
     if (autoAdvanceTimerRef.current) {
@@ -52,29 +52,95 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
       document.activeElement.blur();
     }
     onNextQuestion();
+  }, [question.options, onNextQuestion]);
+
+  const evaluateAnswer = useCallback((userAnswer: string): boolean => {
+    if (question.type === 'typing') {
+      return WanakanaService.validateRomajiAnswer(
+        userAnswer,
+        question.correctAnswer,
+        question.acceptableAnswers
+      );
+    }
+
+    if (question.type === 'conversion' && !question.options) {
+      return WanakanaService.validateKanaAnswer(
+        userAnswer,
+        question.correctAnswer,
+        question.targetAlphabet || 'hiragana'
+      );
+    }
+
+    // Múltipla escolha padrão
+    return userAnswer.trim().toLowerCase() === question.correctAnswer.trim().toLowerCase();
+  }, [question]);
+
+  const handleSelectOption = useCallback((option: string) => {
+    if (hasAnswered || isAdvancingRef.current) return;
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    setSelectedOption(option);
+    const correct = evaluateAnswer(option);
+    setIsCorrect(correct);
+    setHasAnswered(true);
+
+    onAnswer({
+      questionId: question.id,
+      userAnswer: option,
+      isCorrect: correct,
+      correctAnswer: question.correctAnswer,
+      characterId: question.characterInfo?.id,
+    });
+
+    // Avanço automático dinâmico:
+    // - Se acertou: 450ms para ver o verde e avançar com fluidez
+    // - Se errou: 750ms para visualizar a opção vermelha e a resposta correta em verde
+    const delay = correct ? 450 : 750;
+    autoAdvanceTimerRef.current = setTimeout(() => {
+      handleNext();
+    }, delay);
+  }, [hasAnswered, evaluateAnswer, onAnswer, question, handleNext]);
+
+  const handleTypeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (hasAnswered) {
+      handleNext();
+      return;
+    }
+    if (!typedAnswer.trim()) return;
+
+    // Mantém o input focado no evento síncrono do usuário para preservar o teclado mobile
+    inputRef.current?.focus();
+
+    const correct = evaluateAnswer(typedAnswer);
+    setIsCorrect(correct);
+    setHasAnswered(true);
+
+    onAnswer({
+      questionId: question.id,
+      userAnswer: typedAnswer,
+      isCorrect: correct,
+      correctAnswer: question.correctAnswer,
+      characterId: question.characterInfo?.id,
+    });
+
+    // Avanço automático também para digitação
+    const delay = correct ? 450 : 800;
+    autoAdvanceTimerRef.current = setTimeout(() => {
+      handleNext();
+    }, delay);
   };
 
-  // Mantém e seleciona o input sempre focado ao entrar ou mudar de questão
+  // Mantém foco inicial quando a questão é de digitação
   useEffect(() => {
-    isAdvancingRef.current = false;
-    if (autoAdvanceTimerRef.current) {
-      clearTimeout(autoAdvanceTimerRef.current);
-      autoAdvanceTimerRef.current = null;
-    }
-    setTypedAnswer('');
-    setSelectedOption(null);
-    setHasAnswered(false);
-    setIsCorrect(false);
-
     const isTyping = !question.options || question.options.length === 0;
 
     if (!isTyping) {
-      // Garante que nenhum elemento anterior retenha foco em telas touch
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
     } else {
-      // No modo digitação, garante foco contínuo para manter o teclado aberto no celular
       focusInput();
       const rafId = requestAnimationFrame(focusInput);
       const timer = setTimeout(focusInput, 30);
@@ -82,20 +148,19 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
       return () => {
         cancelAnimationFrame(rafId);
         clearTimeout(timer);
-        if (autoAdvanceTimerRef.current) {
-          clearTimeout(autoAdvanceTimerRef.current);
-          autoAdvanceTimerRef.current = null;
-        }
       };
     }
+  }, [question.options, focusInput]);
 
+  // Limpeza de timers no desmonte
+  useEffect(() => {
     return () => {
       if (autoAdvanceTimerRef.current) {
         clearTimeout(autoAdvanceTimerRef.current);
         autoAdvanceTimerRef.current = null;
       }
     };
-  }, [question.id, currentIndex]);
+  }, []);
 
   // Teclas de atalho para respostas e avanço
   useEffect(() => {
@@ -127,85 +192,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [hasAnswered, question, onNextQuestion]);
-
-  const evaluateAnswer = (userAnswer: string): boolean => {
-    if (question.type === 'typing') {
-      return WanakanaService.validateRomajiAnswer(
-        userAnswer,
-        question.correctAnswer,
-        question.acceptableAnswers
-      );
-    }
-
-    if (question.type === 'conversion' && !question.options) {
-      return WanakanaService.validateKanaAnswer(
-        userAnswer,
-        question.correctAnswer,
-        question.targetAlphabet || 'hiragana'
-      );
-    }
-
-    // Múltipla escolha padrão
-    return userAnswer.trim().toLowerCase() === question.correctAnswer.trim().toLowerCase();
-  };
-
-  const handleSelectOption = (option: string) => {
-    if (hasAnswered || isAdvancingRef.current) return;
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-    setSelectedOption(option);
-    const correct = evaluateAnswer(option);
-    setIsCorrect(correct);
-    setHasAnswered(true);
-
-    onAnswer({
-      questionId: question.id,
-      userAnswer: option,
-      isCorrect: correct,
-      correctAnswer: question.correctAnswer,
-      characterId: question.characterInfo?.id,
-    });
-
-    // Avanço automático dinâmico:
-    // - Se acertou: 450ms para ver o verde e avançar com fluidez
-    // - Se errou: 750ms para visualizar a opção vermelha e a resposta correta em verde
-    const delay = correct ? 450 : 750;
-    autoAdvanceTimerRef.current = setTimeout(() => {
-      handleNext();
-    }, delay);
-  };
-
-  const handleTypeSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (hasAnswered) {
-      handleNext();
-      return;
-    }
-    if (!typedAnswer.trim()) return;
-
-    // Mantém o input focado no evento síncrono do usuário para preservar o teclado mobile
-    inputRef.current?.focus();
-
-    const correct = evaluateAnswer(typedAnswer);
-    setIsCorrect(correct);
-    setHasAnswered(true);
-
-    onAnswer({
-      questionId: question.id,
-      userAnswer: typedAnswer,
-      isCorrect: correct,
-      correctAnswer: question.correctAnswer,
-      characterId: question.characterInfo?.id,
-    });
-
-    // Avanço automático também para digitação
-    const delay = correct ? 450 : 800;
-    autoAdvanceTimerRef.current = setTimeout(() => {
-      handleNext();
-    }, delay);
-  };
+  }, [hasAnswered, question.options, handleSelectOption, handleNext]);
 
   return (
     <div className="max-w-2xl mx-auto space-y-3 sm:space-y-6 pb-6 sm:pb-12">

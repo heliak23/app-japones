@@ -48,6 +48,11 @@ export function useLearningProgress() {
     setLearningState({ ...updated });
   }, []);
 
+  const dismissReview = useCallback((characterId: string) => {
+    const updated = StorageService.dismissCharacterReview(characterId);
+    setLearningState({ ...updated });
+  }, []);
+
   const getNeedingReview = useCallback((): CharacterProgressStat[] => {
     return StorageService.getCharactersNeedingReview();
   }, []);
@@ -76,6 +81,7 @@ export function useLearningProgress() {
     setMultipleStudied,
     saveSummary,
     recordAnswer,
+    dismissReview,
     getNeedingReview,
     resetProgress,
     refresh,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { KanaCharacter } from '../../types/kana';
 import { Volume2, VolumeX, RotateCw, CheckCircle2, ChevronLeft, ChevronRight, Shuffle } from 'lucide-react';
 
@@ -17,15 +17,18 @@ export const FlashcardView: React.FC<FlashcardViewProps> = ({
   onPlayAudio,
   isPlaying = false,
 }) => {
+  const [prevCharacters, setPrevCharacters] = useState(characters);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [list, setList] = useState<KanaCharacter[]>(characters);
 
-  useEffect(() => {
+  // Sincroniza estado durante o render quando as props mudam (padrão oficial React para ajuste de estado)
+  if (characters !== prevCharacters) {
+    setPrevCharacters(characters);
     setList(characters);
     setCurrentIndex(0);
     setIsFlipped(false);
-  }, [characters]);
+  }
 
   const current = list[currentIndex];
 

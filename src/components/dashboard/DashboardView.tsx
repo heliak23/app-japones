@@ -3,6 +3,7 @@ import type { ActiveTab } from '../common/Navbar';
 import type { UserLearningState, CurrentSessionMetrics } from '../../types/progress';
 import { StatCard } from '../common/StatCard';
 import { ProgressBar } from '../common/ProgressBar';
+import { KanaDataset } from '../../data/kanaDataset';
 import {
   Sparkles,
   BookOpen,
@@ -29,7 +30,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   learningState,
   sessionMetrics,
 }) => {
-  const totalCharacters = 92; // 46 Hiragana + 46 Katakana
+  const totalCharacters = KanaDataset.getAll().length;
+  const totalHiragana = KanaDataset.getHiragana().length;
+  const totalKatakana = KanaDataset.getKatakana().length;
   const studiedCount = learningState.studiedCharacterIds.length;
   const progressPercent = Math.min(100, Math.round((studiedCount / totalCharacters) * 100));
 
@@ -37,9 +40,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const hiraganaStudiedCount = learningState.studiedCharacterIds.filter((id) => id.startsWith('hira_')).length;
   const katakanaStudiedCount = learningState.studiedCharacterIds.filter((id) => id.startsWith('kata_')).length;
 
-  // Caracteres com maior índice de erros para alerta de revisão rápida
+  // Caracteres com pendência de revisão por erros não superados
   const charactersNeedingReview = Object.values(learningState.characterStats)
-    .filter((stat) => stat.needsReview || (stat.attempts > 0 && stat.incorrect / stat.attempts >= 0.4))
+    .filter((stat) => stat.needsReview)
     .sort((a, b) => b.incorrect - a.incorrect);
 
   const totalExercises = learningState.totalExercisesCompleted;
@@ -163,9 +166,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="bg-white dark:bg-[#131b2e] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-              Progresso do Alfabeto Japonês Básico
+              Progresso do Alfabeto Japonês (Gojūon & Dakuon)
             </span>
-            <span className="text-sm font-bold text-brand-600 dark:text-brand-400">{studiedCount} de 92 caracteres</span>
+            <span className="text-sm font-bold text-brand-600 dark:text-brand-400">{studiedCount} de {totalCharacters} caracteres</span>
           </div>
           <ProgressBar current={studiedCount} total={totalCharacters} color="brand" size="md" showPercentage={false} />
         </div>
@@ -199,11 +202,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </p>
 
             <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>{hiraganaStudiedCount} de 46 caracteres estudados</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((hiraganaStudiedCount / 46) * 100)}%</span>
+              <span>{hiraganaStudiedCount} de {totalHiragana} caracteres estudados</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((hiraganaStudiedCount / (totalHiragana || 1)) * 100)}%</span>
             </div>
             <div className="mt-2">
-              <ProgressBar current={hiraganaStudiedCount} total={46} color="brand" size="sm" showPercentage={false} />
+              <ProgressBar current={hiraganaStudiedCount} total={totalHiragana} color="brand" size="sm" showPercentage={false} />
             </div>
 
             <div className="mt-6 flex gap-3">
@@ -239,11 +242,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </p>
 
             <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>{katakanaStudiedCount} de 46 caracteres estudados</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((katakanaStudiedCount / 46) * 100)}%</span>
+              <span>{katakanaStudiedCount} de {totalKatakana} caracteres estudados</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((katakanaStudiedCount / (totalKatakana || 1)) * 100)}%</span>
             </div>
             <div className="mt-2">
-              <ProgressBar current={katakanaStudiedCount} total={46} color="amber" size="sm" showPercentage={false} />
+              <ProgressBar current={katakanaStudiedCount} total={totalKatakana} color="amber" size="sm" showPercentage={false} />
             </div>
 
             <div className="mt-6 flex gap-3">
