@@ -4,6 +4,7 @@ import type { UserLearningState, CurrentSessionMetrics } from '../../types/progr
 import { StatCard } from '../common/StatCard';
 import { ProgressBar } from '../common/ProgressBar';
 import { KanaDataset } from '../../data/kanaDataset';
+import { useAuth } from '../../hooks/useAuth';
 import {
   Sparkles,
   BookOpen,
@@ -30,6 +31,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   learningState,
   sessionMetrics,
 }) => {
+  const { user, profile } = useAuth();
+  const displayName = profile?.display_name || user?.email?.split('@')[0];
+
   const totalCharacters = KanaDataset.getAll().length;
   const totalHiragana = KanaDataset.getHiragana().length;
   const totalKatakana = KanaDataset.getKatakana().length;
@@ -66,7 +70,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="relative z-10 max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 border border-brand-500/30 text-brand-300 text-xs font-semibold uppercase tracking-wider mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            Japonês para Brasileiros (PT-BR)
+            {displayName ? `Konnichiwa, ${displayName}! 🎌` : 'Japonês para Brasileiros (PT-BR)'}
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
             Domine o <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-brand-400">Hiragana</span> e o <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">Katakana</span>

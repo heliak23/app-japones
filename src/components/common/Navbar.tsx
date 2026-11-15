@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Trash2 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { UserMenu } from './UserMenu';
+import { AuthModal } from '../auth/AuthModal';
 
 export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'practice' | 'review';
 
@@ -10,6 +12,7 @@ interface NavbarProps {
   studiedCount: number;
   totalCount?: number;
   onResetProgress?: () => void;
+  onOpenAuthPage?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -18,8 +21,20 @@ export const Navbar: React.FC<NavbarProps> = ({
   studiedCount,
   totalCount = 92,
   onResetProgress,
+  onOpenAuthPage,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
+
+  const handleOpenAuth = (tab: 'login' | 'register' = 'login') => {
+    if (onOpenAuthPage) {
+      onOpenAuthPage();
+    } else {
+      setAuthModalTab(tab);
+      setAuthModalOpen(true);
+    }
+  };
 
   const handleTabChange = (tab: ActiveTab) => {
     onSelectTab(tab);
@@ -125,6 +140,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Seletor de Tema Light / Dark */}
             <ThemeToggle />
 
+            {/* Menu do Usuário / Autenticação Supabase */}
+            <UserMenu onOpenAuthModal={handleOpenAuth} />
+
             {onResetProgress && (
               <button
                 onClick={() => {
@@ -163,6 +181,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Dropdown Menu Mobile */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 pt-3 pb-6 space-y-2 shadow-lg animate-fadeIn transition-colors">
+            {/* Status / Ações de Autenticação Mobile */}
+            <UserMenu
+              isMobileDrawer
+              onOpenAuthModal={handleOpenAuth}
+              onMobileClose={() => setMobileMenuOpen(false)}
+            />
             <button
               onClick={() => handleTabChange('dashboard')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
@@ -313,6 +337,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span>Revisão</span>
         </button>
       </nav>
+
+      {/* Modal de Autenticação Supabase */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        defaultTab={authModalTab}
+      />
     </>
   );
 };

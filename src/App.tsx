@@ -9,8 +9,13 @@ import type { ExerciseType } from './types/exercise';
 import type { AlphabetType, KanaCharacter } from './types/kana';
 import { KanaDataset } from './data/kanaDataset';
 import { useLearningProgress } from './hooks/useLearningProgress';
+import { useAuth } from './hooks/useAuth';
+import { AuthPage } from './components/auth/AuthPage';
 
 export function App() {
+  const { user, loading } = useAuth();
+  const [isGuest, setIsGuest] = useState(false);
+
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [selectedPracticeType, setSelectedPracticeType] = useState<ExerciseType | undefined>(undefined);
   const [selectedPracticeAlphabet, setSelectedPracticeAlphabet] = useState<'all' | AlphabetType | undefined>(undefined);
@@ -30,6 +35,25 @@ export function App() {
     dismissReview,
     resetProgress,
   } = useLearningProgress();
+
+  // 1. Tela de Carregamento inicial enquanto o Supabase verifica a sessão
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] flex flex-col items-center justify-center p-4">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-black text-3xl shadow-xl shadow-brand-500/20 animate-bounce">
+          あ
+        </div>
+        <p className="mt-4 text-sm font-bold text-slate-700 dark:text-slate-300 animate-pulse">
+          Carregando NihonGo!...
+        </p>
+      </div>
+    );
+  }
+
+  // 2. Se NÃO estiver autenticado e NÃO estiver no modo visitante, exibe a Página de Login / Cadastro
+  if (!user && !isGuest) {
+    return <AuthPage onContinueAsGuest={() => setIsGuest(true)} />;
+  }
 
   // Navegação para a aba de exercícios
   const handleOpenPractice = (options?: {
@@ -83,6 +107,7 @@ export function App() {
         studiedCount={learningState.studiedCharacterIds.length}
         totalCount={KanaDataset.getAll().length}
         onResetProgress={resetProgress}
+        onOpenAuthPage={() => setIsGuest(false)}
       />
 
       {/* Conteúdo Dinâmico por Aba */}
