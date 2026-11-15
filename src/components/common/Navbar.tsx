@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Flame } from 'lucide-react';
+import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Flame, Layers } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';
 import { AuthModal } from '../auth/AuthModal';
 import type { StreakInfo } from '../../types/progress';
 
-export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'practice' | 'review';
+export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'kanji' | 'phrases' | 'practice' | 'review';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -103,6 +103,31 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded">ア</span>
               <span>Katakana</span>
+            </button>
+
+            <button
+              onClick={() => handleTabChange('kanji')}
+              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+                activeTab === 'kanji'
+                  ? 'bg-rose-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
+              }`}
+            >
+              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded">漢</span>
+              <span>Kanji</span>
+            </button>
+
+            <button
+              onClick={() => handleTabChange('phrases')}
+              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+                activeTab === 'phrases'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
+              }`}
+            >
+              <Layers className="w-4 h-4 text-emerald-400" />
+              <span>Frases</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Novo</span>
             </button>
 
             <button
@@ -239,6 +264,33 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             <button
+              onClick={() => handleTabChange('kanji')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                activeTab === 'kanji'
+                  ? 'bg-rose-600 text-white'
+                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <span className="font-jp font-bold text-base bg-black/10 dark:bg-black/30 px-2 py-0.5 rounded">漢</span>
+              <span>Kanjis & Radicais (Lego)</span>
+            </button>
+
+            <button
+              onClick={() => handleTabChange('phrases')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                activeTab === 'phrases'
+                  ? 'bg-emerald-600 text-white'
+                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Layers className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                <span>Trilha de Frases</span>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">Novo</span>
+            </button>
+
+            <button
               onClick={() => handleTabChange('practice')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
                 activeTab === 'practice'
@@ -309,6 +361,30 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <span className="font-jp text-base leading-none font-bold">ア</span>
           <span>Katakana</span>
+        </button>
+
+        <button
+          onClick={() => handleTabChange('kanji')}
+          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
+            activeTab === 'kanji'
+              ? 'text-rose-600 dark:text-rose-400 font-bold'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <span className="font-jp text-base leading-none font-bold">漢</span>
+          <span>Kanji</span>
+        </button>
+
+        <button
+          onClick={() => handleTabChange('phrases')}
+          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
+            activeTab === 'phrases'
+              ? 'text-emerald-600 dark:text-emerald-400 font-bold'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <Layers className="w-5 h-5" />
+          <span>Frases</span>
         </button>
 
         <button

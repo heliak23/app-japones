@@ -5,6 +5,8 @@ import { DashboardView } from './components/dashboard/DashboardView';
 import { StudyView } from './components/study/StudyView';
 import { PracticeContainer } from './components/practice/PracticeContainer';
 import { ReviewView } from './components/review/ReviewView';
+import { PhraseTrackView } from './components/phrases/PhraseTrackView';
+import { KanjiView } from './components/kanji/KanjiView';
 import type { ExerciseType } from './types/exercise';
 import type { AlphabetType, KanaCharacter } from './types/kana';
 import { KanaDataset } from './data/kanaDataset';
@@ -144,6 +146,14 @@ export function App() {
             onSetMultipleStudied={setMultipleStudied}
             onNavigateToPractice={() => handleOpenPractice({ alphabet: 'katakana' })}
           />
+        )}
+
+        {activeTab === 'kanji' && (
+          <KanjiView />
+        )}
+
+        {activeTab === 'phrases' && (
+          <PhraseTrackView />
         )}
 
         {activeTab === 'practice' && (

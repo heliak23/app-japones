@@ -18,7 +18,12 @@ import {
   Brain,
   HelpCircle,
   Flame,
+  Layers,
 } from 'lucide-react';
+import { PhraseStorageService } from '../../services/phraseStorageService';
+import { PHRASE_LESSONS } from '../../data/phraseTracks';
+import { KanjiStorageService } from '../../services/kanjiStorageService';
+import { KANJI_DATASET } from '../../data/kanjiDataset';
 
 interface DashboardViewProps {
   onNavigate: (tab: ActiveTab) => void;
@@ -53,6 +58,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const charactersNeedingReview = Object.values(learningState.characterStats)
     .filter((stat) => stat.needsReview)
     .sort((a, b) => b.incorrect - a.incorrect);
+
+  const phraseProgress = PhraseStorageService.getProgress();
+  const phraseCompletedCount = phraseProgress.completedLessonIds.length;
+  const totalPhraseLessons = PHRASE_LESSONS.length;
+
+  const kanjiProgress = KanjiStorageService.getProgress();
+  const kanjiStudiedCount = kanjiProgress.studiedKanjiIds.length;
+  const totalKanjis = KANJI_DATASET.length;
 
   const totalExercises = learningState.totalExercisesCompleted;
   const globalAccuracy =
@@ -101,6 +114,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <span className="font-jp text-base">ア</span>
               <span>Estudar Katakana</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => onNavigate('kanji')}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm shadow-lg shadow-rose-950/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <span className="font-jp text-base font-bold">漢</span>
+              <span>Estudar Kanji</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => onNavigate('phrases')}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Layers className="w-4 h-4 text-emerald-200" />
+              <span>Trilha de Frases</span>
+              <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-white/20">Novo</span>
             </button>
 
             <button
@@ -199,11 +230,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </section>
 
-      {/* Acesso Rápido aos Dois Alfabetos */}
+      {/* Acesso Rápido aos Três Sistemas de Escrita (Hiragana, Katakana e Kanji) */}
       <section className="space-y-4">
-        <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Alfabetos Japoneses</h2>
+        <div>
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Sistemas de Escrita do Japonês</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Os 3 sistemas complementares usados simultaneamente na língua japonesa</p>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
           {/* Card Hiragana */}
           <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
@@ -285,6 +319,81 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
           </div>
 
+          {/* Card Kanji */}
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-start justify-between">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
+                  Ideogramas & Ideias
+                </span>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
+                  <span>Kanji</span>
+                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">漢字</span>
+                </h3>
+              </div>
+              <div className="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-3xl font-jp font-black text-rose-600 dark:text-rose-400">
+                漢
+              </div>
+            </div>
+
+            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              Ideogramas que representam ideias e conceitos. Aprenda através de peças de montar (radicais) e a fórmula Forma ➔ Som ➔ Significado.
+            </p>
+
+            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span>{kanjiStudiedCount} de {totalKanjis} ideogramas dominados</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((kanjiStudiedCount / (totalKanjis || 1)) * 100)}%</span>
+            </div>
+            <div className="mt-2">
+              <ProgressBar current={kanjiStudiedCount} total={totalKanjis} color="brand" size="sm" showPercentage={false} />
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => onNavigate('kanji')}
+                className="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
+              >
+                <span>Explorar Kanjis & Radicais</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Banner Card Especial: Trilha de Frases */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-emerald-950 via-[#131b2e] to-slate-900 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-md">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Nova Funcionalidade • Do Alfabeto à Conversação</span>
+              </div>
+              <h3 className="text-2xl font-black text-white flex items-center gap-2">
+                <span>Trilha de Frases Passo a Passo</span>
+                <span className="font-jp text-lg text-emerald-400 font-normal">文の道</span>
+              </h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Aprenda a pensar em japonês como blocos de LEGO! Descubra a ordem SOV, as partículas essenciais (は, が, を, の, と, や) e o segredo de です/だ e verbos na prática com dupla tradução (literal vs natural).
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-3 min-w-[220px]">
+              <div className="text-left lg:text-right">
+                <span className="text-xs text-slate-400 font-semibold">Progresso da Trilha:</span>
+                <p className="text-lg font-black text-emerald-400">
+                  {phraseCompletedCount} de {totalPhraseLessons} lições dominadas
+                </p>
+              </div>
+              <button
+                onClick={() => onNavigate('phrases')}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/40 transition-all hover:scale-105 active:scale-95"
+              >
+                <span>Acessar Trilha de Frases</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
