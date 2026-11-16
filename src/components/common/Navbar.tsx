@@ -45,137 +45,146 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       {/* Header Fixo Principal */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-sm transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 lg:gap-4">
           
           {/* Logo / Marca */}
           <div 
             onClick={() => handleTabChange('dashboard')} 
-            className="flex items-center gap-3 cursor-pointer group select-none"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group select-none shrink-0"
             role="button"
             tabIndex={0}
             title="Ir para o início"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-md group-hover:scale-105 transition-transform shrink-0">
               あ
             </div>
-            <div>
-              <div className="flex items-center gap-1.5 font-extrabold text-slate-900 dark:text-white tracking-tight text-lg">
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-1.5 font-extrabold text-slate-900 dark:text-white tracking-tight text-base sm:text-lg leading-tight whitespace-nowrap">
                 <span>NihonGo!</span>
-                <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-full bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/50 dark:border-brand-800/50">PT-BR</span>
+                <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-brand-100 dark:bg-rose-950/70 text-brand-700 dark:text-rose-300 border border-brand-200/60 dark:border-rose-800/60 whitespace-nowrap shrink-0 inline-flex items-center justify-center leading-normal">
+                  PT-BR
+                </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Aprenda Hiragana & Katakana</p>
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap hidden xl:block leading-tight mt-0.5">
+                Aprenda Hiragana & Katakana
+              </p>
             </div>
           </div>
 
           {/* Navegação Desktop */}
-          <nav className="hidden md:flex items-center gap-1.5">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 shrink-0">
             <button
               onClick={() => handleTabChange('dashboard')}
-              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'dashboard'
                   ? 'bg-slate-900 dark:bg-slate-800 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <Home className="w-4 h-4" />
+              <Home className="w-4 h-4 shrink-0" />
               <span>Início</span>
             </button>
 
             <button
               onClick={() => handleTabChange('hiragana')}
-              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'hiragana'
                   ? 'bg-brand-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded">あ</span>
+              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded shrink-0">あ</span>
               <span>Hiragana</span>
             </button>
 
             <button
               onClick={() => handleTabChange('katakana')}
-              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'katakana'
                   ? 'bg-amber-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded">ア</span>
+              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded shrink-0">ア</span>
               <span>Katakana</span>
             </button>
 
             <button
               onClick={() => handleTabChange('kanji')}
-              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'kanji'
                   ? 'bg-rose-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded">漢</span>
+              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded shrink-0">漢</span>
               <span>Kanji</span>
             </button>
 
             <button
               onClick={() => handleTabChange('phrases')}
-              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'phrases'
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <Layers className="w-4 h-4 text-emerald-400" />
+              <Layers className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>Frases</span>
-              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Novo</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-400/30 shrink-0">Novo</span>
             </button>
 
             <button
               onClick={() => handleTabChange('practice')}
-              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'practice'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <Sparkles className="w-4 h-4 text-indigo-300" />
+              <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
               <span>Exercícios</span>
             </button>
 
             <button
               onClick={() => handleTabChange('review')}
-              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'review'
                   ? 'bg-rose-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-4 h-4 shrink-0" />
               <span>Revisão</span>
             </button>
           </nav>
 
           {/* Ofensiva + Progresso Desktop + Alternador de Tema + UserMenu */}
-          <div className="hidden md:flex items-center gap-2.5">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 shrink-0">
             {/* Badge de Ofensiva / Dias Seguidos */}
             <div
               onClick={() => handleTabChange('dashboard')}
               role="button"
               tabIndex={0}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 border border-orange-200/80 dark:border-orange-800/80 text-xs font-bold text-orange-700 dark:text-orange-300 hover:scale-105 cursor-pointer transition-all shadow-sm group select-none"
+              className="flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 border border-orange-200/80 dark:border-orange-800/80 text-xs font-bold text-orange-700 dark:text-orange-300 hover:scale-105 cursor-pointer transition-all shadow-sm group select-none whitespace-nowrap shrink-0"
               title={`Ofensiva de estudos: ${currentStreak} ${currentStreak === 1 ? 'dia seguido' : 'dias seguidos'} (Recorde pessoal: ${maxStreak}d)`}
             >
-              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500 group-hover:scale-110 transition-transform" />
+              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500 group-hover:scale-110 transition-transform shrink-0" />
               <span>{currentStreak} {currentStreak === 1 ? 'dia' : 'dias'}</span>
             </div>
 
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-[#131b2e] border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors">
-              <BookOpen className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
-              <span>{studiedCount} / {totalCount} estudados</span>
+            {/* Contador de caracteres estudados */}
+            <div 
+              className="flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-slate-100 dark:bg-[#131b2e] border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors whitespace-nowrap shrink-0"
+              title={`${studiedCount} de ${totalCount} caracteres estudados`}
+            >
+              <BookOpen className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0" />
+              <span className="hidden xl:inline">{studiedCount} / {totalCount} estudados</span>
+              <span className="xl:hidden">{studiedCount}/{totalCount}</span>
             </div>
 
             {/* Seletor de Tema Light / Dark */}
-            <ThemeToggle />
+            <ThemeToggle className="shrink-0" />
 
             {/* Menu do Usuário / Autenticação Supabase */}
             <UserMenu
@@ -185,29 +194,29 @@ export const Navbar: React.FC<NavbarProps> = ({
             />
           </div>
 
-          {/* Área de Ações Mobile (Ofensiva, Progresso, Seletor de Tema e Hambúrguer) */}
-          <div className="flex items-center gap-1.5 md:hidden">
+          {/* Área de Ações Mobile / Tablet (Ofensiva, Progresso, Seletor de Tema e Hambúrguer) */}
+          <div className="flex items-center gap-1.5 lg:hidden shrink-0">
             {/* Badge de Ofensiva Mobile */}
             <div
               onClick={() => handleTabChange('dashboard')}
               role="button"
               tabIndex={0}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-50 dark:bg-orange-950/50 text-xs font-bold text-orange-700 dark:text-orange-300 border border-orange-200/80 dark:border-orange-800/80 cursor-pointer select-none"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-50 dark:bg-orange-950/50 text-xs font-bold text-orange-700 dark:text-orange-300 border border-orange-200/80 dark:border-orange-800/80 cursor-pointer select-none shrink-0"
               title={`Ofensiva: ${currentStreak} dias`}
             >
-              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500" />
+              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500 shrink-0" />
               <span>{currentStreak}d</span>
             </div>
 
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#131b2e] text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#131b2e] text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60 shrink-0">
               <span className="text-brand-600 dark:text-brand-400">{studiedCount}</span>/{totalCount}
             </div>
 
-            <ThemeToggle />
+            <ThemeToggle className="shrink-0" />
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors shrink-0"
               aria-label="Abrir menu de navegação"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -218,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Dropdown Menu Mobile */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 pt-3 pb-6 space-y-2 shadow-lg animate-fadeIn transition-colors">
+          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 pt-3 pb-6 space-y-2 shadow-lg animate-fadeIn transition-colors">
             {/* Status / Ações de Autenticação Mobile */}
             <UserMenu
               streak={streak}
@@ -326,7 +335,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </header>
 
       {/* Barra de Navegação Inferior Móvel Rápida (Estilo App Nativo para Smartphones com suporte a Safe Area iOS) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] px-3 flex justify-around items-center md:hidden shadow-lg transition-colors duration-200">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] px-3 flex justify-around items-center lg:hidden shadow-lg transition-colors duration-200">
         <button
           onClick={() => handleTabChange('dashboard')}
           className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${

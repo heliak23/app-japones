@@ -113,7 +113,7 @@ export function App() {
       />
 
       {/* Conteúdo Dinâmico por Aba */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:pb-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pb-8">
         
         {activeTab === 'dashboard' && (
           <DashboardView
@@ -183,7 +183,7 @@ export function App() {
 
       {/* Rodapé Elegante */}
       <footer className="border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] py-6 mt-auto text-center text-xs text-slate-500 dark:text-slate-400 transition-colors duration-200">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2 font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
             <span>NihonGo! • Modo 100% Offline e Seguro no seu Navegador</span>
