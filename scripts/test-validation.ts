@@ -1,6 +1,7 @@
 import { HIRAGANA_CHARACTERS } from '../src/data/hiraganaData';
 import { KATAKANA_CHARACTERS } from '../src/data/katakanaData';
 import { KanaDataset } from '../src/data/kanaDataset';
+import { KOSOADO_ITEMS, KOSOADO_QUIZ_QUESTIONS } from '../src/data/kosoadoData';
 import { WanakanaService } from '../src/services/wanakanaService';
 import { ExerciseGenerator } from '../src/services/exerciseGenerator';
 import { StorageService } from '../src/services/storageService';
@@ -430,6 +431,100 @@ assert(checkIn.state.streak.currentStreak === 1, 'checkAndUpdateStreak registra 
 assert(StorageService.getState().streak.currentStreak === 1, 'Streak persistido com sucesso no LocalStorage');
 
 StorageService.resetAllProgress();
+
+// --- 13. Validação das Extensões Fonéticas: Yōon, Katakana Especial e Sokuon ---
+console.log('\n--- 13. Validação das Extensões Fonéticas: Yōon, Katakana Especial e Sokuon ---');
+const yoonHira = KanaDataset.getYoonHiragana();
+const yoonKata = KanaDataset.getYoonKatakana();
+const yoonRows = KanaDataset.getYoonRows();
+const specialKata = KanaDataset.getSpecialKatakana();
+const sokuonExamples = KanaDataset.getSokuonExamples();
+const choonpuExamples = KanaDataset.getChoonpuExamples();
+
+assert(yoonHira.length === 33, 'Total de combinações Yōon do Hiragana deve ser exatamente 33 (11 famílias x 3 sons)');
+assert(yoonKata.length === 33, 'Total de combinações Yōon do Katakana deve ser exatamente 33 (11 famílias x 3 sons)');
+assert(yoonRows.length === 11, 'Total de linhas na matriz Yōon deve ser 11 (K, S, T, N, H, M, R, G, J, B, P)');
+assert(specialKata.length === 19, 'Total de sons especiais de Katakana moderno deve ser 19 (V, F, W e outros)');
+assert(sokuonExamples.length >= 8, 'Exemplos didáticos de pausa fonética (Sokuon) devem estar presentes');
+assert(choonpuExamples.length >= 6, 'Exemplos didáticos de sinal de prolongamento (ー) devem estar presentes');
+
+// Testa se todos os caracteres Yōon possuem campos preenchidos e são recuperáveis por getById
+let allYoonValid = true;
+for (const char of [...yoonHira, ...yoonKata, ...specialKata]) {
+  if (!char.id || !char.character || !char.romaji || !char.ptPronunciation) {
+    allYoonValid = false;
+  }
+  const found = KanaDataset.getById(char.id);
+  if (!found || found.character !== char.character) {
+    allYoonValid = false;
+  }
+}
+assert(allYoonValid, 'Todos os 85 caracteres fonéticos expandidos possuem dados consistentes e são indexados por getById');
+
+// Validação fonética com WanaKana
+assert(wanakana.toHiragana('kya') === 'きゃ', 'WanaKana converte kya -> きゃ');
+assert(wanakana.toKatakana('kya') === 'キャ', 'WanaKana converte kya -> キャ');
+assert(wanakana.toHiragana('sha') === 'しゃ', 'WanaKana converte sha -> しゃ');
+assert(wanakana.toKatakana('sha') === 'シャ', 'WanaKana converte sha -> シャ');
+
+// --- 14. Validação do Sistema Demonstrativo Ko-So-A-Do (Apostila 2) ---
+console.log('\n--- 14. Validação do Sistema Demonstrativo Ko-So-A-Do (Apostila 2) ---');
+assert(KOSOADO_ITEMS.length === 4, 'Sistema Ko-So-A-Do possui os 4 quadrantes fundamentais (KO, SO, A, DO)');
+
+const quadranteIds = KOSOADO_ITEMS.map((item) => item.id);
+assert(
+  quadranteIds.includes('ko') && quadranteIds.includes('so') && quadranteIds.includes('a') && quadranteIds.includes('do'),
+  'Identificadores dos 4 quadrantes estão corretos (ko, so, a, do)'
+);
+
+const koreItem = KOSOADO_ITEMS.find((i) => i.id === 'ko');
+const soreItem = KOSOADO_ITEMS.find((i) => i.id === 'so');
+const areItem = KOSOADO_ITEMS.find((i) => i.id === 'a');
+const doreItem = KOSOADO_ITEMS.find((i) => i.id === 'do');
+
+assert(
+  koreItem?.objectWord.japanese === 'これ' &&
+  soreItem?.objectWord.japanese === 'それ' &&
+  areItem?.objectWord.japanese === 'あれ' &&
+  doreItem?.objectWord.japanese === 'どれ',
+  'Série de Objetos (-re: kore, sore, are, dore) devidamente estruturada'
+);
+
+assert(
+  koreItem?.modifierWord.japanese === 'この' &&
+  soreItem?.modifierWord.japanese === 'その' &&
+  areItem?.modifierWord.japanese === 'あの' &&
+  doreItem?.modifierWord.japanese === 'どの',
+  'Série de Modificadores nominais (-no: kono, sono, ano, dono) devidamente estruturada'
+);
+
+assert(
+  koreItem?.placeWord.japanese === 'ここ' &&
+  soreItem?.placeWord.japanese === 'そこ' &&
+  areItem?.placeWord.japanese === 'あそこ' &&
+  doreItem?.placeWord.japanese === 'どこ',
+  'Série de Lugares (-ko / asoko: koko, soko, asoko, doko) devidamente estruturada'
+);
+
+assert(
+  koreItem?.directionWord.japanese === 'こちら' &&
+  soreItem?.directionWord.japanese === 'そちら' &&
+  areItem?.directionWord.japanese === 'あちら' &&
+  doreItem?.directionWord.japanese === 'どちら',
+  'Série Cortês de Direções/Pessoas (-chira: kochira, sochira, achira, dochira) devidamente estruturada'
+);
+
+assert(KOSOADO_QUIZ_QUESTIONS.length >= 6, 'Banco de Quiz do Ko-So-A-Do possui no mínimo 6 questões práticas');
+let allQuizValid = true;
+for (const q of KOSOADO_QUIZ_QUESTIONS) {
+  if (!q.id || !q.scenario || !q.question || !q.options || q.options.length !== 4 || !q.correctAnswer) {
+    allQuizValid = false;
+  }
+  if (!q.options.some((opt) => opt.label === q.correctAnswer)) {
+    allQuizValid = false;
+  }
+}
+assert(allQuizValid, 'Todas as questões de quiz do Ko-So-A-Do têm opções válidas e contêm a resposta correta');
 
 // Resumo Final
 console.log('\n====================================================');

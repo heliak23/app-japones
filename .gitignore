@@ -36,3 +36,8 @@ Desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+# Local development study materials & reference documents (never commit)
+materials/
+apostilas/
+*.pdf

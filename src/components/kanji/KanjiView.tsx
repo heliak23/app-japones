@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { KanjiCharacter, KanjiCategory } from '../../types/kanji';
 import { KANJI_DATASET, KANJI_CATEGORIES } from '../../data/kanjiDataset';
 import { KanjiStorageService } from '../../services/kanjiStorageService';
@@ -24,15 +24,11 @@ export const KanjiView: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<KanjiCategory | 'all'>('book_specials');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedKanji, setSelectedKanji] = useState<KanjiCharacter | null>(null);
-  const [studiedIds, setStudiedIds] = useState<string[]>([]);
+  const [studiedIds, setStudiedIds] = useState<string[]>(() => {
+    return KanjiStorageService.getProgress().studiedKanjiIds;
+  });
 
   const { playKana, isPlaying } = useAudio();
-
-  // Carrega estado de Kanjis estudados
-  useEffect(() => {
-    const progress = KanjiStorageService.getProgress();
-    setStudiedIds(progress.studiedKanjiIds);
-  }, []);
 
   const totalKanjis = KANJI_DATASET.length;
   const studiedCount = studiedIds.length;

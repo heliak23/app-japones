@@ -28,6 +28,7 @@ interface StudyViewProps {
 }
 
 type ViewMode = 'table' | 'cards' | 'flashcards';
+type FilterGroupType = KanaGroupId | 'all' | 'yoon' | 'special';
 
 export const StudyView: React.FC<StudyViewProps> = ({
   alphabet,
@@ -38,32 +39,41 @@ export const StudyView: React.FC<StudyViewProps> = ({
   onNavigateToPractice,
 }) => {
   const [viewMode, setViewMode] = useState<ViewMode>('table');
-  const [selectedGroup, setSelectedGroup] = useState<KanaGroupId | 'all'>('all');
+  const [selectedGroup, setSelectedGroup] = useState<FilterGroupType>('all');
   const [selectedCharacter, setSelectedCharacter] = useState<KanaCharacter | null>(null);
 
   const { playKana, isPlaying, currentText } = useAudio();
 
+  const isHiragana = alphabet === 'hiragana';
   const allAlphabetChars = KanaDataset.getByAlphabet(alphabet);
+  const yoonChars = KanaDataset.getYoonByAlphabet(alphabet);
+  const specialChars = !isHiragana ? KanaDataset.getSpecialKatakana() : [];
+  const fullAlphabetPool = [...allAlphabetChars, ...yoonChars, ...specialChars];
+
   const studiedInThisAlphabet = allAlphabetChars.filter((c) => studiedIds.includes(c.id));
   const progressPercent = Math.round((studiedInThisAlphabet.length / allAlphabetChars.length) * 100);
 
-  // Filtragem por grupo
-  const displayedChars =
-    selectedGroup === 'all'
-      ? allAlphabetChars
-      : allAlphabetChars.filter((c) => c.group === selectedGroup);
+  // Filtragem flexível de caracteres para cards e flashcards
+  let displayedChars: KanaCharacter[] = allAlphabetChars;
+  if (selectedGroup === 'yoon') {
+    displayedChars = yoonChars;
+  } else if (selectedGroup === 'special') {
+    displayedChars = specialChars;
+  } else if (selectedGroup !== 'all') {
+    displayedChars = fullAlphabetPool.filter((c) => c.group === selectedGroup);
+  }
 
-  // Navegação no Modal
-  const currentIndex = selectedCharacter ? allAlphabetChars.findIndex((c) => c.id === selectedCharacter.id) : -1;
+  // Navegação no Modal com suporte a todo o pool (básicos, yoon e especiais)
+  const currentIndex = selectedCharacter ? fullAlphabetPool.findIndex((c) => c.id === selectedCharacter.id) : -1;
   const hasPrev = currentIndex > 0;
-  const hasNext = currentIndex < allAlphabetChars.length - 1 && currentIndex !== -1;
+  const hasNext = currentIndex < fullAlphabetPool.length - 1 && currentIndex !== -1;
 
   const handlePrevChar = () => {
-    if (hasPrev) setSelectedCharacter(allAlphabetChars[currentIndex - 1]);
+    if (hasPrev) setSelectedCharacter(fullAlphabetPool[currentIndex - 1]);
   };
 
   const handleNextChar = () => {
-    if (hasNext) setSelectedCharacter(allAlphabetChars[currentIndex + 1]);
+    if (hasNext) setSelectedCharacter(fullAlphabetPool[currentIndex + 1]);
   };
 
   const handlePlayAudio = (e: React.MouseEvent | string, char?: string) => {
@@ -73,8 +83,6 @@ export const StudyView: React.FC<StudyViewProps> = ({
       playKana(textToPlay);
     }
   };
-
-  const isHiragana = alphabet === 'hiragana';
 
   return (
     <div className="space-y-8 pb-16">
@@ -97,23 +105,25 @@ export const StudyView: React.FC<StudyViewProps> = ({
 
             <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-base max-w-2xl leading-relaxed">
               {isHiragana
-                ? 'Composto por 46 caracteres básicos curvilíneos. Utilizado para escrever todas as palavras de origem puramente japonesa e as partículas gramaticais.'
-                : 'Composto por 46 caracteres básicos angulares e retos. Utilizado para palavras emprestadas de outras línguas (como televisão, café), nomes estrangeiros e onomatopeias.'}
+                ? 'Composto por 46 caracteres básicos curvilíneos, 25 modificados (Tenten/Maru) e 33 combinações Yōon. Utilizado para palavras nativas e partículas gramaticais.'
+                : 'Composto por 46 caracteres básicos angulares, 25 modificados, 33 combinações Yōon e 19 sons modernos. Utilizado para palavras ocidentais, nomes próprios e marcas.'}
             </p>
           </div>
 
           {/* Card de Progresso do Alfabeto Atual */}
           <div className="w-full lg:w-72 bg-slate-50 dark:bg-[#0f172a] p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-800 shrink-0 transition-colors">
             <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
-              <span>Progresso</span>
-              <span className="text-brand-600 dark:text-brand-400">{studiedInThisAlphabet.length} / 46</span>
+              <span>Progresso Base</span>
+              <span className="text-brand-600 dark:text-brand-400">
+                {studiedInThisAlphabet.length} / {allAlphabetChars.length}
+              </span>
             </div>
             <div className="text-2xl font-black text-slate-900 dark:text-white mb-2">
               {progressPercent}% <span className="text-xs font-normal text-slate-400 dark:text-slate-500">concluído</span>
             </div>
             <ProgressBar
               current={studiedInThisAlphabet.length}
-              total={46}
+              total={allAlphabetChars.length}
               color={isHiragana ? 'brand' : 'amber'}
               size="md"
               showPercentage={false}
@@ -147,7 +157,7 @@ export const StudyView: React.FC<StudyViewProps> = ({
             <Table className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
             <span className="truncate">
               <span className="sm:hidden">Tabela</span>
-              <span className="hidden sm:inline">Tabela Tradicional (Gojūon)</span>
+              <span className="hidden sm:inline">Tabela Completa (Gojūon & Yōon)</span>
             </span>
           </button>
 
@@ -188,15 +198,21 @@ export const StudyView: React.FC<StudyViewProps> = ({
             <Filter className="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
             <select
               value={selectedGroup}
-              onChange={(e) => setSelectedGroup(e.target.value as KanaGroupId | 'all')}
+              onChange={(e) => setSelectedGroup(e.target.value as FilterGroupType)}
               className="w-full sm:w-auto bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
-              <option value="all">Todas as 11 Famílias (46 caracteres)</option>
-              {KANA_GROUPS.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.name}
-                </option>
-              ))}
+              <option value="all">Caracteres Básicos e Modificados ({allAlphabetChars.length})</option>
+              <option value="yoon">✨ Combinações Yōon (33 sons: kya, sha...)</option>
+              {!isHiragana && (
+                <option value="special">🌐 Katakana Especial / Moderno (19 sons: va, fa...)</option>
+              )}
+              <optgroup label="Famílias Individuais">
+                {KANA_GROUPS.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.name}
+                  </option>
+                ))}
+              </optgroup>
             </select>
           </div>
         )}
@@ -204,7 +220,7 @@ export const StudyView: React.FC<StudyViewProps> = ({
 
       {/* Conteúdo Principal baseado no Modo de Visualização */}
 
-      {/* Modo 1: Tabela Tradicional Gojūon */}
+      {/* Modo 1: Tabela Completa (Gojūon, Dakuon, Yōon, Katakana Especial e Sokuon) */}
       {viewMode === 'table' && (
         <AlphabetTable
           alphabet={alphabet}
@@ -298,7 +314,7 @@ export const StudyView: React.FC<StudyViewProps> = ({
         />
       )}
 
-      {/* Modal de Detalhes do Caractere com navegação sequencial */}
+      {/* Modal de Detalhes do Caractere com navegação sequencial ampliada */}
       <CharacterDetailModal
         character={selectedCharacter}
         onClose={() => setSelectedCharacter(null)}
