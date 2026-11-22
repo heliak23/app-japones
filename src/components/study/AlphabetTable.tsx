@@ -357,10 +357,10 @@ export const AlphabetTable: React.FC<AlphabetTableProps> = ({
 
       {/* 2. Tabela de Modificações Fonéticas (Dakuon e Handakuon) */}
       <div className="bg-white dark:bg-[#131b2e] rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
-        <div className="p-3.5 sm:p-5 bg-slate-800 dark:bg-slate-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700/60">
+        <div className="p-3.5 sm:p-5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 dark:from-slate-800 dark:to-slate-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-600/30 dark:border-slate-700/60 transition-colors">
           <div>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-white/20 text-white border border-white/30">
                 <Sparkles className="w-3 h-3" />
                 Dakuon & Handakuon (濁音・半濁音)
               </span>
@@ -368,11 +368,11 @@ export const AlphabetTable: React.FC<AlphabetTableProps> = ({
             <h3 className="font-extrabold text-base sm:text-xl tracking-tight mt-1">
               Sons Sonoros & Modificados
             </h3>
-            <p className="text-xs text-slate-300">
-              Variações sonoras formadas com dakuten (<span className="text-amber-400 font-bold">゛</span>) nas linhas G, Z, D, B e handakuten (<span className="text-amber-400 font-bold">゜</span>) na linha P
+            <p className="text-xs text-white/90">
+              Variações sonoras formadas com dakuten (<span className="text-amber-200 font-bold">゛</span>) nas linhas G, Z, D, B e handakuten (<span className="text-amber-200 font-bold">゜</span>) na linha P
             </p>
           </div>
-          <div className="text-[11px] sm:text-xs font-semibold bg-white/10 px-2.5 sm:px-3 py-1 rounded-full self-start sm:self-auto text-slate-200">
+          <div className="text-[11px] sm:text-xs font-semibold bg-white/20 px-2.5 sm:px-3 py-1 rounded-full self-start sm:self-auto text-white">
             25 novos sons fonéticos
           </div>
         </div>

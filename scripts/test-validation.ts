@@ -6,6 +6,7 @@ import { PARTICLES_DATA, PARTICLE_QUIZ_QUESTIONS } from '../src/data/particlesDa
 import { ADJECTIVES_DATA, VERBS_DATA } from '../src/data/conjugationData';
 import { DIALOGUES_DATA } from '../src/data/dialogueData';
 import { KANJI_DATASET } from '../src/data/kanjiDataset';
+import { TADOKU_STORIES } from '../src/data/tadokuStories';
 import { WanakanaService } from '../src/services/wanakanaService';
 import { ExerciseGenerator } from '../src/services/exerciseGenerator';
 import { StorageService } from '../src/services/storageService';
@@ -661,6 +662,31 @@ assert(
   nichiWords.some((w) => w.includes('日')),
   'Kanji 日 possui palavras reais compostas para aprendizado sem memorização isolada'
 );
+
+// --- 19. Validação da Biblioteca de Leituras Graduadas Tadoku (NPO Tadoku Books) ---
+console.log('\n--- 19. Validação da Biblioteca de Leituras Graduadas Tadoku (NPO Tadoku Books) ---');
+assert(TADOKU_STORIES.length >= 1, 'Biblioteca Tadoku possui pelo menos 1 história cadastrada');
+
+const kitsuneStory = TADOKU_STORIES.find((s) => s.id === 'kitsune-to-tsuru');
+assert(kitsuneStory !== undefined, 'História "キツネとツル" (A Raposa e o Grou) devidamente cadastrada');
+assert(kitsuneStory?.level === 'Level 0', 'História está classificada no nível de entrada "Level 0"');
+assert((kitsuneStory?.pages.length || 0) === 8, 'História possui todas as 8 páginas ilustradas originais');
+
+let allPagesValid = true;
+for (const p of kitsuneStory?.pages || []) {
+  if (!p.image || !p.rawJapanese || !p.lines || p.lines.length === 0) {
+    allPagesValid = false;
+  }
+  for (const line of p.lines) {
+    if (!line.fragments || line.fragments.length === 0 || !line.translation || !line.romaji) {
+      allPagesValid = false;
+    }
+  }
+}
+assert(allPagesValid, 'Todas as páginas possuem ilustrações, texto com fragmentos Furigana, romaji e tradução PT-BR');
+
+const convitePage = kitsuneStory?.pages.find((p) => p.rawJapanese.includes('食べませんか'));
+assert(convitePage !== undefined && convitePage.grammarTip?.pattern.includes('～ませんか'), 'Página de convite amigável possui nota gramatical de ～ませんか');
 
 // Resumo Final
 console.log('\n====================================================');

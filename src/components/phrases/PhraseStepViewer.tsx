@@ -244,7 +244,7 @@ export const PhraseStepViewer: React.FC<PhraseStepViewerProps> = ({
                 onClick={() => setSelectedVariationIndex(null)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   selectedVariationIndex === null
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow'
+                    ? 'bg-indigo-600 dark:bg-white text-white dark:text-indigo-950 shadow'
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                 }`}
               >

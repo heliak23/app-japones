@@ -80,27 +80,27 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-10 pb-16">
       
-      {/* Hero Banner Minimalista e Elegante */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-700/50 dark:border-slate-800">
+      {/* Hero Banner Minimalista e Adaptativo */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-rose-50/40 to-brand-50/60 dark:from-slate-900 dark:via-slate-800 dark:to-slate-950 text-slate-900 dark:text-white rounded-3xl p-6 sm:p-10 shadow-sm dark:shadow-xl border border-slate-200/90 dark:border-slate-800 transition-colors">
         <div className="absolute top-0 right-0 -mt-12 -mr-12 w-80 h-80 rounded-full bg-brand-500/10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/3 -mb-12 w-64 h-64 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 border border-brand-500/30 text-brand-300 text-xs font-semibold uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-500/20 border border-brand-200 dark:border-brand-500/30 text-brand-700 dark:text-brand-300 text-xs font-semibold uppercase tracking-wider mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             {displayName ? `Konnichiwa, ${displayName}! 🎌` : 'Japonês para Brasileiros (PT-BR)'}
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-            Domine o <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-brand-400">Hiragana</span> e o <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">Katakana</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">
+            Domine o <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-brand-600 dark:from-rose-400 dark:to-brand-400">Hiragana</span> e o <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500 dark:from-amber-300 dark:to-orange-400">Katakana</span>
           </h1>
-          <p className="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+          <p className="mt-4 text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
             Aprenda os dois alfabetos fonéticos da língua japonesa com fonética aproximada ao português, pronúncia falada nativa, cartões interativos e 5 modalidades de exercícios.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
             <button
               onClick={() => onNavigate('hiragana')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow-lg shadow-brand-900/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow-md shadow-brand-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <span className="font-jp text-base">あ</span>
               <span>Estudar Hiragana</span>
@@ -109,7 +109,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <button
               onClick={() => onNavigate('katakana')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm shadow-lg shadow-amber-950/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm shadow-md shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <span className="font-jp text-base">ア</span>
               <span>Estudar Katakana</span>
@@ -118,7 +118,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <button
               onClick={() => onNavigate('kanji')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm shadow-lg shadow-rose-950/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm shadow-md shadow-rose-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <span className="font-jp text-base font-bold">漢</span>
               <span>Estudar Kanji</span>
@@ -127,7 +127,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <button
               onClick={() => onNavigate('phrases')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Layers className="w-4 h-4 text-emerald-200" />
               <span>Trilha de Frases</span>
@@ -136,9 +136,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <button
               onClick={() => onNavigate('practice')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 dark:bg-slate-800/90 dark:hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 dark:border-slate-600 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-semibold text-sm border border-slate-200 dark:border-slate-600 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
-              <Zap className="w-4 h-4 text-indigo-400" />
+              <Zap className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
               <span>Praticar Exercícios</span>
             </button>
           </div>
@@ -271,7 +271,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => onNavigate('hiragana')}
-                className="flex-1 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
+                className="flex-1 py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <span>Abrir Tabela e Flashcards</span>
                 <ArrowRight className="w-4 h-4" />
@@ -311,7 +311,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => onNavigate('katakana')}
-                className="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
+                className="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <span>Abrir Tabela e Flashcards</span>
                 <ArrowRight className="w-4 h-4" />
@@ -351,7 +351,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => onNavigate('kanji')}
-                className="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
+                className="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <span>Explorar Kanjis & Radicais</span>
                 <ArrowRight className="w-4 h-4" />
@@ -362,34 +362,69 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Banner Card Especial: Trilha de Frases */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-emerald-950 via-[#131b2e] to-slate-900 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-md">
+        <div className="relative overflow-hidden bg-gradient-to-r from-emerald-50 via-teal-50/50 to-white dark:from-emerald-950 dark:via-[#131b2e] dark:to-slate-900 border border-emerald-200 dark:border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-sm dark:shadow-md transition-colors">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-2 max-w-xl">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100/70 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Nova Funcionalidade • Do Alfabeto à Conversação</span>
               </div>
-              <h3 className="text-2xl font-black text-white flex items-center gap-2">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
                 <span>Trilha de Frases Passo a Passo</span>
-                <span className="font-jp text-lg text-emerald-400 font-normal">文の道</span>
+                <span className="font-jp text-lg text-emerald-600 dark:text-emerald-400 font-normal">文の道</span>
               </h3>
-              <p className="text-slate-300 text-sm leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                 Aprenda a pensar em japonês como blocos de LEGO! Descubra a ordem SOV, as partículas essenciais (は, が, を, の, と, や) e o segredo de です/だ e verbos na prática com dupla tradução (literal vs natural).
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-3 min-w-[220px]">
               <div className="text-left lg:text-right">
-                <span className="text-xs text-slate-400 font-semibold">Progresso da Trilha:</span>
-                <p className="text-lg font-black text-emerald-400">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Progresso da Trilha:</span>
+                <p className="text-lg font-black text-emerald-600 dark:text-emerald-400">
                   {phraseCompletedCount} de {totalPhraseLessons} lições dominadas
                 </p>
               </div>
               <button
                 onClick={() => onNavigate('phrases')}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/40 transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all hover:scale-105 active:scale-95"
               >
                 <span>Acessar Trilha de Frases</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Banner Card Especial: Biblioteca Tadoku */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-teal-50 via-cyan-50/50 to-white dark:from-teal-950 dark:via-[#131b2e] dark:to-slate-900 border border-teal-200 dark:border-teal-500/30 rounded-3xl p-6 sm:p-8 shadow-sm dark:shadow-md transition-colors">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-teal-100/70 dark:bg-teal-500/20 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-500/30">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Metodologia Japonesa • Leitura Extensiva</span>
+              </div>
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span>Biblioteca de Leituras Tadoku</span>
+                <span className="font-jp text-lg text-teal-600 dark:text-teal-400 font-normal">多読ライブラリ</span>
+              </h3>
+              <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                Pratique sua leitura com histórias ilustradas graduadas (nível N5), áudio nativo japonês e furigana dinâmico. Comece com a clássica fábula de Esopo <em>キツネとツル (A Raposa e o Grou)</em>!
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-3 min-w-[220px]">
+              <div className="text-left lg:text-right">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Leitura Recomendada:</span>
+                <p className="text-base font-black text-teal-600 dark:text-teal-400">
+                  キツネとツル (Nível 0)
+                </p>
+              </div>
+              <button
+                onClick={() => onNavigate('stories')}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-sm shadow-md shadow-teal-600/20 transition-all hover:scale-105 active:scale-95"
+              >
+                <span>Abrir Biblioteca</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

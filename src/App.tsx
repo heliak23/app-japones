@@ -7,6 +7,7 @@ import { PracticeContainer } from './components/practice/PracticeContainer';
 import { ReviewView } from './components/review/ReviewView';
 import { PhraseTrackView } from './components/phrases/PhraseTrackView';
 import { KanjiView } from './components/kanji/KanjiView';
+import { TadokuReaderView } from './components/stories/TadokuReaderView';
 import type { ExerciseType } from './types/exercise';
 import type { AlphabetType, KanaCharacter } from './types/kana';
 import { KanaDataset } from './data/kanaDataset';
@@ -154,6 +155,10 @@ export function App() {
 
         {activeTab === 'phrases' && (
           <PhraseTrackView />
+        )}
+
+        {activeTab === 'stories' && (
+          <TadokuReaderView />
         )}
 
         {activeTab === 'practice' && (

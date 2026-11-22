@@ -1,0 +1,351 @@
+import type { TadokuStory } from '../types/story';
+
+export const TADOKU_STORIES: TadokuStory[] = [
+  {
+    id: 'kitsune-to-tsuru',
+    title: 'A Raposa e o Grou',
+    titleJapanese: 'キツネとツル',
+    level: 'Level 0',
+    levelDescription: 'Iniciante N5 • ~80 palavras • Kanas com Furigana e Vocabulário Essencial',
+    author: 'Fábulas de Esopo • NPO Tadoku Books',
+    coverImage: '/stories/kitsune-to-tsuru/cover.jpg',
+    synopsis: 'A clássica fábula de Esopo sobre empatia e respeito. A raposa convida o grou para jantar servindo sopa em um prato raso. No dia seguinte, o grou retribui o convite de um jeito muito especial!',
+    totalWords: 78,
+    pages: [
+      {
+        pageNumber: 1,
+        image: '/stories/kitsune-to-tsuru/page_1.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_1.mp3',
+        rawJapanese: 'ある日、キツネがツルに言いました。「今日、ぼくの家で、いっしょにご飯を食べませんか？」',
+        lines: [
+          {
+            fragments: [
+              { kanji: 'ある' },
+              { kanji: '日', furigana: 'ひ' },
+              { kanji: '、' },
+              { kanji: 'キツネ' },
+              { kanji: 'が' },
+              { kanji: 'ツル' },
+              { kanji: 'に' },
+              { kanji: '言', furigana: 'い' },
+              { kanji: 'いました。' },
+            ],
+            romaji: 'Aru hi, kitsune ga tsuru ni iimashita.',
+            translation: 'Certo dia, a raposa disse ao grou:',
+          },
+          {
+            fragments: [
+              { kanji: '「' },
+              { kanji: '今日', furigana: 'きょう' },
+              { kanji: '、' },
+              { kanji: 'ぼくの' },
+              { kanji: '家', furigana: 'いえ' },
+              { kanji: 'で、' },
+              { kanji: 'いっしょに' },
+              { kanji: 'ご' },
+              { kanji: '飯', furigana: 'はん' },
+              { kanji: 'を' },
+              { kanji: '食', furigana: 'た' },
+              { kanji: 'べませんか？」' },
+            ],
+            romaji: '“Kyou, boku no ie de, issho ni gohan o tabemasen ka?”',
+            translation: '“Hoje, que tal comermos juntos na minha casa?”',
+          },
+        ],
+        vocabularyNotes: [
+          { word: 'キツネ', reading: 'kitsune', meaning: 'Raposa' },
+          { word: 'ツル', reading: 'tsuru', meaning: 'Grou (cegonha japonesa)' },
+          { word: 'ぼく', reading: 'boku', meaning: 'Eu (usado por garotos/homens de modo amigável)' },
+          { word: 'ご飯', reading: 'gohan', meaning: 'Refeição / Comida', kanji: '飯' },
+        ],
+        grammarTip: {
+          pattern: '～ませんか (masen ka)',
+          explanation: 'Forma educada de fazer um convite convidativo em japonês: "Que tal fazermos...?" ou "Gostaria de...?"',
+        },
+      },
+      {
+        pageNumber: 2,
+        image: '/stories/kitsune-to-tsuru/page_2.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_2.mp3',
+        rawJapanese: 'ツルが、キツネの家に来ました。テーブルの上にお皿があります。キツネが言いました。「さあ、食べましょう」',
+        lines: [
+          {
+            fragments: [
+              { kanji: 'ツルが、' },
+              { kanji: 'キツネの' },
+              { kanji: '家', furigana: 'いえ' },
+              { kanji: 'に' },
+              { kanji: '来', furigana: 'き' },
+              { kanji: 'ました。' },
+            ],
+            romaji: 'Tsuru ga, kitsune no ie ni kimashita.',
+            translation: 'O grou foi à casa da raposa.',
+          },
+          {
+            fragments: [
+              { kanji: 'テーブルの' },
+              { kanji: '上', furigana: 'うえ' },
+              { kanji: 'に' },
+              { kanji: 'お' },
+              { kanji: '皿', furigana: 'さら' },
+              { kanji: 'が あります。' },
+            ],
+            romaji: 'Teeburu no ue ni osara ga arimasu.',
+            translation: 'Em cima da mesa há pratos rasos.',
+          },
+          {
+            fragments: [
+              { kanji: 'キツネが' },
+              { kanji: '言', furigana: 'い' },
+              { kanji: 'いました。' },
+              { kanji: '「さあ、' },
+              { kanji: '食', furigana: 'た' },
+              { kanji: 'べましょう」' },
+            ],
+            romaji: 'Kitsune ga iimashita. “Saa, tabemashou”',
+            translation: 'A raposa disse: “Venha, vamos comer!”',
+          },
+        ],
+        vocabularyNotes: [
+          { word: '来ました', reading: 'kimashita', meaning: 'Veio (passado do verbo irregular くる/kuru)', kanji: '来' },
+          { word: 'お皿', reading: 'osara', meaning: 'Prato (raso)', kanji: '皿' },
+          { word: '上', reading: 'ue', meaning: 'Em cima / Sobre', kanji: '上' },
+        ],
+        grammarTip: {
+          pattern: '～ましょう (mashou)',
+          explanation: 'Expressão de incentivo e proposta conjunta ("Vamos fazer!"). Ex: 食べましょう = Vamos comer!',
+        },
+      },
+      {
+        pageNumber: 3,
+        image: '/stories/kitsune-to-tsuru/page_3.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_3.mp3',
+        rawJapanese: 'キツネは、お皿のスープを飲みました。「おいしい！」ツルは、困りました。',
+        lines: [
+          {
+            fragments: [
+              { kanji: 'キツネは、' },
+              { kanji: 'お' },
+              { kanji: '皿', furigana: 'さら' },
+              { kanji: 'の スープを' },
+              { kanji: '飲', furigana: 'の' },
+              { kanji: 'みました。' },
+            ],
+            romaji: 'Kitsune wa, osara no suupu o nomimashita.',
+            translation: 'A raposa tomou a sopa do prato raso.',
+          },
+          {
+            fragments: [
+              { kanji: '「おいしい！」' },
+            ],
+            romaji: '“Oishii!”',
+            translation: '“Uma delícia!”',
+          },
+          {
+            fragments: [
+              { kanji: 'ツルは、' },
+              { kanji: '困', furigana: 'こま' },
+              { kanji: 'りました。' },
+            ],
+            romaji: 'Tsuru wa, komarimashita.',
+            translation: 'O grou ficou em apuros (não conseguia tomar com seu bico comprido).',
+          },
+        ],
+        vocabularyNotes: [
+          { word: 'スープ', reading: 'suupu', meaning: 'Sopa (em Katakana)' },
+          { word: '飲みました', reading: 'nomimashita', meaning: 'Bebeu / tomou (passado de 飲む)', kanji: '飲' },
+          { word: 'おいしい', reading: 'oishii', meaning: 'Gostoso / Delicioso' },
+          { word: '困りました', reading: 'komarimashita', meaning: 'Ficou em apuros / em dificuldades', kanji: '困' },
+        ],
+      },
+      {
+        pageNumber: 4,
+        image: '/stories/kitsune-to-tsuru/page_4.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_4.mp3',
+        rawJapanese: 'キツネは笑いました。',
+        lines: [
+          {
+            fragments: [
+              { kanji: 'キツネは' },
+              { kanji: '笑', furigana: 'わら' },
+              { kanji: 'いました。' },
+            ],
+            romaji: 'Kitsune wa waraimashita.',
+            translation: 'A raposa deu risada.',
+          },
+        ],
+        vocabularyNotes: [
+          { word: '笑いました', reading: 'waraimashita', meaning: 'Riu / Deu risada (passado de 笑う)', kanji: '笑' },
+        ],
+      },
+      {
+        pageNumber: 5,
+        image: '/stories/kitsune-to-tsuru/page_5.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_5.mp3',
+        rawJapanese: '次の日、ツルがキツネに言いました。「昨日はありがとう。今日は私の家で、いっしょにご飯を食べませんか？」',
+        lines: [
+          {
+            fragments: [
+              { kanji: '次', furigana: 'つぎ' },
+              { kanji: 'の' },
+              { kanji: '日', furigana: 'ひ' },
+              { kanji: '、' },
+              { kanji: 'ツルが' },
+              { kanji: 'キツネに' },
+              { kanji: '言', furigana: 'い' },
+              { kanji: 'いました。' },
+            ],
+            romaji: 'Tsugi no hi, tsuru ga kitsune ni iimashita.',
+            translation: 'No dia seguinte, o grou disse à raposa:',
+          },
+          {
+            fragments: [
+              { kanji: '「' },
+              { kanji: '昨日', furigana: 'きのう' },
+              { kanji: 'は ありがとう。' },
+              { kanji: '今日', furigana: 'きょう' },
+              { kanji: 'は' },
+              { kanji: '私', furigana: 'わたし' },
+              { kanji: 'の' },
+              { kanji: '家', furigana: 'いえ' },
+              { kanji: 'で、' },
+              { kanji: 'いっしょに ご' },
+              { kanji: '飯', furigana: 'はん' },
+              { kanji: 'を' },
+              { kanji: '食', furigana: 'た' },
+              { kanji: 'べませんか？」' },
+            ],
+            romaji: '“Kinou wa arigatou. Kyou wa watashi no ie de, issho ni gohan o tabemasen ka?”',
+            translation: '“Obrigado por ontem. Hoje, que tal comermos juntos na minha casa?”',
+          },
+        ],
+        vocabularyNotes: [
+          { word: '次の日', reading: 'tsugi no hi', meaning: 'O dia seguinte', kanji: '次, 日' },
+          { word: '昨日', reading: 'kinou', meaning: 'Ontem', kanji: '昨日' },
+          { word: '今日', reading: 'kyou', meaning: 'Hoje', kanji: '今日' },
+          { word: '私', reading: 'watashi', meaning: 'Eu (neutro e educado)', kanji: '私' },
+        ],
+      },
+      {
+        pageNumber: 6,
+        image: '/stories/kitsune-to-tsuru/page_6.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_6.mp3',
+        rawJapanese: 'キツネがツルの家に来ました。テーブルの上に壺があります。壺の中に肉があります。ツルが言いました。「さあ、食べましょう」',
+        lines: [
+          {
+            fragments: [
+              { kanji: 'キツネが' },
+              { kanji: 'ツルの' },
+              { kanji: '家', furigana: 'いえ' },
+              { kanji: 'に' },
+              { kanji: '来', furigana: 'き' },
+              { kanji: 'ました。' },
+            ],
+            romaji: 'Kitsune ga tsuru no ie ni kimashita.',
+            translation: 'A raposa foi até a casa do grou.',
+          },
+          {
+            fragments: [
+              { kanji: 'テーブルの' },
+              { kanji: '上', furigana: 'うえ' },
+              { kanji: 'に' },
+              { kanji: '壺', furigana: 'つぼ' },
+              { kanji: 'が あります。' },
+              { kanji: '壺', furigana: 'つぼ' },
+              { kanji: 'の' },
+              { kanji: '中', furigana: 'なか' },
+              { kanji: 'に' },
+              { kanji: '肉', furigana: 'にく' },
+              { kanji: 'が あります。' },
+            ],
+            romaji: 'Teeburu no ue ni tsubo ga arimasu. Tsubo no naka ni niku ga arimasu.',
+            translation: 'Em cima da mesa há jarras altas. Dentro da jarra há carne.',
+          },
+          {
+            fragments: [
+              { kanji: 'ツルが' },
+              { kanji: '言', furigana: 'い' },
+              { kanji: 'いました。' },
+              { kanji: '「さあ、' },
+              { kanji: '食', furigana: 'た' },
+              { kanji: 'べましょう」' },
+            ],
+            romaji: 'Tsuru ga iimashita. “Saa, tabemashou”',
+            translation: 'O grou disse: “Venha, vamos comer!”',
+          },
+        ],
+        vocabularyNotes: [
+          { word: '壺', reading: 'tsubo', meaning: 'Jarra / Pote de bico longo', kanji: '壺' },
+          { word: '肉', reading: 'niku', meaning: 'Carne', kanji: '肉' },
+          { word: '中', reading: 'naka', meaning: 'Dentro / Interior', kanji: '中' },
+        ],
+      },
+      {
+        pageNumber: 7,
+        image: '/stories/kitsune-to-tsuru/page_7.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_7.mp3',
+        rawJapanese: 'ツルは、壺の中の肉を食べました。「ああ、おいしい！」キツネは困りました。',
+        lines: [
+          {
+            fragments: [
+              { kanji: 'ツルは、' },
+              { kanji: '壺', furigana: 'つぼ' },
+              { kanji: 'の' },
+              { kanji: '中', furigana: 'なか' },
+              { kanji: 'の' },
+              { kanji: '肉', furigana: 'にく' },
+              { kanji: 'を' },
+              { kanji: '食', furigana: 'た' },
+              { kanji: 'べました。' },
+            ],
+            romaji: 'Tsuru wa, tsubo no naka no niku o tabemashita.',
+            translation: 'O grou comeu a carne de dentro da jarra com facilidade.',
+          },
+          {
+            fragments: [
+              { kanji: '「ああ、おいしい！」' },
+            ],
+            romaji: '“Aa, oishii!”',
+            translation: '“Ah, que delícia!”',
+          },
+          {
+            fragments: [
+              { kanji: 'キツネは' },
+              { kanji: '困', furigana: 'こま' },
+              { kanji: 'りました。' },
+            ],
+            romaji: 'Kitsune wa komarimashita.',
+            translation: 'A raposa ficou em apuros (não conseguia alcançar o fundo da jarra).',
+          },
+        ],
+        vocabularyNotes: [
+          { word: '食べました', reading: 'tabemashita', meaning: 'Comeu (passado de 食べる)', kanji: '食' },
+        ],
+      },
+      {
+        pageNumber: 8,
+        image: '/stories/kitsune-to-tsuru/page_8.jpg',
+        audioUrl: '/stories/kitsune-to-tsuru/audio/page_8.mp3',
+        rawJapanese: 'ツルは笑いました。',
+        lines: [
+          {
+            fragments: [
+              { kanji: 'ツルは' },
+              { kanji: '笑', furigana: 'わら' },
+              { kanji: 'いました。' },
+            ],
+            romaji: 'Tsuru wa waraimashita.',
+            translation: 'O grou deu risada.',
+          },
+        ],
+        vocabularyNotes: [
+          { word: '笑いました', reading: 'waraimashita', meaning: 'Riu / Sorriu', kanji: '笑' },
+        ],
+        grammarTip: {
+          pattern: 'Moral da História (교훈)',
+          explanation: 'Trate os outros como você gostaria de ser tratado: a raposa só pensou em si mesma e provou do próprio veneno!',
+        },
+      },
+    ],
+  },
+];

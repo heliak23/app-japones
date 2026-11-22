@@ -132,7 +132,11 @@ export const StudyView: React.FC<StudyViewProps> = ({
             {onNavigateToPractice && (
               <button
                 onClick={onNavigateToPractice}
-                className="w-full mt-4 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
+                className={`w-full mt-4 py-2.5 px-3 rounded-xl text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm ${
+                  isHiragana
+                    ? 'bg-brand-600 hover:bg-brand-500 shadow-brand-500/20'
+                    : 'bg-amber-600 hover:bg-amber-500 shadow-amber-500/20'
+                }`}
               >
                 <span>Fazer Exercícios deste Alfabeto</span>
               </button>

@@ -85,9 +85,9 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
             {studiedCharIds.length > 0 ? (
               <button
                 onClick={() => onStartStudiedSession(studiedCharIds)}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs transition-all hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs border border-slate-200 dark:border-slate-700 shadow-sm transition-all hover:scale-[1.02]"
               >
-                <Layers className="w-4 h-4" />
+                <Layers className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
                 <span>Revisar Estudados ({studiedCharIds.length})</span>
               </button>
             ) : null}

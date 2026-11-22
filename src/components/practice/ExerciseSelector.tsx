@@ -141,7 +141,7 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
               onClick={() => setSelectedType(opt.type)}
               className={`cursor-pointer rounded-2xl p-5 border transition-all duration-200 flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-slate-900 dark:bg-indigo-950/80 text-white border-slate-900 dark:border-indigo-500 shadow-md scale-[1.02]'
+                  ? 'bg-indigo-600 dark:bg-indigo-950/80 text-white border-indigo-600 dark:border-indigo-500 shadow-md scale-[1.02]'
                   : `bg-white dark:bg-[#131b2e] text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-800 ${opt.color} hover:shadow-sm`
               }`}
             >
@@ -301,7 +301,7 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
                 onClick={() => setSelectedAlphabet('all')}
                 className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-colors ${
                   selectedAlphabet === 'all'
-                    ? 'bg-slate-900 dark:bg-slate-700 text-white border-slate-900 dark:border-slate-600'
+                    ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white dark:bg-[#182238] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                 }`}
               >
