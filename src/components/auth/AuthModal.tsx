@@ -155,7 +155,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       aria-modal="true"
     >
       <div
-        className="relative w-full max-w-md bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden transition-all duration-200"
+        className="relative w-full max-w-md bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 flex flex-col md:h-[600px] min-h-[560px]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Topo Decorativo com Gradiente Japonês */}
@@ -219,155 +219,168 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         )}
 
         {/* Formulário Principal */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Alertas de Erro e Sucesso */}
-          {errorMessage && (
-            <div className="flex items-start gap-2.5 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs animate-shake">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{errorMessage}</span>
-            </div>
-          )}
+        <form onSubmit={handleSubmit} className="p-6 flex-1 flex flex-col justify-between">
+          <div className="space-y-4">
+            {/* Alertas de Erro e Sucesso */}
+            {errorMessage && (
+              <div className="flex items-start gap-2.5 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs animate-shake">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
 
-          {successMessage && (
-            <div className="flex items-start gap-2.5 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs">
-              <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{successMessage}</span>
-            </div>
-          )}
+            {successMessage && (
+              <div className="flex items-start gap-2.5 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs">
+                <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{successMessage}</span>
+              </div>
+            )}
 
-          {/* Campo Nome de Exibição (Apenas no Cadastro) */}
-          {activeTab === 'register' && (
+            {/* Campo Nome de Exibição (Apenas no Cadastro) */}
+            {activeTab === 'register' && (
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Seu Nome ou Apelido
+                </label>
+                <div className="relative">
+                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    placeholder="Ex: Tanaka, Carlos..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Campo E-mail */}
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                Seu Nome ou Apelido
+                E-mail
               </label>
               <div className="relative">
-                <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
-                  type="text"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="Ex: Tanaka, Carlos..."
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="seu.email@exemplo.com"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
                 />
               </div>
             </div>
-          )}
 
-          {/* Campo E-mail */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-              E-mail
-            </label>
-            <div className="relative">
-              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="seu.email@exemplo.com"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
-              />
-            </div>
-          </div>
-
-          {/* Campo Senha */}
-          {activeTab !== 'recovery' && (
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  Senha
-                </label>
-                {activeTab === 'login' && (
+            {/* Campo Senha */}
+            {activeTab !== 'recovery' && (
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Senha
+                  </label>
+                  {activeTab === 'login' && (
+                    <button
+                      type="button"
+                      onClick={() => handleTabChange('recovery')}
+                      className="text-xs text-brand-600 dark:text-brand-400 hover:underline"
+                    >
+                      Esqueceu a senha?
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+                  />
                   <button
                     type="button"
-                    onClick={() => handleTabChange('recovery')}
-                    className="text-xs text-brand-600 dark:text-brand-400 hover:underline"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                   >
-                    Esqueceu a senha?
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
-                )}
+                </div>
               </div>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Confirmar Senha (Apenas no Cadastro) */}
-          {activeTab === 'register' && (
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                Confirmar Senha
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Botão de Ação Principal */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white font-bold text-sm shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Processando...</span>
-              </>
-            ) : (
-              <>
-                <span>
-                  {activeTab === 'login' && 'Entrar na Conta'}
-                  {activeTab === 'register' && 'Cadastrar Gratuitamente'}
-                  {activeTab === 'recovery' && 'Enviar E-mail de Recuperação'}
-                </span>
-              </>
             )}
-          </button>
 
-          {/* Voltar para login se estiver em recuperação */}
-          {activeTab === 'recovery' && (
+            {/* Confirmar Senha (Apenas no Cadastro) */}
+            {activeTab === 'register' && (
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Confirmar Senha
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0c121e] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Informação na aba Login para equilíbrio visual */}
+            {activeTab === 'login' && (
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/80 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed flex items-center gap-2 select-none">
+                <Sparkles className="w-4 h-4 text-brand-500 shrink-0" />
+                <span>Seu progresso, ofensiva diária e pontuação são sincronizados de forma segura no banco de dados.</span>
+              </div>
+            )}
+          </div>
+
+          {/* Ações Inferiores (Botão e Rodapé) */}
+          <div className="pt-4 space-y-3">
+            {/* Botão de Ação Principal */}
             <button
-              type="button"
-              onClick={() => handleTabChange('login')}
-              className="w-full py-2 text-xs text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white font-bold text-sm shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              ← Voltar para o Login
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Processando...</span>
+                </>
+              ) : (
+                <>
+                  <span>
+                    {activeTab === 'login' && 'Entrar na Conta'}
+                    {activeTab === 'register' && 'Cadastrar Gratuitamente'}
+                    {activeTab === 'recovery' && 'Enviar E-mail de Recuperação'}
+                  </span>
+                </>
+              )}
             </button>
-          )}
 
-          {/* Rodapé do Modal com Informações do Banco */}
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex flex-col items-center gap-2">
-            <div className="flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-500">
-              <Database className="w-3 h-3 text-emerald-500" />
-              <span>Autenticação & Banco de Dados via <strong>Supabase</strong></span>
+            {/* Voltar para login se estiver em recuperação */}
+            {activeTab === 'recovery' && (
+              <button
+                type="button"
+                onClick={() => handleTabChange('login')}
+                className="w-full py-2 text-xs text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+              >
+                ← Voltar para o Login
+              </button>
+            )}
+
+            {/* Rodapé do Modal com Informações do Banco */}
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex flex-col items-center gap-2">
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-500">
+                <Database className="w-3.5 h-3.5 text-emerald-500" />
+                <span>Autenticação segura via <strong>Banco de Dados</strong></span>
+              </div>
             </div>
           </div>
         </form>

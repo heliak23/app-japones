@@ -122,7 +122,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({
 
         <div className="flex items-center gap-2 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1.5 rounded-lg border border-emerald-200/50 dark:border-emerald-800/50">
           <Cloud className="w-3.5 h-3.5 shrink-0" />
-          <span>Progresso salvo no Supabase</span>
+          <span>Progresso salvo no Banco de Dados</span>
         </div>
 
         {onOpenChangePassword && (
