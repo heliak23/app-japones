@@ -133,72 +133,72 @@ export const PhraseTrackView: React.FC = () => {
 
       {/* Navegação entre Trilha e Ferramentas Didáticas (Apostila 1 e 2) */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-        <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 overflow-x-auto max-w-full pb-1 scrollbar-none">
           <button
             onClick={() => setMainTab('lessons')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 ${
               mainTab === 'lessons'
                 ? 'bg-white dark:bg-[#131b2e] text-brand-600 dark:text-brand-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <BookOpen className="w-4 h-4" />
+            <BookOpen className="w-4 h-4 shrink-0" />
             <span>Lições da Trilha ({totalLessons})</span>
           </button>
 
           <button
             onClick={() => setMainTab('particles')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 ${
               mainTab === 'particles'
                 ? 'bg-white dark:bg-[#131b2e] text-indigo-600 dark:text-indigo-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <FileText className="w-4 h-4 text-indigo-500" />
+            <FileText className="w-4 h-4 text-indigo-500 shrink-0" />
             <span>12 Partículas (は, が, を...)</span>
-            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300">
+            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 shrink-0">
               Novo
             </span>
           </button>
 
           <button
             onClick={() => setMainTab('conjugator')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 ${
               mainTab === 'conjugator'
                 ? 'bg-white dark:bg-[#131b2e] text-emerald-600 dark:text-emerald-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <Layers className="w-4 h-4 text-emerald-500" />
+            <Layers className="w-4 h-4 text-emerald-500 shrink-0" />
             <span>Conjugador (Verbos & Adjetivos)</span>
-            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 shrink-0">
               Novo
             </span>
           </button>
 
           <button
             onClick={() => setMainTab('kosoado')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 ${
               mainTab === 'kosoado'
                 ? 'bg-white dark:bg-[#131b2e] text-amber-600 dark:text-amber-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <Compass className="w-4 h-4 text-amber-500" />
+            <Compass className="w-4 h-4 text-amber-500 shrink-0" />
             <span>Ko-So-A-Do (こ・そ・あ・ど)</span>
           </button>
 
           <button
             onClick={() => setMainTab('dialogues')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap shrink-0 ${
               mainTab === 'dialogues'
                 ? 'bg-white dark:bg-[#131b2e] text-rose-600 dark:text-rose-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <MessageSquare className="w-4 h-4 text-rose-500" />
+            <MessageSquare className="w-4 h-4 text-rose-500 shrink-0" />
             <span>Diálogos Reais (Sakura & Takeshi)</span>
-            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300">
+            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 shrink-0">
               Novo
             </span>
           </button>

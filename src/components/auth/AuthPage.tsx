@@ -119,15 +119,15 @@ export const AuthPage: React.FC = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-800 dark:text-slate-100 flex flex-col justify-between selection:bg-brand-100 selection:text-brand-900 dark:selection:bg-brand-900/50 transition-colors duration-200">
       
       {/* Barra de Topo Simplificada */}
-      <header className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
-        <div className="flex items-center gap-3 select-none">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+      <header className="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-5 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 sm:gap-3 select-none shrink-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-md shrink-0">
             あ
           </div>
           <div>
-            <div className="flex items-center gap-1.5 font-extrabold text-slate-900 dark:text-white tracking-tight text-lg">
+            <div className="flex items-center gap-1.5 font-extrabold text-slate-900 dark:text-white tracking-tight text-base sm:text-lg">
               <span>NihonGo!</span>
-              <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-full bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/50 dark:border-brand-800/50">
+              <span className="hidden min-[400px]:inline-flex text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-full bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/50 dark:border-brand-800/50 shrink-0">
                 PT-BR
               </span>
             </div>
@@ -137,7 +137,7 @@ export const AuthPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <ThemeToggle />
         </div>
       </header>

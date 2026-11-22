@@ -67,9 +67,9 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Topo com gradiente */}
-        <div className={`p-4 sm:p-6 bg-gradient-to-r ${themeBg} text-white flex items-center justify-between shrink-0`}>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs uppercase font-extrabold tracking-wider bg-white/20 px-2.5 py-1 rounded-full">
+        <div className={`p-4 sm:p-6 bg-gradient-to-r ${themeBg} text-white flex items-center justify-between shrink-0 gap-2`}>
+          <div className="flex items-center gap-2 flex-wrap min-w-0">
+            <span className="text-xs uppercase font-extrabold tracking-wider bg-white/20 px-2.5 py-1 rounded-full shrink-0">
               {character.alphabet === 'hiragana' ? 'Hiragana (ひらがな)' : 'Katakana (カタカナ)'}
             </span>
             {onToggleStudied ? (
@@ -77,28 +77,28 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
                 type="button"
                 onClick={() => onToggleStudied(character.id)}
                 title={isStudied ? 'Clique para desmarcar como estudado' : 'Clique para marcar como estudado'}
-                className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold transition-all cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
                   isStudied
                     ? 'bg-emerald-500/40 hover:bg-emerald-500/60 text-emerald-100 border border-emerald-300/40'
                     : 'bg-white/20 hover:bg-white/30 text-white border border-white/30'
                 }`}
               >
-                <CheckCircle2 className={`w-3.5 h-3.5 ${isStudied ? 'text-emerald-200 fill-emerald-500/40' : 'text-white'}`} />
+                <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 ${isStudied ? 'text-emerald-200 fill-emerald-500/40' : 'text-white'}`} />
                 <span>{isStudied ? 'Estudado (clique p/ desmarcar)' : 'Marcar como Estudado'}</span>
               </button>
             ) : isStudied ? (
-              <span className="inline-flex items-center gap-1 text-xs bg-emerald-500/30 text-emerald-100 px-2 py-0.5 rounded-full font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-200" />
+              <span className="inline-flex items-center gap-1 text-xs bg-emerald-500/30 text-emerald-100 px-2 py-0.5 rounded-full font-medium shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-200 shrink-0" />
                 Estudado
               </span>
             ) : null}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center shrink-0 ml-2"
             title="Fechar (Esc)"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 shrink-0" />
           </button>
         </div>
 

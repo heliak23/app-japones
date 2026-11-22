@@ -71,20 +71,20 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
         e.stopPropagation();
         toggleTheme();
       }}
-      className={`relative inline-flex items-center justify-center p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100/80 dark:bg-[#131b2e] hover:bg-slate-200/80 dark:hover:bg-[#182238] border border-slate-200 dark:border-slate-700/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 shadow-sm group active:scale-95 cursor-pointer ${className}`}
+      className={`relative inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100/80 dark:bg-[#131b2e] hover:bg-slate-200/80 dark:hover:bg-[#182238] border border-slate-200 dark:border-slate-700/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 shadow-sm group active:scale-95 cursor-pointer shrink-0 ${className}`}
       aria-label={isDark ? 'Mudar para tema claro (Light Mode)' : 'Mudar para tema escuro (Dark Mode)'}
       title={isDark ? 'Alternar para tema claro' : 'Alternar para tema escuro'}
     >
-      <div className="relative w-5 h-5 flex items-center justify-center pointer-events-none">
+      <div className="relative w-5 h-5 flex items-center justify-center pointer-events-none shrink-0">
         {isDark ? (
-          <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
+          <Sun className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-400 group-hover:rotate-45 transition-transform duration-300 shrink-0" />
         ) : (
-          <Moon className="w-4 h-4 text-indigo-600 group-hover:-rotate-12 transition-transform duration-300" />
+          <Moon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-indigo-600 group-hover:-rotate-12 transition-transform duration-300 shrink-0" />
         )}
       </div>
 
       {showLabel && (
-        <span className="ml-2 text-xs font-semibold pointer-events-none">
+        <span className="ml-2 text-xs font-semibold pointer-events-none shrink-0">
           {isDark ? 'Modo Claro' : 'Modo Escuro'}
         </span>
       )}

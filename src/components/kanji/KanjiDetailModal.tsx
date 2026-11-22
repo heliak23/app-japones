@@ -69,41 +69,41 @@ export const KanjiDetailModal: React.FC<KanjiDetailModalProps> = ({
         className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-[#131b2e] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 space-y-6 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700"
       >
         {/* Header Superior com Fechar e Navegação */}
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300 border border-brand-200/50 dark:border-brand-800/50">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300 border border-brand-200/50 dark:border-brand-800/50 truncate shrink-0">
               {kanji.categoryLabel}
             </span>
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 shrink-0">
               {kanji.strokes} traços
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {hasPrev && onPrev && (
               <button
                 onClick={onPrev}
-                className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
+                className="w-8 h-8 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors flex items-center justify-center shrink-0"
                 title="Kanji anterior (Seta esquerda)"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-5 h-5 shrink-0" />
               </button>
             )}
             {hasNext && onNext && (
               <button
                 onClick={onNext}
-                className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
+                className="w-8 h-8 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors flex items-center justify-center shrink-0"
                 title="Próximo Kanji (Seta direita)"
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 shrink-0" />
               </button>
             )}
             <button
               onClick={onClose}
-              className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors ml-1"
+              className="w-8 h-8 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors flex items-center justify-center shrink-0 ml-1"
               title="Fechar (Esc)"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 shrink-0" />
             </button>
           </div>
         </div>

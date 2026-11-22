@@ -73,14 +73,14 @@ export const UserMenu: React.FC<UserMenuProps> = ({
     }
 
     return (
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1.5 shrink-0">
         <button
           onClick={() => onOpenAuthModal('login')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white text-xs font-bold shadow-sm shadow-brand-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 text-white text-xs font-bold shadow-sm shadow-brand-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] shrink-0"
           title="Fazer Login ou Criar Conta"
         >
-          <LogIn className="w-3.5 h-3.5" />
-          <span>Entrar</span>
+          <LogIn className="w-3.5 h-3.5 shrink-0" />
+          <span className="shrink-0">Entrar</span>
         </button>
       </div>
     );
