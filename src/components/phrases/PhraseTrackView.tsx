@@ -5,6 +5,9 @@ import { PhraseStorageService } from '../../services/phraseStorageService';
 import { PhraseStepViewer } from './PhraseStepViewer';
 import { PhraseQuizViewer } from './PhraseQuizViewer';
 import { KosoadoVisualizer } from './KosoadoVisualizer';
+import { DialoguePlayer } from './DialoguePlayer';
+import { ParticlesGuide } from '../grammar/ParticlesGuide';
+import { ConjugatorView } from '../grammar/ConjugatorView';
 import {
   Sparkles,
   CheckCircle2,
@@ -12,10 +15,13 @@ import {
   Trophy,
   Compass,
   BookOpen,
+  Layers,
+  FileText,
+  MessageSquare,
 } from 'lucide-react';
 
 export const PhraseTrackView: React.FC = () => {
-  const [mainTab, setMainTab] = useState<'lessons' | 'kosoado'>('lessons');
+  const [mainTab, setMainTab] = useState<'lessons' | 'particles' | 'conjugator' | 'kosoado' | 'dialogues'>('lessons');
   const [selectedLesson, setSelectedLesson] = useState<PhraseLesson | null>(null);
   const [mode, setMode] = useState<'list' | 'steps' | 'quiz'>('list');
   const [selectedModuleFilter, setSelectedModuleFilter] = useState<string>('all');
@@ -125,12 +131,12 @@ export const PhraseTrackView: React.FC = () => {
         </div>
       </section>
 
-      {/* Navegação entre Trilha e Laboratório Ko-So-A-Do */}
+      {/* Navegação entre Trilha e Ferramentas Didáticas (Apostila 1 e 2) */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-        <div className="inline-flex p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
+        <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
           <button
             onClick={() => setMainTab('lessons')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               mainTab === 'lessons'
                 ? 'bg-white dark:bg-[#131b2e] text-brand-600 dark:text-brand-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -141,34 +147,119 @@ export const PhraseTrackView: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setMainTab('kosoado')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              mainTab === 'kosoado'
-                ? 'bg-white dark:bg-[#131b2e] text-brand-600 dark:text-brand-400 shadow-sm'
+            onClick={() => setMainTab('particles')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              mainTab === 'particles'
+                ? 'bg-white dark:bg-[#131b2e] text-indigo-600 dark:text-indigo-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <Compass className="w-4 h-4 text-emerald-500" />
-            <span>Sistema Ko-So-A-Do (こ・そ・あ・ど)</span>
+            <FileText className="w-4 h-4 text-indigo-500" />
+            <span>12 Partículas (は, が, を...)</span>
+            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300">
+              Novo
+            </span>
+          </button>
+
+          <button
+            onClick={() => setMainTab('conjugator')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              mainTab === 'conjugator'
+                ? 'bg-white dark:bg-[#131b2e] text-emerald-600 dark:text-emerald-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Layers className="w-4 h-4 text-emerald-500" />
+            <span>Conjugador (Verbos & Adjetivos)</span>
             <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+              Novo
+            </span>
+          </button>
+
+          <button
+            onClick={() => setMainTab('kosoado')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              mainTab === 'kosoado'
+                ? 'bg-white dark:bg-[#131b2e] text-amber-600 dark:text-amber-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Compass className="w-4 h-4 text-amber-500" />
+            <span>Ko-So-A-Do (こ・そ・あ・ど)</span>
+          </button>
+
+          <button
+            onClick={() => setMainTab('dialogues')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              mainTab === 'dialogues'
+                ? 'bg-white dark:bg-[#131b2e] text-rose-600 dark:text-rose-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <MessageSquare className="w-4 h-4 text-rose-500" />
+            <span>Diálogos Reais (Sakura & Takeshi)</span>
+            <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300">
               Novo
             </span>
           </button>
         </div>
 
         {mainTab === 'lessons' && (
-          <button
-            onClick={() => setMainTab('kosoado')}
-            className="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition-colors"
-          >
-            <span>Dúvidas com kore / sore / are? Abra o Guia Ko-So-A-Do</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="hidden lg:flex items-center gap-3 text-xs font-bold text-slate-500 dark:text-slate-400">
+            <button
+              onClick={() => setMainTab('particles')}
+              className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              12 Partículas →
+            </button>
+            <span>&bull;</span>
+            <button
+              onClick={() => setMainTab('conjugator')}
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            >
+              Conjugador →
+            </button>
+            <span>&bull;</span>
+            <button
+              onClick={() => setMainTab('dialogues')}
+              className="hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
+            >
+              Diálogo Sakura & Takeshi →
+            </button>
+          </div>
         )}
       </div>
 
       {/* Conteúdo da aba selecionada */}
-      {mainTab === 'kosoado' ? (
+      {mainTab === 'particles' && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setMainTab('lessons')}
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#131b2e]"
+            >
+              ← Voltar para as Lições da Trilha
+            </button>
+          </div>
+          <ParticlesGuide />
+        </div>
+      )}
+
+      {mainTab === 'conjugator' && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setMainTab('lessons')}
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#131b2e]"
+            >
+              ← Voltar para as Lições da Trilha
+            </button>
+          </div>
+          <ConjugatorView />
+        </div>
+      )}
+
+      {mainTab === 'kosoado' && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <button
@@ -180,7 +271,23 @@ export const PhraseTrackView: React.FC = () => {
           </div>
           <KosoadoVisualizer />
         </div>
-      ) : (
+      )}
+
+      {mainTab === 'dialogues' && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setMainTab('lessons')}
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#131b2e]"
+            >
+              ← Voltar para as Lições da Trilha
+            </button>
+          </div>
+          <DialoguePlayer />
+        </div>
+      )}
+
+      {mainTab === 'lessons' && (
         <>
           {/* Filtros de Módulo */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">

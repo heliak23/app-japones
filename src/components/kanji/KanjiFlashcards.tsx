@@ -6,6 +6,9 @@ import {
   XCircle,
   ArrowRight,
   ArrowLeft,
+  Eye,
+  EyeOff,
+  Sparkles,
 } from 'lucide-react';
 
 interface KanjiFlashcardsProps {
@@ -23,6 +26,8 @@ export const KanjiFlashcards: React.FC<KanjiFlashcardsProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [hideFurigana, setHideFurigana] = useState(false);
+  const [revealedWords, setRevealedWords] = useState<string[]>([]);
 
   if (kanjis.length === 0) {
     return (
@@ -37,11 +42,13 @@ export const KanjiFlashcards: React.FC<KanjiFlashcardsProps> = ({
 
   const handleNext = () => {
     setIsFlipped(false);
+    setRevealedWords([]);
     setCurrentIndex((prev) => (prev < kanjis.length - 1 ? prev + 1 : 0));
   };
 
   const handlePrev = () => {
     setIsFlipped(false);
+    setRevealedWords([]);
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : kanjis.length - 1));
   };
 
@@ -52,8 +59,36 @@ export const KanjiFlashcards: React.FC<KanjiFlashcardsProps> = ({
     handleNext();
   };
 
+  const handleToggleRevealWord = (word: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setRevealedWords((prev) =>
+      prev.includes(word) ? prev.filter((w) => w !== word) : [...prev, word]
+    );
+  };
+
   return (
-    <div className="max-w-xl mx-auto space-y-6">
+    <div className="max-w-xl mx-auto space-y-4">
+      {/* Barra de Modo de Estudo Anki e Toggle de Furigana */}
+      <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800 text-xs">
+        <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-bold">
+          <Sparkles className="w-3.5 h-3.5 text-brand-500" />
+          <span>Método Anki da Apostila 2</span>
+        </div>
+
+        <button
+          onClick={() => setHideFurigana(!hideFurigana)}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all border ${
+            hideFurigana
+              ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+          }`}
+          title="Ocultar Furigana para forçar a recuperação ativa da memória"
+        >
+          {hideFurigana ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+          <span>{hideFurigana ? 'Furigana Oculto (Modo Anki)' : 'Furigana Visível'}</span>
+        </button>
+      </div>
+
       {/* Indicador de Cartão */}
       <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 px-2">
         <span>
@@ -76,7 +111,7 @@ export const KanjiFlashcards: React.FC<KanjiFlashcardsProps> = ({
         onClick={() => setIsFlipped(!isFlipped)}
         role="button"
         tabIndex={0}
-        className="relative min-h-[380px] bg-white dark:bg-[#131b2e] rounded-3xl border-2 border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-10 flex flex-col items-center justify-between text-center cursor-pointer select-none transition-all hover:border-brand-400 group"
+        className="relative min-h-[420px] bg-white dark:bg-[#131b2e] rounded-3xl border-2 border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 flex flex-col items-center justify-between text-center cursor-pointer select-none transition-all hover:border-brand-400 group"
       >
         <div className="w-full flex items-center justify-between text-xs text-slate-400">
           <span>{currentKanji.strokes} traços</span>
@@ -86,11 +121,13 @@ export const KanjiFlashcards: React.FC<KanjiFlashcardsProps> = ({
         {/* Frente do Flashcard */}
         {!isFlipped ? (
           <div className="my-auto space-y-4">
-            <span className="font-jp text-8xl font-black text-slate-900 dark:text-white group-hover:scale-105 transition-transform">
+            <span className="font-jp text-8xl font-black text-slate-900 dark:text-white group-hover:scale-105 transition-transform block">
               {currentKanji.character}
             </span>
-            <p className="text-xs text-slate-400 max-w-xs">
-              Você lembra a leitura e o significado deste ideograma?
+            <p className="text-xs text-slate-400 max-w-xs mx-auto">
+              {hideFurigana
+                ? 'Modo Anki: Consegue lembrar a leitura e o significado deste ideograma em palavras reais?'
+                : 'Você lembra a leitura e o significado deste ideograma?'}
             </p>
           </div>
         ) : (
@@ -109,21 +146,61 @@ export const KanjiFlashcards: React.FC<KanjiFlashcardsProps> = ({
               </p>
             </div>
 
+            {/* Palavras em Contexto Real (Filosofia Anki da Apostila 2) */}
+            {currentKanji.examples.length > 0 && (
+              <div className="space-y-2 text-left w-full pt-2">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 block text-center">
+                  Vocabulário Real em Contexto
+                </span>
+                <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 scrollbar-none">
+                  {currentKanji.examples.slice(0, 3).map((ex, idx) => {
+                    const isWordRevealed = !hideFurigana || revealedWords.includes(ex.japanese);
+                    return (
+                      <div
+                        key={idx}
+                        onClick={(e) => handleToggleRevealWord(ex.japanese, e)}
+                        className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between gap-2 hover:border-brand-300 transition-colors"
+                        title={hideFurigana ? 'Toque para revelar ou ocultar a leitura' : undefined}
+                      >
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-2">
+                            <span className="font-jp font-bold text-slate-900 dark:text-white text-base">
+                              {ex.japanese}
+                            </span>
+                            {isWordRevealed ? (
+                              <span className="text-xs font-bold text-brand-600 dark:text-brand-400">
+                                ({ex.furigana} • {ex.romaji})
+                              </span>
+                            ) : (
+                              <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400">
+                                👁️ Toque p/ revelar
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[11px] text-slate-500 block">
+                            {ex.meaning}
+                          </span>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onPlayAudio(ex.audioText || ex.japanese);
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-brand-600"
+                        >
+                          <Volume2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-200/60 dark:border-amber-800/40 text-left text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
               <strong className="text-amber-700 dark:text-amber-400">Mnemônico: </strong>
               <span>{currentKanji.mnemonicStory}</span>
             </div>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onPlayAudio(currentKanji.character);
-              }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-brand-50 hover:text-brand-600 transition-colors"
-            >
-              <Volume2 className="w-3.5 h-3.5" />
-              <span>Ouvir Som</span>
-            </button>
           </div>
         )}
 

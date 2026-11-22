@@ -2,6 +2,10 @@ import { HIRAGANA_CHARACTERS } from '../src/data/hiraganaData';
 import { KATAKANA_CHARACTERS } from '../src/data/katakanaData';
 import { KanaDataset } from '../src/data/kanaDataset';
 import { KOSOADO_ITEMS, KOSOADO_QUIZ_QUESTIONS } from '../src/data/kosoadoData';
+import { PARTICLES_DATA, PARTICLE_QUIZ_QUESTIONS } from '../src/data/particlesData';
+import { ADJECTIVES_DATA, VERBS_DATA } from '../src/data/conjugationData';
+import { DIALOGUES_DATA } from '../src/data/dialogueData';
+import { KANJI_DATASET } from '../src/data/kanjiDataset';
 import { WanakanaService } from '../src/services/wanakanaService';
 import { ExerciseGenerator } from '../src/services/exerciseGenerator';
 import { StorageService } from '../src/services/storageService';
@@ -525,6 +529,138 @@ for (const q of KOSOADO_QUIZ_QUESTIONS) {
   }
 }
 assert(allQuizValid, 'Todas as questões de quiz do Ko-So-A-Do têm opções válidas e contêm a resposta correta');
+
+// --- 15. Validação das 12 Partículas Fundamentais & Quiz de Lacunas (Apostila 1) ---
+console.log('\n--- 15. Validação das 12 Partículas Fundamentais & Quiz de Lacunas (Apostila 1) ---');
+assert(PARTICLES_DATA.length === 12, 'Catálogo deve conter exatamente as 12 partículas essenciais da apostila');
+
+const expectedParticleIds = ['wa', 'ga', 'wo', 'ni', 'de', 'he', 'no', 'to', 'ya', 'mo', 'kara', 'made'];
+const currentParticleIds = PARTICLES_DATA.map((p) => p.id);
+const allParticlesPresent = expectedParticleIds.every((id) => currentParticleIds.includes(id));
+assert(allParticlesPresent, 'Todas as 12 partículas fundamentais estão presentes no dataset');
+
+let particlesDataValid = true;
+for (const p of PARTICLES_DATA) {
+  if (!p.id || !p.character || !p.romaji || !p.name || !p.goldenRule || !p.examples || p.examples.length === 0) {
+    particlesDataValid = false;
+  }
+}
+assert(particlesDataValid, 'Todas as 12 partículas possuem nome, regras pedagógicas e exemplos com frases');
+
+assert(PARTICLE_QUIZ_QUESTIONS.length >= 8, 'Quiz de fixação de partículas possui no mínimo 8 questões');
+let allParticleQuizValid = true;
+for (const q of PARTICLE_QUIZ_QUESTIONS) {
+  if (!q.id || !q.sentenceWithBlank || !q.correctParticle || !q.options || q.options.length !== 4) {
+    allParticleQuizValid = false;
+  }
+  if (!q.options.includes(q.correctParticle)) {
+    allParticleQuizValid = false;
+  }
+}
+assert(allParticleQuizValid, 'Todas as questões do Quiz de partículas contêm opções válidas e incluem a resposta correta');
+
+// --- 16. Validação do Conjugador de Verbos e Adjetivos (Apostila 1) ---
+console.log('\n--- 16. Validação do Conjugador de Verbos e Adjetivos (Apostila 1) ---');
+
+// Adjetivos
+const iAdjectives = ADJECTIVES_DATA.filter((a) => a.type === 'i');
+const naAdjectives = ADJECTIVES_DATA.filter((a) => a.type === 'na');
+assert(iAdjectives.length >= 4, 'Possui catálogo de adjetivos do tipo い (i-keiyoushi)');
+assert(naAdjectives.length >= 3, 'Possui catálogo de adjetivos do tipo な (na-keiyoushi)');
+
+const iiAdj = ADJECTIVES_DATA.find((a) => a.id === 'ii');
+assert(iiAdj !== undefined && iiAdj.forms.presentNegative.japanese.includes('よくない'), 'Exceção irregular do adjetivo "ii" -> "yokunai" devidamente mapeada');
+
+const kireiAdj = ADJECTIVES_DATA.find((a) => a.id === 'kirei');
+assert(kireiAdj !== undefined && kireiAdj.type === 'na', 'Adjetivo fonético enganoso "kirei" classificado corretamente como tipo "na"');
+
+let allAdjFormsValid = true;
+for (const adj of ADJECTIVES_DATA) {
+  const f = adj.forms;
+  if (!f.presentAffirmative || !f.presentNegative || !f.pastAffirmative || !f.pastNegative) {
+    allAdjFormsValid = false;
+  }
+}
+assert(allAdjFormsValid, 'Todos os adjetivos possuem as 4 formas completas (Afirmativo, Negativo, Passado e Passado Negativo)');
+
+// Verbos
+const g1Verbs = VERBS_DATA.filter((v) => v.group === 'g1');
+const g2Verbs = VERBS_DATA.filter((v) => v.group === 'g2');
+const g3Verbs = VERBS_DATA.filter((v) => v.group === 'g3');
+
+assert(g1Verbs.length >= 4, 'Grupo 1 (Godan) possui exemplos dos vários finais consonantais (mu, ku, su, etc.)');
+assert(g2Verbs.length >= 2, 'Grupo 2 (Ichidan) possui verbos terminados em -eru e -iru');
+assert(g3Verbs.length === 2, 'Grupo 3 (Irregulares) possui exatamente os verbos suru (する) e kuru (来る)');
+
+const ikuVerb = VERBS_DATA.find((v) => v.id === 'iku');
+assert(ikuVerb?.forms.ta.japanese === '行った' && ikuVerb?.forms.te.japanese === '行って', 'Exceção fonética de "iku" com sokuon (itta / itte) devidamente tratada');
+
+let allVerbFormsValid = true;
+for (const verb of VERBS_DATA) {
+  const f = verb.forms;
+  if (!f.dictionary || !f.masu || !f.masuNegative || !f.masuPast || !f.nai || !f.ta || !f.te) {
+    allVerbFormsValid = false;
+  }
+}
+assert(allVerbFormsValid, 'Todos os verbos possuem as 7 formas canônicas (Dicionário, Masu, Masen, Mashita, Nai, Ta, Te)');
+
+// --- 17. Validação do Modo Diálogo Conversacional (Apostila 2 - Sakura & Takeshi) ---
+console.log('\n--- 17. Validação do Modo Diálogo Conversacional (Apostila 2 - Sakura & Takeshi) ---');
+const hajimemashiteDialogue = DIALOGUES_DATA.find((d) => d.id === 'hajimemashite');
+assert(hajimemashiteDialogue !== undefined, 'Diálogo "Hajimemashite" da Apostila 2 deve estar cadastrado');
+assert(hajimemashiteDialogue?.characters.length === 2, 'Diálogo possui os 2 interlocutores principais (Sakura e Takeshi)');
+
+const charNames = hajimemashiteDialogue?.characters.map((c) => c.name) || [];
+assert(charNames.includes('Takeshi') && charNames.includes('Sakura'), 'Personagens Takeshi e Sakura devidamente identificados');
+
+assert(hajimemashiteDialogue?.lines.length === 9, 'Diálogo contém a progressão completa das 9 falas do roteiro da apostila');
+
+const hatachiLine = hajimemashiteDialogue?.lines.find((l) => l.japanese.includes('二十歳'));
+assert(hatachiLine !== undefined && hatachiLine.characterId === 'sakura', 'Sakura diz a idade com leitura especial "hatachi" (二十歳)');
+
+const kochiraLine = hajimemashiteDialogue?.lines.find((l) => l.japanese.includes('こちらこそ'));
+assert(kochiraLine !== undefined && kochiraLine.characterId === 'takeshi', 'Takeshi responde com a cortesia "Kochira koso"');
+
+assert(
+  (hajimemashiteDialogue?.comprehensionQuiz.length || 0) >= 3,
+  'Diálogo possui no mínimo 3 questões de interpretação e compreensão auditiva'
+);
+
+let allDialogueQuizValid = true;
+for (const q of hajimemashiteDialogue?.comprehensionQuiz || []) {
+  if (!q.id || !q.question || !q.options || q.options.length < 3 || !q.correctAnswer) {
+    allDialogueQuizValid = false;
+  }
+  if (!q.options.includes(q.correctAnswer)) {
+    allDialogueQuizValid = false;
+  }
+}
+assert(allDialogueQuizValid, 'Todas as questões do Quiz de Diálogo contêm opções válidas e incluem a resposta correta');
+
+// --- 18. Validação da Filosofia Anki & Vocabulário em Contexto de Kanjis (Apostila 2) ---
+console.log('\n--- 18. Validação da Filosofia Anki & Vocabulário em Contexto de Kanjis (Apostila 2) ---');
+assert(KANJI_DATASET.length >= 20, 'Dataset contém catálogo de kanjis fundamentais da apostila');
+
+let allKanjisHaveContextWords = true;
+for (const k of KANJI_DATASET) {
+  if (!k.examples || k.examples.length === 0) {
+    allKanjisHaveContextWords = false;
+  }
+  for (const ex of k.examples) {
+    if (!ex.japanese || !ex.furigana || !ex.meaning) {
+      allKanjisHaveContextWords = false;
+    }
+  }
+}
+assert(allKanjisHaveContextWords, 'Todos os kanjis possuem vocabulário real em contexto (Filosofia Anki da Apostila 2)');
+
+const nichiKanji = KANJI_DATASET.find((k) => k.character === '日');
+assert(nichiKanji !== undefined, 'Kanji base 日 (dia/sol) presente no catálogo');
+const nichiWords = nichiKanji?.examples.map((ex) => ex.japanese) || [];
+assert(
+  nichiWords.some((w) => w.includes('日')),
+  'Kanji 日 possui palavras reais compostas para aprendizado sem memorização isolada'
+);
 
 // Resumo Final
 console.log('\n====================================================');
