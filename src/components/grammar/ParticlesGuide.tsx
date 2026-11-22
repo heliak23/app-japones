@@ -77,9 +77,9 @@ export const ParticlesGuide: React.FC = () => {
             <Sparkles className="w-3 h-3" />
             <span>Capítulos 3 & 5 da Apostila 1</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
             <span>Guia das 12 Partículas Essenciais</span>
-            <span className="font-jp text-lg text-slate-400 font-normal">助詞</span>
+            <span className="font-jp text-lg text-slate-400 font-normal whitespace-nowrap">助詞</span>
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
             As partículas agem como etiquetas anexadas às palavras que indicam a função de cada termo na frase.

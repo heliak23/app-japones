@@ -329,11 +329,11 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
               Alfabeto a Praticar
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 min-[380px]:grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setSelectedAlphabet('all')}
-                className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-colors ${
+                className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-colors whitespace-nowrap ${
                   selectedAlphabet === 'all'
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white dark:bg-[#182238] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50'
@@ -344,7 +344,7 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedAlphabet('hiragana')}
-                className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-colors ${
+                className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-colors whitespace-nowrap ${
                   selectedAlphabet === 'hiragana'
                     ? 'bg-brand-600 text-white border-brand-600'
                     : 'bg-white dark:bg-[#182238] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50'
@@ -355,7 +355,7 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedAlphabet('katakana')}
-                className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-colors ${
+                className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-colors whitespace-nowrap ${
                   selectedAlphabet === 'katakana'
                     ? 'bg-amber-600 text-white border-amber-600'
                     : 'bg-white dark:bg-[#182238] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50'
@@ -377,13 +377,14 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
                   key={count}
                   type="button"
                   onClick={() => setQuestionCount(count)}
-                  className={`py-2.5 px-2 rounded-xl text-xs font-bold border transition-colors ${
+                  className={`py-2.5 px-1.5 sm:px-2 rounded-xl text-xs font-bold border transition-colors whitespace-nowrap text-center ${
                     questionCount === count
                       ? 'bg-indigo-600 dark:bg-indigo-500 text-white border-indigo-600 dark:border-indigo-500'
                       : 'bg-white dark:bg-[#182238] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                   }`}
                 >
-                  {count} testes
+                  <span className="min-[380px]:hidden">{count}</span>
+                  <span className="hidden min-[380px]:inline">{count} testes</span>
                 </button>
               ))}
             </div>

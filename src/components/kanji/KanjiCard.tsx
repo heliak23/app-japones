@@ -24,7 +24,7 @@ export const KanjiCard: React.FC<KanjiCardProps> = ({
       onClick={() => onClick(kanji)}
       role="button"
       tabIndex={0}
-      className={`group relative flex flex-col justify-between bg-white dark:bg-[#131b2e] rounded-3xl p-5 border transition-all duration-200 cursor-pointer hover:shadow-md hover:-translate-y-0.5 select-none ${
+      className={`group relative flex flex-col justify-between bg-white dark:bg-[#131b2e] rounded-3xl p-4 sm:p-5 border transition-all duration-200 cursor-pointer hover:shadow-md hover:-translate-y-0.5 select-none ${
         isStudied
           ? 'border-emerald-300 dark:border-emerald-800/60 shadow-sm'
           : 'border-slate-200/90 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700'
@@ -32,12 +32,12 @@ export const KanjiCard: React.FC<KanjiCardProps> = ({
     >
       {/* Topo do Card: Radical, Traços e Check de Estudado */}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+        <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 whitespace-nowrap shrink-0">
             {kanji.strokes} traços
           </span>
           <span
-            className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/60 dark:border-amber-800/40"
+            className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/60 dark:border-amber-800/40 whitespace-nowrap shrink-0"
             title={`Radical principal: ${kanji.radical.name} (${kanji.radical.meaning})`}
           >
             Rad: {kanji.radical.symbol}

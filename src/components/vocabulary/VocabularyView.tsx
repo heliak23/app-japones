@@ -92,9 +92,9 @@ export const VocabularyView: React.FC = () => {
               <span>Baseado nas Apostilas 1 & 2 e Leituras Tadoku</span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-baseline gap-3 flex-wrap">
               <span>Banco de Palavras</span>
-              <span className="font-jp text-xl sm:text-2xl text-slate-400 dark:text-slate-500 font-normal">
+              <span className="font-jp text-xl sm:text-2xl text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">
                 単語
               </span>
             </h1>

@@ -41,9 +41,9 @@ export const ConjugatorView: React.FC = () => {
             <Sparkles className="w-3 h-3" />
             <span>Capítulos 4 & 6 da Apostila 1</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
             <span>Conjugador Visual de Verbos & Adjetivos</span>
-            <span className="font-jp text-lg text-slate-400 font-normal">活用の道</span>
+            <span className="font-jp text-lg text-slate-400 font-normal whitespace-nowrap">活用の道</span>
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
             Veja as regras de flexão passo a passo: a base da palavra permanece e a desinência muda conforme o tempo e polidez.
@@ -103,7 +103,7 @@ export const ConjugatorView: React.FC = () => {
           </div>
 
           {/* Seletor de Verbos */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
             {filteredVerbs.map((verb) => {
               const isSelected = selectedVerb.id === verb.id;
               return (
@@ -260,7 +260,7 @@ export const ConjugatorView: React.FC = () => {
           </div>
 
           {/* Seletor de Adjetivos */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
             {filteredAdjectives.map((adj) => {
               const isSelected = selectedAdj.id === adj.id;
               return (

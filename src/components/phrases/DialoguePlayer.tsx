@@ -140,9 +140,9 @@ export const DialoguePlayer: React.FC = () => {
             <Sparkles className="w-3 h-3" />
             <span>Diálogos Reais da Apostila 2</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
             <span>{selectedDialogue.title}</span>
-            <span className="font-jp text-lg text-slate-400 font-normal">
+            <span className="font-jp text-lg text-slate-400 font-normal whitespace-nowrap">
               {selectedDialogue.japaneseTitle}
             </span>
           </h2>

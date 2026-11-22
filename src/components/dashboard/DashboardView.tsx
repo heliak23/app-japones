@@ -258,165 +258,173 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <p className="text-xs text-slate-500 dark:text-slate-400">Os 3 sistemas complementares usados simultaneamente na língua japonesa</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6">
           
           {/* Card Hiragana */}
-          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-start justify-between">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/50 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800/60">
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <span className="inline-flex items-center text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap bg-rose-50 dark:bg-rose-950/50 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800/60">
                   Sistema Principal
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
-                  <span>Hiragana</span>
-                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">ひらがな</span>
-                </h3>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-50 dark:bg-brand-950/60 flex items-center justify-center text-2xl sm:text-3xl font-jp font-black text-brand-600 dark:text-brand-400 shrink-0">
+                  あ
+                </div>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-brand-50 dark:bg-brand-950/60 flex items-center justify-center text-3xl font-jp font-black text-brand-600 dark:text-brand-400">
-                あ
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
+                <span>Hiragana</span>
+                <span className="font-jp text-base sm:text-lg text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">ひらがな</span>
+              </h3>
+
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Utilizado para palavras nativas japonesas, partículas gramaticais e desinências de verbos. É o primeiro alfabeto ensinado no Japão.
+              </p>
+            </div>
+
+            <div>
+              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span>{hiraganaStudiedCount} de {totalHiragana} caracteres estudados</span>
+                <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((hiraganaStudiedCount / (totalHiragana || 1)) * 100)}%</span>
               </div>
-            </div>
+              <div className="mt-2">
+                <ProgressBar current={hiraganaStudiedCount} total={totalHiragana} color="brand" size="sm" showPercentage={false} />
+              </div>
 
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Utilizado para palavras nativas japonesas, partículas gramaticais e desinências de verbos. É o primeiro alfabeto ensinado no Japão.
-            </p>
-
-            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>{hiraganaStudiedCount} de {totalHiragana} caracteres estudados</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((hiraganaStudiedCount / (totalHiragana || 1)) * 100)}%</span>
-            </div>
-            <div className="mt-2">
-              <ProgressBar current={hiraganaStudiedCount} total={totalHiragana} color="brand" size="sm" showPercentage={false} />
-            </div>
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => onNavigate('hiragana')}
-                className="flex-1 py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
-              >
-                <span>Abrir Tabela e Flashcards</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => onNavigate('hiragana')}
+                  className="w-full py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
+                >
+                  <span>Abrir Tabela e Flashcards</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Card Katakana */}
-          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-start justify-between">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <span className="inline-flex items-center text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
                   Palavras Estrangeiras
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
-                  <span>Katakana</span>
-                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">カタカナ</span>
-                </h3>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/60 flex items-center justify-center text-2xl sm:text-3xl font-jp font-black text-amber-600 dark:text-amber-400 shrink-0">
+                  ア
+                </div>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-amber-50 dark:bg-amber-950/60 flex items-center justify-center text-3xl font-jp font-black text-amber-600 dark:text-amber-400">
-                ア
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
+                <span>Katakana</span>
+                <span className="font-jp text-base sm:text-lg text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">カタカナ</span>
+              </h3>
+
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Utilizado para palavras importadas de outras línguas (como <em>kohii</em> / café, <em>terebi</em> / TV), nomes estrangeiros, onomatopeias e ênfase visual.
+              </p>
+            </div>
+
+            <div>
+              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span>{katakanaStudiedCount} de {totalKatakana} caracteres estudados</span>
+                <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((katakanaStudiedCount / (totalKatakana || 1)) * 100)}%</span>
               </div>
-            </div>
+              <div className="mt-2">
+                <ProgressBar current={katakanaStudiedCount} total={totalKatakana} color="amber" size="sm" showPercentage={false} />
+              </div>
 
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Utilizado para palavras importadas de outras línguas (como <em>kohii</em> / café, <em>terebi</em> / TV), nomes estrangeiros, onomatopeias e ênfase visual.
-            </p>
-
-            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>{katakanaStudiedCount} de {totalKatakana} caracteres estudados</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((katakanaStudiedCount / (totalKatakana || 1)) * 100)}%</span>
-            </div>
-            <div className="mt-2">
-              <ProgressBar current={katakanaStudiedCount} total={totalKatakana} color="amber" size="sm" showPercentage={false} />
-            </div>
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => onNavigate('katakana')}
-                className="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
-              >
-                <span>Abrir Tabela e Flashcards</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => onNavigate('katakana')}
+                  className="w-full py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
+                >
+                  <span>Abrir Tabela e Flashcards</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Card Palavras & Vocabulário */}
-          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-start justify-between">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <span className="inline-flex items-center text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
                   Apostilas & Diálogos
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
-                  <span>Palavras</span>
-                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">単語</span>
-                </h3>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-2xl sm:text-3xl font-jp font-medium text-rose-600 dark:text-rose-400 shrink-0">
+                  語
+                </div>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-3xl font-jp font-medium text-rose-600 dark:text-rose-400">
-                語
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
+                <span>Palavras</span>
+                <span className="font-jp text-base sm:text-lg text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">単語</span>
+              </h3>
+
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Vocabulário contextualizado das apostilas e leituras Tadoku. Pratique com flashcards estilo Anki, áudio nativo e exercícios interativos.
+              </p>
+            </div>
+
+            <div>
+              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span>{vocabLearnedCount} de {totalVocabWords} palavras aprendidas</span>
+                <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((vocabLearnedCount / (totalVocabWords || 1)) * 100)}%</span>
               </div>
-            </div>
+              <div className="mt-2">
+                <ProgressBar current={vocabLearnedCount} total={totalVocabWords} color="brand" size="sm" showPercentage={false} />
+              </div>
 
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Vocabulário contextualizado das apostilas e leituras Tadoku. Pratique com flashcards estilo Anki, áudio nativo e exercícios interativos.
-            </p>
-
-            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>{vocabLearnedCount} de {totalVocabWords} palavras aprendidas</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((vocabLearnedCount / (totalVocabWords || 1)) * 100)}%</span>
-            </div>
-            <div className="mt-2">
-              <ProgressBar current={vocabLearnedCount} total={totalVocabWords} color="brand" size="sm" showPercentage={false} />
-            </div>
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => onNavigate('words')}
-                className="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
-              >
-                <span>Aprender & Treinar Palavras</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => onNavigate('words')}
+                  className="w-full py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
+                >
+                  <span>Aprender & Treinar Palavras</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Card Kanji */}
-          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-start justify-between">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <span className="inline-flex items-center text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
                   Ideogramas & Ideias
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
-                  <span>Kanji</span>
-                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">漢字</span>
-                </h3>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-2xl sm:text-3xl font-jp font-black text-rose-600 dark:text-rose-400 shrink-0">
+                  漢
+                </div>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-3xl font-jp font-black text-rose-600 dark:text-rose-400">
-                漢
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
+                <span>Kanji</span>
+                <span className="font-jp text-base sm:text-lg text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">漢字</span>
+              </h3>
+
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Ideogramas que representam ideias e conceitos. Aprenda através de peças de montar (radicais) e a fórmula Forma ➔ Som ➔ Significado.
+              </p>
+            </div>
+
+            <div>
+              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span>{kanjiStudiedCount} de {totalKanjis} ideogramas dominados</span>
+                <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((kanjiStudiedCount / (totalKanjis || 1)) * 100)}%</span>
               </div>
-            </div>
+              <div className="mt-2">
+                <ProgressBar current={kanjiStudiedCount} total={totalKanjis} color="brand" size="sm" showPercentage={false} />
+              </div>
 
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Ideogramas que representam ideias e conceitos. Aprenda através de peças de montar (radicais) e a fórmula Forma ➔ Som ➔ Significado.
-            </p>
-
-            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>{kanjiStudiedCount} de {totalKanjis} ideogramas dominados</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((kanjiStudiedCount / (totalKanjis || 1)) * 100)}%</span>
-            </div>
-            <div className="mt-2">
-              <ProgressBar current={kanjiStudiedCount} total={totalKanjis} color="brand" size="sm" showPercentage={false} />
-            </div>
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => onNavigate('kanji')}
-                className="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
-              >
-                <span>Explorar Kanjis & Radicais</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => onNavigate('kanji')}
+                  className="w-full py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
+                >
+                  <span>Explorar Kanjis & Radicais</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -430,9 +438,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Nova Funcionalidade • Do Alfabeto à Conversação</span>
               </div>
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
                 <span>Trilha de Frases Passo a Passo</span>
-                <span className="font-jp text-lg text-emerald-600 dark:text-emerald-400 font-normal">文の道</span>
+                <span className="font-jp text-lg text-emerald-600 dark:text-emerald-400 font-normal whitespace-nowrap">文の道</span>
               </h3>
               <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                 Aprenda a pensar em japonês como blocos de LEGO! Descubra a ordem SOV, as partículas essenciais (は, が, を, の, と, や) e o segredo de です/だ e verbos na prática com dupla tradução (literal vs natural).
@@ -465,9 +473,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>Metodologia Japonesa • Leitura Extensiva</span>
               </div>
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
                 <span>Biblioteca de Leituras Tadoku</span>
-                <span className="font-jp text-lg text-teal-600 dark:text-teal-400 font-normal">多読ライブラリ</span>
+                <span className="font-jp text-lg text-teal-600 dark:text-teal-400 font-normal whitespace-nowrap">多読ライブラリ</span>
               </h3>
               <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                 Pratique sua leitura com histórias ilustradas graduadas (nível N5), áudio nativo japonês e furigana dinâmico. Comece com a clássica fábula de Esopo <em>キツネとツル (A Raposa e o Grou)</em>!
@@ -500,9 +508,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <PenTool className="w-3.5 h-3.5" />
                 <span>Nova Funcionalidade • Memória Motora & Caligrafia</span>
               </div>
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-2 flex-wrap">
                 <span>Estúdio de Escrita & Caligrafia Japonesa</span>
-                <span className="font-jp text-lg text-rose-600 dark:text-rose-400 font-normal">書き方</span>
+                <span className="font-jp text-lg text-rose-600 dark:text-rose-400 font-normal whitespace-nowrap">書き方</span>
               </h3>
               <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                 Desenhe por cima das letras em japonês com opacidade translúcida de guia e a tradicional grade de caligrafia (Genkōyōshi). Pratique traçado com pincel sumi-e, ajuste a espessura, desfaça traços e receba avaliação automática de precisão para Hiragana, Katakana e Kanji!

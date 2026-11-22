@@ -113,8 +113,8 @@ export const PhraseStepViewer: React.FC<PhraseStepViewerProps> = ({
           </span>
         </div>
 
-        {/* Barra de Progresso Segmentada */}
-        <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
+        {/* Barra de Progresso Segmentada Flexível */}
+        <div className="flex gap-1.5 sm:gap-2">
           {lesson.steps.map((step, idx) => (
             <button
               key={step.stepNumber}
@@ -122,7 +122,7 @@ export const PhraseStepViewer: React.FC<PhraseStepViewerProps> = ({
                 setCurrentStepIndex(idx);
                 setSelectedVariationIndex(null);
               }}
-              className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ${
+              className={`flex-1 h-2 sm:h-2.5 rounded-full transition-all duration-300 ${
                 idx === currentStepIndex
                   ? 'bg-amber-500 shadow-md shadow-amber-500/20 ring-2 ring-amber-400/50'
                   : idx < currentStepIndex

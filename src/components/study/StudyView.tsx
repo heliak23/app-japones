@@ -96,9 +96,9 @@ export const StudyView: React.FC<StudyViewProps> = ({
               <span>{isHiragana ? 'Alfabeto Nativo' : 'Alfabeto de Estrangeirismos'}</span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 sm:gap-3">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-baseline gap-2 sm:gap-3 flex-wrap">
               <span>{isHiragana ? 'Hiragana' : 'Katakana'}</span>
-              <span className="font-jp text-xl sm:text-2xl text-slate-400 dark:text-slate-500 font-normal">
+              <span className="font-jp text-xl sm:text-2xl text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">
                 {isHiragana ? 'ひらがな' : 'カタカナ'}
               </span>
             </h1>

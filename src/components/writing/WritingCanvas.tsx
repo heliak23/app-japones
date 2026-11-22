@@ -355,7 +355,7 @@ export const WritingCanvas: React.FC<WritingCanvasProps> = ({
       {/* Área Principal do Canvas com Caractere em Guia d'Água */}
       <div
         ref={containerRef}
-        className="relative w-[300px] h-[300px] sm:w-[360px] sm:h-[360px] bg-white dark:bg-[#0c1220] rounded-3xl shadow-lg border-2 border-slate-300 dark:border-slate-700 overflow-hidden select-none transition-colors"
+        className="relative max-w-full aspect-square w-[280px] h-[280px] min-[360px]:w-[320px] min-[360px]:h-[320px] sm:w-[360px] sm:h-[360px] bg-white dark:bg-[#0c1220] rounded-3xl shadow-lg border-2 border-slate-300 dark:border-slate-700 overflow-hidden select-none transition-colors"
       >
         {/* Camada 1: Grade Tradicional Japonesa (田 e Diagonais) */}
         {showGrid && (

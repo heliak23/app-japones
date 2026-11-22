@@ -555,11 +555,11 @@ export const AlphabetTable: React.FC<AlphabetTableProps> = ({
               {isHiragana ? 'っ' : 'ッ'}
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h4 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
                   Sokuon (促音) • O "Tsu Pequeno" e a Pausa de Ar
                 </h4>
-                <span className="text-[10px] font-bold bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">
                   Guia Prático
                 </span>
               </div>
@@ -635,11 +635,11 @@ export const AlphabetTable: React.FC<AlphabetTableProps> = ({
                 ー
               </div>
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <h4 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
                     Chōonpu (ー) • O Sinal de Prolongamento do Katakana
                   </h4>
-                  <span className="text-[10px] font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">
                     Essencial
                   </span>
                 </div>

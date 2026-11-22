@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Navegação Desktop Responsiva */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 shrink-0">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 shrink-0 max-w-full overflow-x-auto scrollbar-none">
             <button
               onClick={() => handleTabChange('dashboard')}
               className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${

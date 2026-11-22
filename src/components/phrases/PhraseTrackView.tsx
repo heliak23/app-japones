@@ -92,9 +92,9 @@ export const PhraseTrackView: React.FC = () => {
               <span>Inspirado no Método Desvendando a Língua Japonesa</span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-baseline gap-3 flex-wrap">
               <span>Trilha de Frases</span>
-              <span className="font-jp text-xl sm:text-2xl text-slate-400 dark:text-slate-500 font-normal">
+              <span className="font-jp text-xl sm:text-2xl text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">
                 文の道
               </span>
             </h1>
@@ -364,7 +364,7 @@ export const PhraseTrackView: React.FC = () => {
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                          <span className="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                             Lição #{lesson.lessonOrder} • {lesson.level}
                           </span>
 

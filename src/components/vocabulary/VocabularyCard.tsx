@@ -37,10 +37,10 @@ export const VocabularyCard: React.FC<VocabularyCardProps> = ({
       {/* Topo do Card: Categoria, Origem e Ações Rápidas */}
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap shrink-0">
             {word.categoryLabel}
           </span>
-          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/60 dark:border-brand-800/60 truncate max-w-[140px]">
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/60 dark:border-brand-800/60 truncate max-w-[140px] shrink-0">
             {word.source.split('(')[0].trim()}
           </span>
         </div>

@@ -361,24 +361,27 @@ export const VocabularyQuizView: React.FC<VocabularyQuizViewProps> = ({
         </div>
 
         {/* Cards de Métricas */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800">
-            <span className="text-[11px] font-bold text-slate-400 uppercase block">Acertos</span>
-            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800 text-center">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase block whitespace-nowrap">Acertos</span>
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400">
               {score}
             </span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800">
-            <span className="text-[11px] font-bold text-slate-400 uppercase block">Erros</span>
-            <span className="text-2xl font-black text-rose-600 dark:text-rose-400">
+          <div className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800 text-center">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase block whitespace-nowrap">Erros</span>
+            <span className="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400">
               {questions.length - score}
             </span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800">
-            <span className="text-[11px] font-bold text-slate-400 uppercase block">Aproveitamento</span>
-            <span className="text-2xl font-black text-brand-600 dark:text-brand-400">
+          <div className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#131b2e] border border-slate-200 dark:border-slate-800 text-center">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase block whitespace-nowrap">
+              <span className="min-[400px]:hidden">Taxa</span>
+              <span className="hidden min-[400px]:inline">Aproveitamento</span>
+            </span>
+            <span className="text-xl sm:text-2xl font-black text-brand-600 dark:text-brand-400">
               {accuracy}%
             </span>
           </div>

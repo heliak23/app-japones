@@ -131,4 +131,17 @@
 
 .font-jp {
   font-family: 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: strict;
+}
+
+/* Prevenção de quebra indevida de palavras e caracteres compostos */
+.keep-words {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.text-balance {
+  text-wrap: balance;
 }
