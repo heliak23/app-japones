@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   BookOpen,
   Info,
+  PenTool,
 } from 'lucide-react';
 
 interface ExerciseSelectorProps {
@@ -25,6 +26,7 @@ interface ExerciseSelectorProps {
   initialType?: ExerciseType;
   initialAlphabet?: 'all' | AlphabetType;
   onNavigateToStudy?: (alphabet: 'hiragana' | 'katakana') => void;
+  onNavigateToWriting?: () => void;
 }
 
 interface ExerciseOption {
@@ -85,6 +87,7 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
   initialType = 'recognition',
   initialAlphabet = 'all',
   onNavigateToStudy,
+  onNavigateToWriting,
 }) => {
   const [selectedType, setSelectedType] = useState<ExerciseType>(initialType);
   const [selectedAlphabet, setSelectedAlphabet] = useState<'all' | AlphabetType>(initialAlphabet);
@@ -129,6 +132,37 @@ export const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({
           Pratique com feedback imediato em português, correções inteligentes e acompanhamento do seu progresso.
         </p>
       </div>
+
+      {/* Banner de Acesso Rápido ao Estúdio de Escrita & Traçado */}
+      {onNavigateToWriting && (
+        <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-rose-50 via-pink-50/50 to-white dark:from-rose-950/40 dark:via-[#131b2e] dark:to-slate-900 border border-rose-200 dark:border-rose-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-2xl bg-gradient-to-tr from-rose-500 to-brand-600 text-white shrink-0 shadow-sm">
+              <PenTool className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                  Quer praticar desenhar os caracteres japoneses?
+                </h3>
+                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">
+                  Novo
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">
+                Pratique o traçado à mão livre sobre a guia com baixa opacidade para <strong>Hiragana</strong>, <strong>Katakana</strong> e <strong>Kanji</strong>.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onNavigateToWriting}
+            className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-brand-600 hover:from-rose-500 hover:to-brand-500 shadow-xs transition-all shrink-0 hover:scale-105 active:scale-95"
+          >
+            Abrir Estúdio de Escrita ➔
+          </button>
+        </div>
+      )}
 
       {/* Grid de Escolha das 5 Modalidades */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

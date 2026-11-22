@@ -17,6 +17,7 @@ interface PracticeContainerProps {
   onSaveSummary: (summary: ExerciseSessionSummary) => void;
   onRecordAnswer: (characterId: string, isCorrect: boolean) => void;
   onNavigateToStudy?: (alphabet: 'hiragana' | 'katakana') => void;
+  onNavigateToWriting?: () => void;
 }
 
 type PracticeState = 'selecting' | 'running' | 'summary';
@@ -30,6 +31,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
   onSaveSummary,
   onRecordAnswer,
   onNavigateToStudy,
+  onNavigateToWriting,
 }) => {
   // Somente inicia rodando direto se autoStart for explicitamente true.
   // Caso contrário, o usuário sempre vê a tela para escolher a modalidade de exercício.
@@ -195,6 +197,7 @@ export const PracticeContainer: React.FC<PracticeContainerProps> = ({
           initialType={initialType || lastConfig.type}
           initialAlphabet={initialAlphabet || lastConfig.alphabet}
           onNavigateToStudy={onNavigateToStudy}
+          onNavigateToWriting={onNavigateToWriting}
         />
       )}
 

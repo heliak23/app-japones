@@ -19,15 +19,19 @@ import {
   HelpCircle,
   Flame,
   Layers,
+  PenTool,
 } from 'lucide-react';
 import { PhraseStorageService } from '../../services/phraseStorageService';
 import { PHRASE_LESSONS } from '../../data/phraseTracks';
 import { KanjiStorageService } from '../../services/kanjiStorageService';
 import { KANJI_DATASET } from '../../data/kanjiDataset';
+import { WritingStorageService } from '../../services/writingStorageService';
+import type { WritingCharacterType } from '../../types/writing';
 
 interface DashboardViewProps {
   onNavigate: (tab: ActiveTab) => void;
   onStartExercise?: (type?: string) => void;
+  onOpenWriting?: (type?: WritingCharacterType, charId?: string) => void;
   learningState: UserLearningState;
   sessionMetrics: CurrentSessionMetrics;
 }
@@ -66,6 +70,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const kanjiProgress = KanjiStorageService.getProgress();
   const kanjiStudiedCount = kanjiProgress.studiedKanjiIds.length;
   const totalKanjis = KANJI_DATASET.length;
+
+  const writingStats = WritingStorageService.getStats();
 
   const totalExercises = learningState.totalExercisesCompleted;
   const globalAccuracy =
@@ -131,6 +137,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             >
               <Layers className="w-4 h-4 text-emerald-200" />
               <span>Trilha de Frases</span>
+              <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-white/20">Novo</span>
+            </button>
+
+            <button
+              onClick={() => onNavigate('writing')}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-brand-600 hover:from-rose-500 hover:to-brand-500 text-white font-bold text-sm shadow-md shadow-brand-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <PenTool className="w-4 h-4" />
+              <span>Praticar Escrita & Traçado</span>
               <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-white/20">Novo</span>
             </button>
 
@@ -425,6 +440,41 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-sm shadow-md shadow-teal-600/20 transition-all hover:scale-105 active:scale-95"
               >
                 <span>Abrir Biblioteca</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Banner Card Especial: Estúdio de Escrita & Traçado */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-rose-50 via-pink-50/50 to-white dark:from-rose-950 dark:via-[#131b2e] dark:to-slate-900 border border-rose-200 dark:border-rose-500/30 rounded-3xl p-6 sm:p-8 shadow-sm dark:shadow-md transition-colors">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100/80 dark:bg-rose-500/20 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-500/30">
+                <PenTool className="w-3.5 h-3.5" />
+                <span>Nova Funcionalidade • Memória Motora & Caligrafia</span>
+              </div>
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span>Estúdio de Escrita & Caligrafia Japonesa</span>
+                <span className="font-jp text-lg text-rose-600 dark:text-rose-400 font-normal">書き方</span>
+              </h3>
+              <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                Desenhe por cima das letras em japonês com opacidade translúcida de guia e a tradicional grade de caligrafia (Genkōyōshi). Pratique traçado com pincel sumi-e, ajuste a espessura, desfaça traços e receba avaliação automática de precisão para Hiragana, Katakana e Kanji!
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-3 min-w-[220px]">
+              <div className="text-left lg:text-right">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Total Praticado:</span>
+                <p className="text-lg font-black text-rose-600 dark:text-rose-400">
+                  {writingStats.totalPracticed} caracteres concluídos
+                </p>
+              </div>
+              <button
+                onClick={() => onNavigate('writing')}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-brand-600 hover:from-rose-500 hover:to-brand-500 text-white font-bold text-sm shadow-md shadow-rose-600/20 transition-all hover:scale-105 active:scale-95"
+              >
+                <span>Abrir Estúdio de Escrita</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { KanaCharacter } from '../../types/kana';
-import { Volume2, VolumeX, X, ChevronLeft, ChevronRight, CheckCircle2, Lightbulb } from 'lucide-react';
+import { Volume2, VolumeX, X, ChevronLeft, ChevronRight, CheckCircle2, Lightbulb, PenTool } from 'lucide-react';
+import { WritingPracticeModal } from '../writing/WritingPracticeModal';
 
 interface CharacterDetailModalProps {
   character: KanaCharacter | null;
@@ -29,6 +30,8 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
   onPlayAudio,
   isPlaying = false,
 }) => {
+  const [writingModalOpen, setWritingModalOpen] = useState(false);
+
   // Marca como estudado automaticamente ao abrir um novo caractere para estudo
   useEffect(() => {
     if (character && !isStudied) {
@@ -116,11 +119,11 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
               </span>
             </div>
 
-            {/* Botão de Áudio com Atalho */}
-            <div className="mt-4 flex items-center justify-center gap-3">
+            {/* Botão de Áudio com Atalho e Botão de Prática de Escrita */}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
               <button
                 onClick={() => onPlayAudio(character.character)}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm transition-all shadow-sm ${
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all shadow-xs ${
                   isPlaying
                     ? 'bg-brand-600 text-white animate-pulse'
                     : 'bg-slate-100 dark:bg-[#182238] hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700'
@@ -131,6 +134,15 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
                 <kbd className="hidden sm:inline-block text-[10px] bg-white/70 dark:bg-black/40 px-1.5 py-0.5 rounded font-mono text-slate-500 dark:text-slate-400">
                   Espaço
                 </kbd>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setWritingModalOpen(true)}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-rose-600 to-brand-600 hover:from-rose-500 hover:to-brand-500 shadow-sm transition-all hover:scale-105 active:scale-95"
+              >
+                <PenTool className="w-4 h-4" />
+                <span>Praticar Escrita</span>
               </button>
             </div>
           </div>
@@ -184,6 +196,30 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Modal de Prática de Escrita do Caractere Atual */}
+      <WritingPracticeModal
+        isOpen={writingModalOpen}
+        onClose={() => setWritingModalOpen(false)}
+        characterItem={
+          character
+            ? {
+                id: character.id,
+                type: character.alphabet,
+                character: character.character,
+                romaji: character.romaji,
+                ptPronunciation: character.ptPronunciation,
+                categoryLabel: character.alphabet === 'hiragana' ? 'Hiragana' : 'Katakana',
+                mnemonic: character.mnemonicNote,
+                strokes: character.character.length,
+              }
+            : null
+        }
+        onNext={onNext}
+        onPrev={onPrev}
+        hasNext={hasNext}
+        hasPrev={hasPrev}
+      />
     </div>
   );
 };

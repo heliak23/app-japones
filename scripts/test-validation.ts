@@ -11,6 +11,7 @@ import { WanakanaService } from '../src/services/wanakanaService';
 import { ExerciseGenerator } from '../src/services/exerciseGenerator';
 import { StorageService } from '../src/services/storageService';
 import { StreakService } from '../src/services/streakService';
+import { WritingStorageService } from '../src/services/writingStorageService';
 import * as wanakana from 'wanakana';
 
 // Mock simples para LocalStorage/SessionStorage em ambiente Node de teste se não existirem
@@ -687,6 +688,32 @@ assert(allPagesValid, 'Todas as páginas possuem ilustrações, texto com fragme
 
 const convitePage = kitsuneStory?.pages.find((p) => p.rawJapanese.includes('食べませんか'));
 assert(convitePage !== undefined && convitePage.grammarTip?.pattern.includes('～ませんか'), 'Página de convite amigável possui nota gramatical de ～ませんか');
+
+// --- 20. Validação do Estúdio de Escrita & Traçado (Hiragana, Katakana e Kanji) ---
+console.log('\n--- 20. Validação do Estúdio de Escrita & Traçado (Hiragana, Katakana e Kanji) ---');
+
+// Teste de gravação e consulta no WritingStorageService
+WritingStorageService.recordPractice('hira_a', 'あ', 'hiragana', 95);
+assert(WritingStorageService.isCharacterPracticed('hira_a') === true, 'Caractere Hiragana "あ" marcado como praticado');
+assert(WritingStorageService.isCharacterPracticed('hira_i') === false, 'Caractere não praticado retorna false');
+
+WritingStorageService.recordPractice('kata_ka', 'カ', 'katakana', 88);
+assert(WritingStorageService.isCharacterPracticed('kata_ka') === true, 'Caractere Katakana "カ" marcado como praticado');
+
+WritingStorageService.recordPractice('kanji_ai', '愛', 'kanji', 92);
+assert(WritingStorageService.isCharacterPracticed('kanji_ai') === true, 'Kanji "愛" marcado como praticado');
+
+const writingStats = WritingStorageService.getStats();
+assert(writingStats.totalPracticed === 3, 'Total de caracteres praticados contabilizado corretamente (3)');
+assert(writingStats.hiraganaPracticed === 1, 'Hiraganas praticados contabilizados (1)');
+assert(writingStats.katakanaPracticed === 1, 'Katakanas praticados contabilizados (1)');
+assert(writingStats.kanjiPracticed === 1, 'Kanjis praticados contabilizados (1)');
+assert(writingStats.averageScore >= 90, 'Média de precisão calculada corretamente');
+
+// Validação dos catálogos para escrita
+assert(HIRAGANA_CHARACTERS.every((c) => Boolean(c.character && c.id && c.romaji)), 'Todos os Hiraganas são aptos para o estúdio de escrita');
+assert(KATAKANA_CHARACTERS.every((c) => Boolean(c.character && c.id && c.romaji)), 'Todos os Katakanas são aptos para o estúdio de escrita');
+assert(KANJI_DATASET.every((k) => Boolean(k.character && k.id && k.meaning && k.strokes)), 'Todos os Kanjis são aptos para o estúdio de escrita com contagem de traços');
 
 // Resumo Final
 console.log('\n====================================================');

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { KanjiCharacter } from '../../types/kanji';
 import {
   X,
@@ -11,7 +11,9 @@ import {
   ArrowRight,
   ArrowLeft,
   BookOpen,
+  PenTool,
 } from 'lucide-react';
+import { WritingPracticeModal } from '../writing/WritingPracticeModal';
 
 interface KanjiDetailModalProps {
   kanji: KanjiCharacter | null;
@@ -40,6 +42,8 @@ export const KanjiDetailModal: React.FC<KanjiDetailModalProps> = ({
   hasNext = false,
   hasPrev = false,
 }) => {
+  const [writingModalOpen, setWritingModalOpen] = useState(false);
+
   // Fecha no Esc
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -120,6 +124,14 @@ export const KanjiDetailModal: React.FC<KanjiDetailModalProps> = ({
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mt-2">
                 1. Forma (Desenho)
               </span>
+              <button
+                type="button"
+                onClick={() => setWritingModalOpen(true)}
+                className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900 border border-rose-200 dark:border-rose-800 transition-all shadow-xs"
+              >
+                <PenTool className="w-3.5 h-3.5" />
+                <span>Praticar Traçado</span>
+              </button>
             </div>
 
             <div className="hidden sm:block text-slate-300 dark:text-slate-600 font-bold text-xl">➔</div>
@@ -280,6 +292,32 @@ export const KanjiDetailModal: React.FC<KanjiDetailModalProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Modal de Prática de Traçado do Kanji Atual */}
+      <WritingPracticeModal
+        isOpen={writingModalOpen}
+        onClose={() => setWritingModalOpen(false)}
+        characterItem={
+          kanji
+            ? {
+                id: kanji.id,
+                type: 'kanji',
+                character: kanji.character,
+                romaji: kanji.onyomi[0] || kanji.kunyomi[0] || '',
+                meaning: kanji.meaning,
+                strokes: kanji.strokes,
+                categoryLabel: kanji.categoryLabel,
+                mnemonic: kanji.mnemonicStory,
+                onyomi: kanji.onyomi,
+                kunyomi: kanji.kunyomi,
+              }
+            : null
+        }
+        onNext={onNext}
+        onPrev={onPrev}
+        hasNext={hasNext}
+        hasPrev={hasPrev}
+      />
     </div>
   );
 };

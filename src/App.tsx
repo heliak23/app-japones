@@ -7,9 +7,11 @@ import { PracticeContainer } from './components/practice/PracticeContainer';
 import { ReviewView } from './components/review/ReviewView';
 import { PhraseTrackView } from './components/phrases/PhraseTrackView';
 import { KanjiView } from './components/kanji/KanjiView';
+import { WritingPracticeView } from './components/writing/WritingPracticeView';
 import { TadokuReaderView } from './components/stories/TadokuReaderView';
 import type { ExerciseType } from './types/exercise';
 import type { AlphabetType, KanaCharacter } from './types/kana';
+import type { WritingCharacterType } from './types/writing';
 import { KanaDataset } from './data/kanaDataset';
 import { useLearningProgress } from './hooks/useLearningProgress';
 import { useAuth } from './hooks/useAuth';
@@ -26,6 +28,8 @@ export function App() {
   const [targetReviewChars, setTargetReviewChars] = useState<KanaCharacter[] | undefined>(undefined);
   const [practiceAutoStart, setPracticeAutoStart] = useState<boolean>(false);
   const [practiceSessionKey, setPracticeSessionKey] = useState<number>(0);
+  const [selectedWritingType, setSelectedWritingType] = useState<WritingCharacterType | undefined>(undefined);
+  const [selectedWritingCharId, setSelectedWritingCharId] = useState<string | undefined>(undefined);
   
   const {
     learningState,
@@ -85,8 +89,18 @@ export function App() {
       setSelectedPracticeAlphabet(undefined);
       setTargetReviewChars(undefined);
       setPracticeAutoStart(false);
+      if (tab !== 'writing') {
+        setSelectedWritingType(undefined);
+        setSelectedWritingCharId(undefined);
+      }
       setActiveTab(tab);
     }
+  };
+
+  const handleOpenWriting = (type?: WritingCharacterType, charId?: string) => {
+    setSelectedWritingType(type);
+    setSelectedWritingCharId(charId);
+    setActiveTab('writing');
   };
 
   const handleStartTargetedReview = (characterIds: string[]) => {
@@ -120,6 +134,7 @@ export function App() {
           <DashboardView
             onNavigate={handleSelectTab}
             onStartExercise={(type) => handleOpenPractice({ type: type as ExerciseType })}
+            onOpenWriting={handleOpenWriting}
             learningState={learningState}
             sessionMetrics={sessionMetrics}
           />
@@ -153,6 +168,13 @@ export function App() {
           <KanjiView />
         )}
 
+        {activeTab === 'writing' && (
+          <WritingPracticeView
+            initialType={selectedWritingType || 'hiragana'}
+            initialCharacterId={selectedWritingCharId}
+          />
+        )}
+
         {activeTab === 'phrases' && (
           <PhraseTrackView />
         )}
@@ -172,6 +194,7 @@ export function App() {
             onSaveSummary={saveSummary}
             onRecordAnswer={recordAnswer}
             onNavigateToStudy={(alphabet) => handleSelectTab(alphabet)}
+            onNavigateToWriting={() => handleOpenWriting()}
           />
         )}
 

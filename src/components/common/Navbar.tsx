@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Flame, Layers } from 'lucide-react';
+import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Flame, Layers, PenTool } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';
 import { AuthModal } from '../auth/AuthModal';
 import type { StreakInfo } from '../../types/progress';
 
-export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'kanji' | 'phrases' | 'stories' | 'practice' | 'review';
+export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'kanji' | 'writing' | 'phrases' | 'stories' | 'practice' | 'review';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -119,6 +119,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1 py-0.5 rounded shrink-0 leading-none">漢</span>
               <span>Kanji</span>
+            </button>
+
+            <button
+              onClick={() => handleTabChange('writing')}
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+                activeTab === 'writing'
+                  ? 'bg-gradient-to-r from-rose-600 to-brand-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
+              }`}
+            >
+              <PenTool className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-rose-400 shrink-0" />
+              <span>Escrita</span>
             </button>
 
             <button
@@ -295,6 +307,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <span className="font-jp font-bold text-base bg-black/10 dark:bg-black/30 px-2 py-0.5 rounded">漢</span>
               <span>Kanjis & Radicais (Lego)</span>
+            </button>
+
+            <button
+              onClick={() => handleTabChange('writing')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                activeTab === 'writing'
+                  ? 'bg-gradient-to-r from-rose-600 to-brand-600 text-white'
+                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <PenTool className="w-5 h-5 text-rose-500" />
+                <span>Prática de Escrita & Traçado</span>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
+                Novo
+              </span>
             </button>
 
             <button
