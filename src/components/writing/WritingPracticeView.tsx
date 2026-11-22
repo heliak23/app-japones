@@ -263,7 +263,7 @@ export const WritingPracticeView: React.FC<WritingPracticeViewProps> = ({
                     : 'bg-white dark:bg-[#131b2e] hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800'
                 }`}
               >
-                <span className="font-jp text-lg sm:text-xl font-black leading-none">
+                <span className="font-jp text-lg sm:text-xl font-medium leading-none">
                   {item.character}
                 </span>
                 <span className="text-[10px] font-bold opacity-80 mt-1 truncate max-w-[42px]">

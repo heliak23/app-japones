@@ -12,6 +12,8 @@ import { ExerciseGenerator } from '../src/services/exerciseGenerator';
 import { StorageService } from '../src/services/storageService';
 import { StreakService } from '../src/services/streakService';
 import { WritingStorageService } from '../src/services/writingStorageService';
+import { VOCABULARY_DATASET, VOCABULARY_CATEGORIES } from '../src/data/vocabularyData';
+import { VocabularyStorageService } from '../src/services/vocabularyStorageService';
 import * as wanakana from 'wanakana';
 
 // Mock simples para LocalStorage/SessionStorage em ambiente Node de teste se não existirem
@@ -714,6 +716,63 @@ assert(writingStats.averageScore >= 90, 'Média de precisão calculada corretame
 assert(HIRAGANA_CHARACTERS.every((c) => Boolean(c.character && c.id && c.romaji)), 'Todos os Hiraganas são aptos para o estúdio de escrita');
 assert(KATAKANA_CHARACTERS.every((c) => Boolean(c.character && c.id && c.romaji)), 'Todos os Katakanas são aptos para o estúdio de escrita');
 assert(KANJI_DATASET.every((k) => Boolean(k.character && k.id && k.meaning && k.strokes)), 'Todos os Kanjis são aptos para o estúdio de escrita com contagem de traços');
+
+// ==========================================
+// 21. Validação da Seção de Palavras & Vocabulário (Apostilas 1 & 2)
+// ==========================================
+console.log('\n--- 21. Validação do Banco de Palavras, Vocabulário e Exercícios (Apostilas 1 & 2) ---');
+
+assert(VOCABULARY_DATASET.length >= 30, 'Banco de palavras deve conter no mínimo 30 palavras essenciais extraídas dos materiais');
+assert(VOCABULARY_CATEGORIES.length >= 8, 'Deve conter pelo menos 8 categorias temáticas para organização didática');
+
+// Validação de unicidade e campos obrigatórios
+const wordIds = new Set<string>();
+let allWordsValid = true;
+VOCABULARY_DATASET.forEach((w) => {
+  if (!w.id || wordIds.has(w.id)) allWordsValid = false;
+  wordIds.add(w.id);
+  if (!w.kanji || !w.kana || !w.romaji || !w.meaning || !w.category || !w.exampleSentence) {
+    allWordsValid = false;
+  }
+  if (!w.exampleSentence.japanese || !w.exampleSentence.meaning || !w.exampleSentence.audioText) {
+    allWordsValid = false;
+  }
+});
+assert(allWordsValid, 'Todas as palavras possuem IDs exclusivos, campos obrigatórios e frases de exemplo completas');
+
+// Verificação de palavras-chave canônicas dos materiais
+const hasKonnichiwa = VOCABULARY_DATASET.some((w) => w.id === 'word_konnichiwa' && w.kanji === 'こんにちは');
+const hasHajimemashite = VOCABULARY_DATASET.some((w) => w.id === 'word_hajimemashite' && w.meaning.includes('Prazer'));
+const hasGakkou = VOCABULARY_DATASET.some((w) => w.id === 'word_gakkou' && w.kana === 'がっこう');
+const hasTaberu = VOCABULARY_DATASET.some((w) => w.id === 'word_taberu' && w.meaning === 'Comer');
+const hasKore = VOCABULARY_DATASET.some((w) => w.id === 'word_kore' && w.category === 'kosoado');
+const hasApaato = VOCABULARY_DATASET.some((w) => w.id === 'word_apaato' && w.category === 'katakana');
+
+assert(hasKonnichiwa, 'Saudação "こんにちは" da Apostila 2 cadastrada com sucesso');
+assert(hasHajimemashite, 'Expressão "初めまして" da Apostila 2 cadastrada com sucesso');
+assert(hasGakkou, 'Substantivo de pausa "学校" (gakkou) da Apostila 1 cadastrado');
+assert(hasTaberu, 'Verbo Ichidan "食べる" (comer) da Apostila 1 cadastrado');
+assert(hasKore, 'Demonstrativo "これ" do sistema Ko-So-A-Do cadastrado');
+assert(hasApaato, 'Palavra em Katakana "アパート" com prolongamento cadastrada');
+
+// Testes de persistência no VocabularyStorageService
+VocabularyStorageService.resetProgress();
+assert(VocabularyStorageService.isWordLearned('word_konnichiwa') === false, 'Palavra não aprendida inicialmente');
+
+const updatedLearned = VocabularyStorageService.toggleLearned('word_konnichiwa');
+assert(updatedLearned.learnedWordIds.includes('word_konnichiwa'), 'Palavra marcada como aprendida com sucesso');
+assert(VocabularyStorageService.isWordLearned('word_konnichiwa') === true, 'isWordLearned retorna true após marcação');
+
+const untoggledLearned = VocabularyStorageService.toggleLearned('word_konnichiwa');
+assert(!untoggledLearned.learnedWordIds.includes('word_konnichiwa'), 'toggleLearned desmarca palavra previamente aprendida');
+
+const updatedBookmarked = VocabularyStorageService.toggleBookmarked('word_taberu');
+assert(updatedBookmarked.bookmarkedWordIds.includes('word_taberu'), 'Palavra favoritada com sucesso');
+
+const quizSaved = VocabularyStorageService.recordQuizResult(8, 10);
+assert(quizSaved.totalQuizzesCompleted === 1, 'Total de treinos de vocabulário contabilizado (1)');
+assert(quizSaved.totalCorrect === 8, 'Total de acertos de vocabulário contabilizado (8)');
+assert(quizSaved.totalQuestions === 10, 'Total de questões de vocabulário contabilizado (10)');
 
 // Resumo Final
 console.log('\n====================================================');

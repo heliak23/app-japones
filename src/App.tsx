@@ -9,6 +9,7 @@ import { PhraseTrackView } from './components/phrases/PhraseTrackView';
 import { KanjiView } from './components/kanji/KanjiView';
 import { WritingPracticeView } from './components/writing/WritingPracticeView';
 import { TadokuReaderView } from './components/stories/TadokuReaderView';
+import { VocabularyView } from './components/vocabulary/VocabularyView';
 import type { ExerciseType } from './types/exercise';
 import type { AlphabetType, KanaCharacter } from './types/kana';
 import type { WritingCharacterType } from './types/writing';
@@ -162,6 +163,10 @@ export function App() {
             onSetMultipleStudied={setMultipleStudied}
             onNavigateToPractice={() => handleOpenPractice({ alphabet: 'katakana' })}
           />
+        )}
+
+        {activeTab === 'words' && (
+          <VocabularyView />
         )}
 
         {activeTab === 'kanji' && (

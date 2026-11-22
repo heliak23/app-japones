@@ -212,9 +212,9 @@ export const WritingCanvas: React.FC<WritingCanvasProps> = ({
 
     refCtx.clearRect(0, 0, width, height);
     refCtx.fillStyle = '#000000';
-    // Utiliza tamanho de fonte proporcional ao canvas
+    // Utiliza tamanho de fonte proporcional ao canvas com peso normal para traços nítidos e legíveis
     const fontSize = Math.round(width * 0.65);
-    refCtx.font = `900 ${fontSize}px "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif`;
+    refCtx.font = `400 ${fontSize}px "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif`;
     refCtx.textAlign = 'center';
     refCtx.textBaseline = 'middle';
     refCtx.fillText(character, width / 2, height / 2 + fontSize * 0.04);
@@ -372,12 +372,12 @@ export const WritingCanvas: React.FC<WritingCanvasProps> = ({
           </div>
         )}
 
-        {/* Camada 2: Caractere Base com Opacidade Fraca (Marca d'Água para Desenhar por Cima) */}
+        {/* Camada 2: Caractere Base com Opacidade Fraca (Marca d'Água para Desenhar por Cima - Peso Normal para Traçado Nítido) */}
         <div
           className="absolute inset-0 flex items-center justify-center pointer-events-none select-none transition-opacity duration-200"
           style={{ opacity: guideOpacity }}
         >
-          <span className="font-jp text-[190px] sm:text-[230px] font-black text-slate-900 dark:text-slate-100 leading-none select-none">
+          <span className="font-jp text-[190px] sm:text-[230px] font-normal text-slate-900 dark:text-slate-100 leading-none select-none">
             {character}
           </span>
         </div>

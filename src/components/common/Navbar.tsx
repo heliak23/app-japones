@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Flame, Layers, PenTool } from 'lucide-react';
+import { BookOpen, Sparkles, RotateCcw, Home, Menu, X, Flame, Layers, PenTool, BookMarked } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';
 import { AuthModal } from '../auth/AuthModal';
 import type { StreakInfo } from '../../types/progress';
 
-export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'kanji' | 'writing' | 'phrases' | 'stories' | 'practice' | 'review';
+export type ActiveTab = 'dashboard' | 'hiragana' | 'katakana' | 'words' | 'kanji' | 'writing' | 'phrases' | 'stories' | 'practice' | 'review';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -45,7 +45,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       {/* Header Fixo Principal */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-sm transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
-        <div className="w-full max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-4 xl:px-8 h-16 flex items-center justify-between gap-1.5 sm:gap-2 lg:gap-3 xl:gap-4">
+        <div className="w-full max-w-[1700px] mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 h-16 flex items-center justify-between gap-2 xl:gap-3">
           
           {/* Logo / Marca */}
           <div 
@@ -58,9 +58,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="w-8 h-8 sm:w-9 sm:h-9 xl:w-10 xl:h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-bold text-sm sm:text-lg xl:text-xl shadow-md group-hover:scale-105 transition-transform shrink-0">
               あ
             </div>
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-1 font-extrabold text-slate-900 dark:text-white tracking-tight text-sm sm:text-base xl:text-lg leading-tight whitespace-nowrap">
-                <span>NihonGo!</span>
+            <div className="flex flex-col justify-center shrink-0">
+              <div className="flex items-center gap-1 font-extrabold text-slate-900 dark:text-white tracking-tight text-sm sm:text-base xl:text-lg leading-tight whitespace-nowrap shrink-0">
+                <span className="shrink-0">NihonGo!</span>
                 <span className="hidden min-[400px]:inline-flex text-[9px] xl:text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-brand-100 dark:bg-rose-950/70 text-brand-700 dark:text-rose-300 border border-brand-200/60 dark:border-rose-800/60 whitespace-nowrap shrink-0 items-center justify-center leading-normal">
                   PT-BR
                 </span>
@@ -72,10 +72,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Navegação Desktop Responsiva */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 shrink-0">
             <button
               onClick={() => handleTabChange('dashboard')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'dashboard'
                   ? 'bg-brand-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -83,12 +83,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               title="Início"
             >
               <Home className="w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0" />
-              <span className="hidden xl:inline">Início</span>
+              <span>Início</span>
             </button>
 
             <button
               onClick={() => handleTabChange('hiragana')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'hiragana'
                   ? 'bg-brand-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -101,7 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => handleTabChange('katakana')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'katakana'
                   ? 'bg-amber-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -113,8 +113,21 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             <button
+              onClick={() => handleTabChange('words')}
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
+                activeTab === 'words'
+                  ? 'bg-rose-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
+              }`}
+              title="Palavras (Vocabulário)"
+            >
+              <BookMarked className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-rose-400 shrink-0" />
+              <span>Palavras</span>
+            </button>
+
+            <button
               onClick={() => handleTabChange('kanji')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'kanji'
                   ? 'bg-rose-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -127,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => handleTabChange('writing')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'writing'
                   ? 'bg-gradient-to-r from-rose-600 to-brand-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -140,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => handleTabChange('phrases')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'phrases'
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -153,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => handleTabChange('stories')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'stories'
                   ? 'bg-teal-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -162,12 +175,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <BookOpen className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-teal-400 shrink-0" />
               <span>Leituras</span>
-              <span className="hidden xl:inline text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-teal-500/20 text-teal-600 dark:text-teal-300 border border-teal-400/30 shrink-0">Tadoku</span>
             </button>
 
             <button
               onClick={() => handleTabChange('practice')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'practice'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -181,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => handleTabChange('review')}
-              className={`px-1.5 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-1.5 xl:px-2 2xl:px-2.5 py-1.5 rounded-xl text-xs xl:text-xs 2xl:text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 activeTab === 'review'
                   ? 'bg-rose-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
@@ -193,29 +205,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Ofensiva + Progresso Desktop + Alternador de Tema + UserMenu */}
-          <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 shrink-0">
+          {/* Ofensiva + Alternador de Tema + UserMenu */}
+          <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 shrink-0">
             {/* Badge de Ofensiva / Dias Seguidos */}
             <div
               onClick={() => handleTabChange('dashboard')}
               role="button"
               tabIndex={0}
-              className="flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 border border-orange-200/80 dark:border-orange-800/80 text-xs font-bold text-orange-700 dark:text-orange-300 hover:scale-105 cursor-pointer transition-all shadow-sm group select-none whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 border border-orange-200/80 dark:border-orange-800/80 text-xs font-bold text-orange-700 dark:text-orange-300 hover:scale-105 cursor-pointer transition-all shadow-sm group select-none whitespace-nowrap shrink-0"
               title={`Ofensiva de estudos: ${currentStreak} ${currentStreak === 1 ? 'dia seguido' : 'dias seguidos'} (Recorde pessoal: ${maxStreak}d)`}
             >
               <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500 group-hover:scale-110 transition-transform shrink-0" />
-              <span className="hidden xl:inline">{currentStreak} {currentStreak === 1 ? 'dia' : 'dias'}</span>
-              <span className="xl:hidden">{currentStreak}d</span>
-            </div>
-
-            {/* Contador de caracteres estudados (Aparece em telas a partir de XL) */}
-            <div 
-              className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-[#131b2e] border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors whitespace-nowrap shrink-0"
-              title={`${studiedCount} de ${totalCount} caracteres estudados`}
-            >
-              <BookOpen className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0" />
-              <span className="hidden 2xl:inline">{studiedCount} / {totalCount} estudados</span>
-              <span className="2xl:hidden">{studiedCount}/{totalCount}</span>
+              <span>{currentStreak} {currentStreak === 1 ? 'dia' : 'dias'}</span>
             </div>
 
             {/* Seletor de Tema Light / Dark */}
@@ -318,6 +319,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <span className="font-jp font-bold text-base bg-black/10 dark:bg-black/30 px-2 py-0.5 rounded shrink-0">ア</span>
               <span>Katakana (46 caracteres)</span>
+            </button>
+
+            <button
+              onClick={() => handleTabChange('words')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                activeTab === 'words'
+                  ? 'bg-rose-600 text-white'
+                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <BookMarked className="w-5 h-5 text-rose-500 shrink-0" />
+                <span>Palavras & Vocabulário (単語)</span>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800 shrink-0">
+                Novo
+              </span>
             </button>
 
             <button

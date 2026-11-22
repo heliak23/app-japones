@@ -26,6 +26,8 @@ import { PHRASE_LESSONS } from '../../data/phraseTracks';
 import { KanjiStorageService } from '../../services/kanjiStorageService';
 import { KANJI_DATASET } from '../../data/kanjiDataset';
 import { WritingStorageService } from '../../services/writingStorageService';
+import { VocabularyStorageService } from '../../services/vocabularyStorageService';
+import { VOCABULARY_DATASET } from '../../data/vocabularyData';
 import type { WritingCharacterType } from '../../types/writing';
 
 interface DashboardViewProps {
@@ -70,6 +72,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const kanjiProgress = KanjiStorageService.getProgress();
   const kanjiStudiedCount = kanjiProgress.studiedKanjiIds.length;
   const totalKanjis = KANJI_DATASET.length;
+
+  const vocabProgress = VocabularyStorageService.getProgress();
+  const vocabLearnedCount = vocabProgress.learnedWordIds.length;
+  const totalVocabWords = VOCABULARY_DATASET.length;
 
   const writingStats = WritingStorageService.getStats();
 
@@ -252,7 +258,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <p className="text-xs text-slate-500 dark:text-slate-400">Os 3 sistemas complementares usados simultaneamente na língua japonesa</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           
           {/* Card Hiragana */}
           <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
@@ -329,6 +335,46 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <span>Abrir Tabela e Flashcards</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Card Palavras & Vocabulário */}
+          <div className="group bg-white dark:bg-[#131b2e] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-start justify-between">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
+                  Apostilas & Diálogos
+                </span>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3 flex items-center gap-2">
+                  <span>Palavras</span>
+                  <span className="font-jp text-lg text-slate-400 dark:text-slate-500 font-normal">単語</span>
+                </h3>
+              </div>
+              <div className="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-3xl font-jp font-medium text-rose-600 dark:text-rose-400">
+                語
+              </div>
+            </div>
+
+            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              Vocabulário contextualizado das apostilas e leituras Tadoku. Pratique com flashcards estilo Anki, áudio nativo e exercícios interativos.
+            </p>
+
+            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span>{vocabLearnedCount} de {totalVocabWords} palavras aprendidas</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{Math.round((vocabLearnedCount / (totalVocabWords || 1)) * 100)}%</span>
+            </div>
+            <div className="mt-2">
+              <ProgressBar current={vocabLearnedCount} total={totalVocabWords} color="brand" size="sm" showPercentage={false} />
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => onNavigate('words')}
+                className="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
+              >
+                <span>Aprender & Treinar Palavras</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
