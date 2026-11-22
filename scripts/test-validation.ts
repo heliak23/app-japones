@@ -741,6 +741,9 @@ VOCABULARY_DATASET.forEach((w) => {
 assert(allWordsValid, 'Todas as palavras possuem IDs exclusivos, campos obrigatórios e frases de exemplo completas');
 
 // Verificação de palavras-chave canônicas dos materiais
+const hasOhayou = VOCABULARY_DATASET.some((w) => w.id === 'word_ohayou' && w.meaning.includes('Bom dia'));
+const hasKonbanwa = VOCABULARY_DATASET.some((w) => w.id === 'word_konbanwa' && w.meaning.includes('Boa noite'));
+const hasOyasumi = VOCABULARY_DATASET.some((w) => w.id === 'word_oyasuminasai' && w.meaning.includes('Boa noite'));
 const hasKonnichiwa = VOCABULARY_DATASET.some((w) => w.id === 'word_konnichiwa' && w.kanji === 'こんにちは');
 const hasHajimemashite = VOCABULARY_DATASET.some((w) => w.id === 'word_hajimemashite' && w.meaning.includes('Prazer'));
 const hasGakkou = VOCABULARY_DATASET.some((w) => w.id === 'word_gakkou' && w.kana === 'がっこう');
@@ -748,6 +751,9 @@ const hasTaberu = VOCABULARY_DATASET.some((w) => w.id === 'word_taberu' && w.mea
 const hasKore = VOCABULARY_DATASET.some((w) => w.id === 'word_kore' && w.category === 'kosoado');
 const hasApaato = VOCABULARY_DATASET.some((w) => w.id === 'word_apaato' && w.category === 'katakana');
 
+assert(hasOhayou, 'Saudação "Bom dia" (おはようございます) cadastrada com sucesso');
+assert(hasKonbanwa, 'Saudação "Boa noite ao se encontrar" (こんばんは) cadastrada com sucesso');
+assert(hasOyasumi, 'Despedida "Boa noite ao dormir" (おやすみなさい) cadastrada com sucesso');
 assert(hasKonnichiwa, 'Saudação "こんにちは" da Apostila 2 cadastrada com sucesso');
 assert(hasHajimemashite, 'Expressão "初めまして" da Apostila 2 cadastrada com sucesso');
 assert(hasGakkou, 'Substantivo de pausa "学校" (gakkou) da Apostila 1 cadastrado');

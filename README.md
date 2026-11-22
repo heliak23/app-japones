@@ -41,7 +41,7 @@ Abrange todo o sistema fonético com mais de 200 variações e combinações:
 
 ### 3. Banco de Palavras & Vocabulário
 - Catálogo de centenas de vocábulos essenciais organizados por categorias:
-  - *Saudações & Cortesia*
+  - *Saudações & Cortesia* (inclui **Bom dia** [*Ohayou gozaimasu*], **Boa noite ao se encontrar** [*Konbanwa*], **Boa noite ao dormir/despedida** [*Oyasuminasai*], **Olá/Boa tarde** [*Konnichiwa*], *Arigatou*, *Hajimemashite*, *Sumimasen*, etc.)
   - *Pessoas, Família & Pronomes*
   - *Escola, Cidade & Lugares*
   - *Comida & Bebida*
@@ -148,11 +148,11 @@ npm run dev
 ```
 O servidor estará disponível por padrão em `http://localhost:5173`.
 
-### 4. Executar os Testes Automatizados (169 Testes)
+### 4. Executar os Testes Automatizados (172 Testes)
 ```bash
 npm test
 ```
-Executa a suíte completa de validação cobrindo alfabetos, WanaKana, geradores de exercícios, gramática, diálogos, kanjis, leituras Tadoku, estúdio de escrita, autenticação e sincronização.
+Executa a suíte completa de validação cobrindo alfabetos, WanaKana, geradores de exercícios, gramática, diálogos, kanjis, leituras Tadoku, estúdio de escrita, vocabulário (saudações, bom dia, boa noite), autenticação e sincronização.
 
 Para validar o sistema de temas (Dark/Light):
 ```bash
