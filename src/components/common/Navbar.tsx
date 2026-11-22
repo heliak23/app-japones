@@ -45,142 +45,143 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       {/* Header Fixo Principal */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-sm transition-colors duration-200 pt-[env(safe-area-inset-top,0px)]">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 lg:gap-4">
+        <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 h-16 flex items-center justify-between gap-2 lg:gap-3 xl:gap-4">
           
           {/* Logo / Marca */}
           <div 
             onClick={() => handleTabChange('dashboard')} 
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group select-none shrink-0"
+            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer group select-none shrink-0"
             role="button"
             tabIndex={0}
             title="Ir para o início"
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-md group-hover:scale-105 transition-transform shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 xl:w-10 xl:h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-rose-500 flex items-center justify-center text-white font-bold text-base sm:text-lg xl:text-xl shadow-md group-hover:scale-105 transition-transform shrink-0">
               あ
             </div>
             <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-1.5 font-extrabold text-slate-900 dark:text-white tracking-tight text-base sm:text-lg leading-tight whitespace-nowrap">
+              <div className="flex items-center gap-1 font-extrabold text-slate-900 dark:text-white tracking-tight text-sm sm:text-base xl:text-lg leading-tight whitespace-nowrap">
                 <span>NihonGo!</span>
-                <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-brand-100 dark:bg-rose-950/70 text-brand-700 dark:text-rose-300 border border-brand-200/60 dark:border-rose-800/60 whitespace-nowrap shrink-0 inline-flex items-center justify-center leading-normal">
+                <span className="text-[9px] xl:text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-brand-100 dark:bg-rose-950/70 text-brand-700 dark:text-rose-300 border border-brand-200/60 dark:border-rose-800/60 whitespace-nowrap shrink-0 inline-flex items-center justify-center leading-normal">
                   PT-BR
                 </span>
               </div>
-              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap hidden xl:block leading-tight mt-0.5">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 whitespace-nowrap hidden 2xl:block leading-tight mt-0.5">
                 Aprenda Hiragana & Katakana
               </p>
             </div>
           </div>
 
-          {/* Navegação Desktop */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 shrink-0">
+          {/* Navegação Desktop Responsiva */}
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0">
             <button
               onClick={() => handleTabChange('dashboard')}
-              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'dashboard'
                   ? 'bg-slate-900 dark:bg-slate-800 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <Home className="w-4 h-4 shrink-0" />
+              <Home className="w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0" />
               <span>Início</span>
             </button>
 
             <button
               onClick={() => handleTabChange('hiragana')}
-              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'hiragana'
                   ? 'bg-brand-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded shrink-0">あ</span>
+              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1 py-0.5 rounded shrink-0 leading-none">あ</span>
               <span>Hiragana</span>
             </button>
 
             <button
               onClick={() => handleTabChange('katakana')}
-              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'katakana'
                   ? 'bg-amber-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded shrink-0">ア</span>
+              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1 py-0.5 rounded shrink-0 leading-none">ア</span>
               <span>Katakana</span>
             </button>
 
             <button
               onClick={() => handleTabChange('kanji')}
-              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'kanji'
                   ? 'bg-rose-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1.5 py-0.5 rounded shrink-0">漢</span>
+              <span className="font-jp font-bold text-xs bg-black/10 dark:bg-black/30 px-1 py-0.5 rounded shrink-0 leading-none">漢</span>
               <span>Kanji</span>
             </button>
 
             <button
               onClick={() => handleTabChange('phrases')}
-              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'phrases'
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <Layers className="w-4 h-4 text-emerald-400 shrink-0" />
+              <Layers className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-emerald-400 shrink-0" />
               <span>Frases</span>
-              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-400/30 shrink-0">Novo</span>
+              <span className="hidden 2xl:inline text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-400/30 shrink-0">Novo</span>
             </button>
 
             <button
               onClick={() => handleTabChange('practice')}
-              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'practice'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
+              <Sparkles className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-indigo-400 shrink-0" />
               <span>Exercícios</span>
             </button>
 
             <button
               onClick={() => handleTabChange('review')}
-              className={`px-2.5 xl:px-3 py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+              className={`px-2 xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'review'
                   ? 'bg-rose-600 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80'
               }`}
             >
-              <RotateCcw className="w-4 h-4 shrink-0" />
+              <RotateCcw className="w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0" />
               <span>Revisão</span>
             </button>
           </nav>
 
           {/* Ofensiva + Progresso Desktop + Alternador de Tema + UserMenu */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 shrink-0">
+          <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 shrink-0">
             {/* Badge de Ofensiva / Dias Seguidos */}
             <div
               onClick={() => handleTabChange('dashboard')}
               role="button"
               tabIndex={0}
-              className="flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 border border-orange-200/80 dark:border-orange-800/80 text-xs font-bold text-orange-700 dark:text-orange-300 hover:scale-105 cursor-pointer transition-all shadow-sm group select-none whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40 border border-orange-200/80 dark:border-orange-800/80 text-xs font-bold text-orange-700 dark:text-orange-300 hover:scale-105 cursor-pointer transition-all shadow-sm group select-none whitespace-nowrap shrink-0"
               title={`Ofensiva de estudos: ${currentStreak} ${currentStreak === 1 ? 'dia seguido' : 'dias seguidos'} (Recorde pessoal: ${maxStreak}d)`}
             >
               <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500 group-hover:scale-110 transition-transform shrink-0" />
-              <span>{currentStreak} {currentStreak === 1 ? 'dia' : 'dias'}</span>
+              <span className="hidden xl:inline">{currentStreak} {currentStreak === 1 ? 'dia' : 'dias'}</span>
+              <span className="xl:hidden">{currentStreak}d</span>
             </div>
 
-            {/* Contador de caracteres estudados */}
+            {/* Contador de caracteres estudados (Aparece em telas a partir de XL) */}
             <div 
-              className="flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-slate-100 dark:bg-[#131b2e] border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors whitespace-nowrap shrink-0"
+              className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-[#131b2e] border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors whitespace-nowrap shrink-0"
               title={`${studiedCount} de ${totalCount} caracteres estudados`}
             >
               <BookOpen className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0" />
-              <span className="hidden xl:inline">{studiedCount} / {totalCount} estudados</span>
-              <span className="xl:hidden">{studiedCount}/{totalCount}</span>
+              <span className="hidden 2xl:inline">{studiedCount} / {totalCount} estudados</span>
+              <span className="2xl:hidden">{studiedCount}/{totalCount}</span>
             </div>
 
             {/* Seletor de Tema Light / Dark */}
@@ -334,90 +335,66 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </header>
 
-      {/* Barra de Navegação Inferior Móvel Rápida (Estilo App Nativo para Smartphones com suporte a Safe Area iOS) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] px-3 flex justify-around items-center lg:hidden shadow-lg transition-colors duration-200">
+      {/* Barra de Navegação Inferior Móvel Rápida (5 Abas Principais com Touch Targets Otimizados para Smartphones) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pt-1.5 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] px-2 grid grid-cols-5 items-center lg:hidden shadow-lg transition-colors duration-200">
         <button
           onClick={() => handleTabChange('dashboard')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl text-[10px] font-semibold transition-colors ${
             activeTab === 'dashboard'
-              ? 'text-slate-900 dark:text-white font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-slate-900 dark:text-white font-extrabold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'
           }`}
         >
-          <Home className="w-5 h-5" />
-          <span>Início</span>
+          <Home className="w-5 h-5 shrink-0" />
+          <span className="truncate max-w-[60px]">Início</span>
         </button>
 
         <button
           onClick={() => handleTabChange('hiragana')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl text-[10px] font-semibold transition-colors ${
             activeTab === 'hiragana'
-              ? 'text-brand-600 dark:text-brand-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-brand-600 dark:text-brand-400 font-extrabold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'
           }`}
         >
           <span className="font-jp text-base leading-none font-bold">あ</span>
-          <span>Hiragana</span>
+          <span className="truncate max-w-[60px]">Hiragana</span>
         </button>
 
         <button
           onClick={() => handleTabChange('katakana')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl text-[10px] font-semibold transition-colors ${
             activeTab === 'katakana'
-              ? 'text-amber-600 dark:text-amber-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-amber-600 dark:text-amber-400 font-extrabold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'
           }`}
         >
           <span className="font-jp text-base leading-none font-bold">ア</span>
-          <span>Katakana</span>
-        </button>
-
-        <button
-          onClick={() => handleTabChange('kanji')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
-            activeTab === 'kanji'
-              ? 'text-rose-600 dark:text-rose-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
-          }`}
-        >
-          <span className="font-jp text-base leading-none font-bold">漢</span>
-          <span>Kanji</span>
+          <span className="truncate max-w-[60px]">Katakana</span>
         </button>
 
         <button
           onClick={() => handleTabChange('phrases')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl text-[10px] font-semibold transition-colors ${
             activeTab === 'phrases'
-              ? 'text-emerald-600 dark:text-emerald-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-emerald-600 dark:text-emerald-400 font-extrabold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'
           }`}
         >
-          <Layers className="w-5 h-5" />
-          <span>Frases</span>
+          <Layers className="w-5 h-5 shrink-0" />
+          <span className="truncate max-w-[60px]">Frases</span>
         </button>
 
         <button
           onClick={() => handleTabChange('practice')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl text-[10px] font-semibold transition-colors ${
             activeTab === 'practice'
-              ? 'text-indigo-600 dark:text-indigo-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-indigo-600 dark:text-indigo-400 font-extrabold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'
           }`}
         >
-          <Sparkles className="w-5 h-5" />
-          <span>Exercícios</span>
-        </button>
-
-        <button
-          onClick={() => handleTabChange('review')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[11px] font-medium transition-colors ${
-            activeTab === 'review'
-              ? 'text-rose-600 dark:text-rose-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
-          }`}
-        >
-          <RotateCcw className="w-5 h-5" />
-          <span>Revisão</span>
+          <Sparkles className="w-5 h-5 shrink-0" />
+          <span className="truncate max-w-[60px]">Treino</span>
         </button>
       </nav>
 

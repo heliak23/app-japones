@@ -156,18 +156,19 @@ export const UserMenu: React.FC<UserMenuProps> = ({
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl bg-slate-100 dark:bg-[#131b2e] hover:bg-slate-200/80 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 text-xs font-medium text-slate-700 dark:text-slate-200 transition-all select-none"
+        className="flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 pr-1.5 sm:pr-2.5 rounded-xl bg-slate-100 dark:bg-[#131b2e] hover:bg-slate-200/80 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 text-xs font-medium text-slate-700 dark:text-slate-200 transition-all select-none shrink-0"
         aria-expanded={menuOpen}
         aria-label="Menu do usuário"
+        title={displayName}
       >
-        <div className="relative">
+        <div className="relative shrink-0">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
             {initial}
           </div>
           <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#0b0f19]" />
         </div>
-        <span className="max-w-[100px] truncate font-semibold">{displayName}</span>
-        <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+        <span className="hidden 2xl:inline max-w-[100px] truncate font-semibold">{displayName}</span>
+        <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
       </button>
 
       {menuOpen && (
