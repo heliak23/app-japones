@@ -1,136 +1,238 @@
-# NihonGo! • Aplicativo Web para Aprendizado de Japonês (Hiragana & Katakana)
+# NihonGo! (Japonezando) • Plataforma de Aprendizado da Língua Japonesa
 
-Aplicativo web moderno, intuitivo, responsivo e 100% em português brasileiro (PT-BR) para ensinar os alfabetos fonéticos japoneses **Hiragana (ひらがな)** e **Katakana (カタカナ)**.
+Aplicativo web moderno, intuitivo, responsivo e 100% em português brasileiro (PT-BR) projetado para o aprendizado completo da língua japonesa: **Hiragana**, **Katakana**, **Kanjis essenciais**, **Vocabulário contextual**, **Gramática & Partículas**, **Diálogos conversacionais**, **Leituras Graduadas (Tadoku)** e um **Estúdio de Escrita/Caligrafia interativo**.
 
-Desenvolvido para funcionar completamente no lado do cliente (Client-Side), sem necessidade de backend, banco de dados ou autenticação. Funciona perfeitamente offline direto no navegador do estudante.
+Desenvolvido sob a arquitetura **Offline-First com sincronização em nuvem (Supabase)**: funciona perfeitamente sem conexão direto no navegador do estudante, salvando o progresso localmente no `LocalStorage` e sincronizando automaticamente na nuvem quando conectado.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-- **TypeScript:** Tipagem estrita de primeira classe sem uso de `any`.
-- **React 19:** Componentização modular, reativa e de alta performance.
-- **Tailwind CSS v3:** Interface elegante, minimalista e 100% responsiva (Desktop, Tablets, Android e iOS).
-- **Vite:** Build rápido e otimizado.
-- **WanaKana (`wanakana`):** Manipulação, conversão e validação inteligente de caracteres japoneses.
-- **Web Speech API:** Síntese de voz nativa japonesa (`ja-JP`) para pronúncia em áudio offline.
-- **PWA (Progressive Web App):** Suporte nativo para instalação em dispositivos móveis (iOS e Android), ícones dedicados em alta resolução e modo *Standalone* (tela cheia sem barra do navegador).
-- **Lucide React:** Ícones modernos e acessíveis.
+- **React 19:** Componentização reativa, moderna e de alta performance.
+- **TypeScript:** Tipagem estrita de ponta a ponta sem uso de `any`.
+- **Tailwind CSS v3:** Interface elegante, minimalista, com suporte a Dark/Light Mode e 100% responsiva (Desktop, Tablets, Android e iOS).
+- **Vite 8:** Ferramenta de build ultrarrápida e otimizada.
+- **Supabase (`@supabase/supabase-js`):** Autenticação (Login, Cadastro e Recuperação de Senha) e sincronização de progresso do usuário em nuvem (Cloud Sync).
+- **WanaKana (`wanakana`):** Manipulação, validação e conversão inteligente de caracteres japoneses (Romaji ⇄ Kana).
+- **Web Speech API:** Síntese de voz nativa japonesa (`ja-JP`) para pronúncia em áudio offline de kanas, vocabulário e diálogos.
+- **HTML5 Canvas API:** Motor de desenho interativo para prática de caligrafia e reconhecimento de traçado.
+- **PWA (Progressive Web App):** Suporte nativo para instalação em dispositivos móveis (iOS e Android), Service Workers com Workbox, ícones em alta resolução e modo *Standalone* (tela cheia sem barra do navegador).
+- **Lucide React:** Ícones modernos, minimalistas e acessíveis.
+- **Oxlint & TSX:** Linting de alta velocidade e suíte de validação de testes automatizados.
 
 ---
 
-## 📚 Escopo Pedagógico Completo (142 Caracteres)
+## 📚 Escopo Pedagógico Completo
 
-O aplicativo abrange todos os 71 caracteres do **Hiragana** e 71 do **Katakana** (46 básicos do Gojūon + 25 de modificações fonéticas Dakuon e Handakuon), divididos em 16 famílias fonéticas:
+### 1. Alfabetos Fonéticos: Hiragana & Katakana
+Abrange todo o sistema fonético com mais de 200 variações e combinações:
+- **Gojūon (46 básicos cada):** Todas as linhas (Vogais, K, S, T, N, H, M, Y, R, W e o caractere final N).
+- **Dakuon & Handakuon (25 modificados cada):** Linhas G, Z, D, B (Tenten `゛`) e Linha P (Handakuten `゜`).
+- **Combinações Yōon (ようおん - 33 cada):** Sons contraídos formados pela junção com pequenos ya, yu, yo (ex: きゃ, しゅ, ちょ / キャ, シュ, チョ).
+- **Pausa Fonética Sokuon (っ / ッ):** Regras de corte e duplicação consonantal com exemplos práticos.
+- **Sons Especiais do Katakana Moderno (Gairaigo):** Mapeamento de sons ocidentais modernos como ヴ (vu), ファ (fa), ウィ (wi), シェ (she), ティ (ti), etc.
+- Cada caractere inclui: visualização em fonte `Noto Sans JP`, romanização oficial (Romaji), pronúncia aproximada para brasileiros, família fonética, mnemônicos ilustrados e áudio nativo.
 
-### Gojūon (Sons Básicos - 46 Caracteres):
-1. **Vogais Puras:** あ/ア (a), い/イ (i), う/ウ (u), え/エ (e), お/オ (o)
-2. **Linha K:** か/カ (ka), き/キ (ki), く/ク (ku), ke/ケ (ke), こ/コ (ko)
-3. **Linha S:** さ/サ (sa), し/シ (shi), す/ス (su), せ/セ (se), そ/ソ (so)
-4. **Linha T:** た/タ (ta), ち/チ (chi), つ/ツ (tsu), て/テ (te), と/ト (to)
-5. **Linha N:** な/ナ (na), に/ニ (ni), ぬ/ヌ (nu), ね/ネ (ne), の/ノ (no)
-6. **Linha H:** は/ハ (ha), ひ/ヒ (hi), ふ/フ (fu), へ/ヘ (he), ほ/ホ (ho)
-7. **Linha M:** ま/マ (ma), み/ミ (mi), む/ム (mu), め/メ (me), も/モ (mo)
-8. **Linha Y:** や/ヤ (ya), ゆ/ユ (yu), よ/ヨ (yo)
-9. **Linha R:** ら/ラ (ra), り/リ (ri), る/ル (ru), れ/レ (re), ろ/ロ (ro)
-10. **Linha W:** わ/ワ (wa), を/ヲ (wo)
-11. **Caractere Final:** ん/ン (n)
+### 2. Kanjis Essenciais (N5 & Fundamentais)
+- **Metodologia de Decomposição:** Estudo dos ideogramas divididos em seus radicais fundamentais (*bushu*), permitindo compreender a lógica de formação dos caracteres como "blocos de LEGO".
+- **Leituras Oficiais:** Apresentação clara de *On'yomi* (leitura chinesa) e *Kun'yomi* (leitura japonesa).
+- **Contagem e Guia de Traços:** Quantidade de traços (*kakusuu*) e ordem recomendada de escrita.
+- **Filosofia Anki & Vocabulário em Contexto:** Seguindo os princípios de materiais didáticos conceituados (como TUFS e Luiz Rafael), os kanjis são aprendidos associados a palavras reais e frases de exemplo com suporte a *Furigana* interativo.
 
-### Dakuon & Handakuon (Sons Modificados - 25 Caracteres):
-12. **Linha G (Dakuon K + ゛):** が/ガ (ga), ぎ/ギ (gi), ぐ/グ (gu), げ/ゲ (ge), ご/ゴ (go)
-13. **Linha Z (Dakuon S + ゛):** ざ/ザ (za), じ/ジ (ji), ず/ズ (zu), ぜ/ゼ (ze), ぞ/ゾ (zo)
-14. **Linha D (Dakuon T + ゛):** だ/ダ (da), ぢ/ヂ (ji), づ/ヅ (zu), で/デ (de), ど/ド (do)
-15. **Linha B (Dakuon H + ゛):** ば/バ (ba), び/ビ (bi), ぶ/ブ (bu), べ/ベ (be), ぼ/ボ (bo)
-16. **Linha P (Handakuon H + ゜):** ぱ/パ (pa), ぴ/ピ (pi), ぷ/プ (pu), ぺ/ペ (pe), ぽ/ポ (po)
+### 3. Banco de Palavras & Vocabulário
+- Catálogo de centenas de vocábulos essenciais organizados por categorias:
+  - *Saudações & Cortesia*
+  - *Pessoas, Família & Pronomes*
+  - *Escola, Cidade & Lugares*
+  - *Comida & Bebida*
+  - *Natureza, Clima & Tempo*
+  - *Verbos Essenciais*
+  - *Adjetivos & Qualidades*
+  - *Sistema Demonstrativo (Ko-So-A-Do)*
+  - *Katakana Moderno & Palavras Estrangeiras (Gairaigo)*
+- Cada palavra conta com kanji original, leitura em kana, áudio nativo, tradução PT-BR, frase de exemplo com furigana segmentado, notas de uso, marcação de aprendida e lista de favoritos.
+- **Quizzes e Flashcards de Vocabulário:** Modos dedicados para testar fixação rápida e memorização ativa.
 
-Cada caractere possui:
-- Caractere japonês em fonte de alta legibilidade (`Noto Sans JP`).
-- Romanização oficial (Romaji).
-- Pronúncia aproximada para falantes de português brasileiro.
-- Família fonética correspondente.
-- Dica mnemônica ilustrada para fixação na memória.
-- Áudio de pronúncia falada nativa.
+### 4. Gramática, Partículas & Conjugação
+- **Guia Interativo de Partículas Japonesas:** As 12 partículas fundamentais explicadas sob a ótica do raciocínio japonês:
+  - は (*wa* - tópico), が (*ga* - sujeito/foco), を (*wo* - objeto direto), の (*no* - posse/ligação), に (*ni* - direção/tempo/alvo), で (*de* - meio/local de ação), へ (*he* - direção do movimento), と (*to* - companhia/enumeração fechada), や (*ya* - enumeração aberta), も (*mo* - inclusão "também"), から (*kara* - origem/ponto de partida) e まで (*made* - destino/limite).
+  - Inclui Quiz de "preencher a lacuna" (*Fill-in-the-blank*) para testar a aplicação correta em frases reais.
+- **Visualizador do Sistema Demonstrativo Ko-So-A-Do:**
+  - Demonstração gráfica interativa da relação de proximidade espacial entre interlocutores:
+    - **Ko (此):** Próximo do falante (*kore, kono, koko, kochira*).
+    - **So (其):** Próximo do ouvinte (*sore, sono, soko, sochira*).
+    - **A (彼):** Distante de ambos (*are, ano, asoko, achira*).
+    - **Do (何):** Indagação/Dúvida (*dore, dono, doko, dochira*).
+- **Conjugador Interativo de Verbos e Adjetivos:**
+  - **Verbos:** Classificação visual dos 3 Grupos verbais (Grupo 1 - Godan, Grupo 2 - Ichidan, Grupo 3 - Irregulares: *suru* e *kuru*) com conjugação em 7 formas canônicas: Dicionário, Forma Masu, Masen, Mashita, Forma Nai, Forma Ta e Forma Te.
+  - **Adjetivos:** Flexão dos adjetivos do Tipo-i (*i-keiyoushi*) e Tipo-na (*na-keiyoushi*), abrangendo afirmativo, negativo, passado e passado-negativo (incluindo exceções como *ii/yoi* e adjetivos enganosos como *kirei*).
 
----
+### 5. Diálogos Conversacionais
+- Roteiros conversacionais contextualizados (ex: diálogo clássico de apresentação pessoal *Hajimemashite* entre Sakura e Takeshi).
+- Reprodução de áudio fala a fala com vozes alternadas (masculina/feminina via Web Speech API).
+- Balões interativos com alternância de Furigana, Romaji e Tradução em português.
+- Quiz de compreensão auditiva e interpretação no final do diálogo.
 
-## 🎮 Funcionalidades Principais
+### 6. Leituras Graduadas Tadoku (Tadoku Graded Readers)
+- Leitor imersivo de contos e fábulas japonesas adaptadas (Nível 0 - Iniciante N5, como *"A Raposa e o Grou"* / キツネとツル).
+- Páginas ilustradas originais em alta resolução.
+- Áudio nativo gravado página por página com player integrado.
+- Texto japonês com suporte inteligente a Furigana (leituras em kanas acima de cada kanji), tradução linha a linha e glossário de termos específicos da página.
 
-### 1. Dashboard Inicial
-- Apresentação visual e didática.
-- Métricas da sessão atual e históricas (caracteres estudados de 0 a 92, pontuação, aproveitamento geral).
-- Acesso rápido aos alfabetos e às 5 modalidades de exercícios.
-- Guia fonético com dicas preciosas para brasileiros.
-
-### 2. Área de Aprendizado (Hiragana & Katakana)
-- **Tabela Gojūon (五十音):** Matriz clássica 5x10 com cabeçalho de vogais, células interativas e scroll horizontal em dispositivos móveis.
-- **Grade de Cards:** Agrupada por famílias de consoantes com descrições didáticas.
-- **Modo Flashcards:** Cartões 3D interativos com mecanismo de flip (frente/verso), áudio, botões de avanço e botão "Já Aprendi!".
-- **Modal de Estudo Detalhado:** Estudo individual de cada caractere com navegação sequencial por setas do teclado e tecla Espaço para ouvir pronúncia.
-
-### 3. As 5 Modalidades de Exercícios
-- **Exercício 1 (Reconhecimento):** Caractere japonês com 4 alternativas em Romaji e atalhos numéricos (`1`, `2`, `3`, `4`).
-- **Exercício 2 (Digitação):** Campo de digitação com foco automático, aceita `Enter` e valida com tolerâncias fonéticas (ex.: `shi`/`si`, `tsu`/`tu`).
-- **Exercício 3 (Conversão):** Conversão de Romaji para Kana com apoio de vocabulário ilustrativo.
-- **Exercício 4 (Identificação de Alfabeto):** Classificação rápida entre Hiragana ou Katakana.
-- **Exercício 5 (Revisão Aleatória):** Maratona mista combinando formatos para retenção profunda.
-
-### 4. Sistema de Avaliação
-- Feedback imediato de acerto ou erro com explicação pedagógica e avanço por `Enter`.
-- Tela de resultado ao finalizar a sessão com pontuação, acertos, erros, percentual (%) e gabarito completo.
-- Botão "Revisar Somente os Erros" gerado dinamicamente para sanar falhas imediatas.
-
-### 5. Sistema de Revisão Inteligente
-- Identifica e isola os caracteres que o usuário errou nos exercícios.
-- Ranqueamento por frequência de erro.
-- Botão de prática imediata focado nos caracteres com dificuldade.
-- Histórico completo de sessões salvo localmente em `LocalStorage`.
+### 7. Estúdio de Escrita & Caligrafia (Writing Studio)
+- Canvas interativo de desenho para treino de caligrafia em Hiragana, Katakana e Kanji.
+- Grid tradicional japonês quadriculado com guias de centro e proporção.
+- Opção de exibir/ocultar a "marca-d'água" do caractere guia para desenhar de memória.
+- Contador de traços (*strokes*) e algoritmo de avaliação de preenchimento e precisão do desenho.
+- Suporte total a toque na tela em dispositivos móveis (Touch/Stylus) e mouse no Desktop.
 
 ---
 
-## 🛠️ Como Executar o Projeto
+## 🎮 Modalidades de Exercícios & Revisão
 
+### As 5 Modalidades de Exercícios de Kana
+1. **Reconhecimento:** Caractere em destaque com 4 alternativas em Romaji e atalhos de teclado (`1`, `2`, `3`, `4`).
+2. **Digitação com WanaKana:** Entrada de texto com foco automático, suporte a tecla `Enter` e tolerância a convenções fonéticas PT-BR (ex: `shi`/`si`, `tsu`/`tu`, `chi`/`ti`, `fu`/`hu`).
+3. **Conversão (Romaji ➔ Kana):** Identificação do caractere correspondente a partir de pistas sonoras e palavras de apoio.
+4. **Identificação de Alfabeto:** Desafio rápido para distinguir visualmente se o caractere pertence ao Hiragana ou Katakana.
+5. **Revisão Aleatória Mista:** Maratona combinando todos os formatos dinamicamente.
+
+### Sistema de Avaliação & Revisão Inteligente
+- Feedback imediato de acertos e erros com explicações pedagógicas.
+- Relatório de conclusão de sessão com métricas de acertos, pontuação e gabarito detalhado.
+- **Revisão de Erros Automática:** O sistema isola os caracteres errados e permite iniciar uma sessão direcionada apenas para sanar as dificuldades detectadas.
+- Possibilidade de treinar apenas os caracteres que o usuário já marcou como "estudados" ou focar em grupos específicos.
+
+---
+
+## 🏆 Gamificação, UX & Sincronização
+
+- **Ofensivas Diárias (Streaks):** Rastreador de dias consecutivos de estudo com widget na tela inicial e contagem de recorde pessoal (*max streak*).
+- **Flashcards 3D:** Cartões interativos com animação de flip tridimensional (frente com kanji/kana e verso com leitura, áudio e significado).
+- **Tema Escuro & Claro (Dark/Light Mode):** Paleta moderna com fundo grafite azulado (#0b0f19) e superfície (#131b2e) para máximo conforto visual em sessões noturnas, sem piscar de tela (anti-FOUC).
+- **Nuvem & Offline-First:**
+  - Login seguro com Supabase Auth (E-mail/Senha).
+  - Recuperação de senha integrada com fluxo protegido.
+  - Sincronização automática de progresso na nuvem (`user_learning_state`).
+  - Funcionamento ininterrupto mesmo sem internet, salvando no navegador do usuário e subindo alterações assim que a conexão estiver estável.
+
+---
+
+## 🛠️ Como Executar o Projeto Localmente
+
+### Pré-requisitos
+- [Node.js](https://nodejs.org/) versão 18 ou superior.
+- Gerenciador de pacotes `npm`.
+
+### 1. Clonar o Repositório e Instalar Dependências
 ```bash
-# 1. Instalar dependências
+git clone <URL_DO_REPOSITORIO>
+cd app-japones
 npm install
+```
 
-# 2. Iniciar servidor de desenvolvimento
+### 2. Configurar Variáveis de Ambiente (Opcional)
+O projeto já conta com credenciais de demonstração e fallback seguro caso nenhuma variável seja fornecida. Para apontar para o seu próprio projeto Supabase, copie o arquivo de exemplo:
+```bash
+cp .env.example .env
+```
+Edite `.env`:
+```env
+VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+VITE_SUPABASE_ANON_KEY=sua-chave-anon-aqui
+```
+
+### 3. Iniciar Servidor de Desenvolvimento
+```bash
 npm run dev
+```
+O servidor estará disponível por padrão em `http://localhost:5173`.
 
-# 3. Executar a suíte de testes automatizada (34 testes)
+### 4. Executar os Testes Automatizados (169 Testes)
+```bash
 npm test
+```
+Executa a suíte completa de validação cobrindo alfabetos, WanaKana, geradores de exercícios, gramática, diálogos, kanjis, leituras Tadoku, estúdio de escrita, autenticação e sincronização.
 
-# 4. Gerar build de produção
+Para validar o sistema de temas (Dark/Light):
+```bash
+npx tsx scripts/test-theme.ts
+```
+
+### 5. Checagem de Código (Lint) & Build de Produção
+```bash
+# Análise estática com Oxlint
+npm run lint
+
+# Geração de build otimizado para produção
 npm run build
+
+# Pré-visualização local do build
+npm run preview
 ```
 
 ---
 
 ## 📲 Instalação como App no Celular (PWA)
 
-O aplicativo foi desenvolvido como um **Progressive Web App (PWA)**. Você pode "instalá-lo" diretamente no seu celular sem precisar baixar nada da App Store ou Play Store. Ele se comportará como um **aplicativo nativo**: ganha ícone próprio na tela inicial e abre em **tela cheia** (sem a barra de endereços do navegador).
+O aplicativo foi desenvolvido como um **Progressive Web App (PWA)** com suporte completo para uso como aplicativo nativo (em tela cheia, sem barra de navegação e com ícone exclusivo na tela inicial).
 
 ### 🍏 No iPhone (iOS)
-> **Importante:** No iOS, o recurso de atalho como app nativo deve ser feito pelo **Safari**.
+> **Importante:** No iOS, utilize o navegador **Safari** para habilitar o modo PWA nativo:
 
-1. Acesse o site do projeto pelo navegador **Safari**.
+1. Abra o site no **Safari**.
 2. Toque no botão de **Compartilhar** (ícone do quadrado com a seta apontando para cima `⎋` na barra inferior).
-3. Role as opções para baixo e toque em **"Adicionar à Tela de Início"** (*Add to Home Screen*).
-4. O app já virá identificado como **Japonezando** com o ícone oficial `あ`. Toque em **Adicionar** no canto superior direito.
-5. Pronto! O ícone estará na tela inicial do seu iPhone e abrirá em tela cheia com adaptação para o Notch/Dynamic Island e barra de gestos do iOS.
+3. Role para baixo e selecione **"Adicionar à Tela de Início"** (*Add to Home Screen*).
+4. O app será identificado como **Japonezando** com o ícone oficial `あ`. Toque em **Adicionar** no canto superior direito.
+5. Pronto! O aplicativo será aberto em tela cheia com adaptação total ao Notch/Dynamic Island e área segura de gestos do iOS.
 
 ### 🤖 No Celular Android
-No Android, o PWA funciona na maioria dos navegadores (Google Chrome, Samsung Internet, Edge, Opera, etc.):
-
-- **Instalação Automática:** Ao entrar no site pelo Chrome, o próprio navegador costuma exibir um banner no rodapé: *"Instalar aplicativo"* ou *"Adicionar Japonezando à tela inicial"*. Basta tocar em **Instalar**.
+Funciona nos principais navegadores (Google Chrome, Samsung Internet, Edge, Opera):
+- **Instalação Automática:** Ao acessar pelo Chrome, toque no banner inferior *"Instalar aplicativo"* ou *"Adicionar Japonezando à tela inicial"*.
 - **Instalação Manual:**
-  1. Abra o site no **Google Chrome** (ou navegador de preferência).
-  2. Toque no menu de **três pontinhos (⋮)** no canto superior direito.
-  3. Selecione a opção **"Instalar aplicativo"** (ou *"Adicionar à tela inicial"*).
-  4. Confirme tocando em **"Instalar"**.
-  5. O aplicativo será adicionado tanto à sua **tela de início** quanto à sua **gaveta de aplicativos** do Android.
+  1. Toque no menu de **três pontinhos (⋮)** no canto superior direito.
+  2. Selecione a opção **"Instalar aplicativo"** (ou *"Adicionar à tela inicial"*).
+  3. Confirme em **"Instalar"**. O app estará disponível na tela inicial e na gaveta de aplicativos.
 
 ---
 
-## 📱 Responsividade e Acessibilidade
-- **Desktop:** Navegação superior fluida com indicadores e atalhos completos.
-- **Mobile (Smartphones e Tablets):** Menu gaveta e **Bottom Navigation Bar** fixa no rodapé estilo aplicativo móvel nativo, facilitando o uso com uma só mão.
+## 📁 Estrutura do Projeto
+
+```text
+app-japones/
+├── materials/                 # Apostilas, referências pedagógicas e planos de implementação
+├── public/                    # Assets estáticos, áudios e ilustrações das histórias Tadoku
+├── scripts/
+│   ├── test-validation.ts     # Suíte com 169 testes automatizados de regras pedagógicas e de negócio
+│   └── test-theme.ts          # Validador de temas Dark/Light e anti-FOUC
+├── src/
+│   ├── assets/                # Imagens e vetores gráficos da aplicação
+│   ├── components/
+│   │   ├── auth/              # Modais de login, cadastro e redefinição de senha
+│   │   ├── common/            # Navbar, ThemeToggle, UserMenu, ProgressBar, FuriganaText
+│   │   ├── dashboard/         # Visão geral, estatísticas, ofensiva (StreakWidget) e atalhos rápidos
+│   │   ├── grammar/           # Guia interativo de partículas e conjugador de verbos/adjetivos
+│   │   ├── kanji/             # Cards de kanji, detalhe modal, explorador de radicais e flashcards
+│   │   ├── phrases/           # Módulos de frases, diálogos conversacionais e sistema Ko-So-A-Do
+│   │   ├── practice/          # Contêiner dos 5 tipos de exercícios e tela de resultados
+│   │   ├── review/            # Módulo de revisão inteligente com foco nos erros cometidos
+│   │   ├── stories/           # Leitor de contos graduados Tadoku (Graded Readers)
+│   │   ├── study/             # Tabelas Gojūon, cards e flashcards 3D de Hiragana e Katakana
+│   │   ├── vocabulary/        # Banco de palavras, categorias, flashcards e quiz de vocabulário
+│   │   └── writing/           # Canvas interativo de caligrafia e prática de traçado
+│   ├── contexts/              # Contextos globais (AuthContext, ThemeContext)
+│   ├── data/                  # Datasets de kanas, kanjis, vocabulário, histórias, gramática e diálogos
+│   ├── hooks/                 # Hooks customizados (useAuth, useAudio, useTheme, useLearningProgress)
+│   ├── services/              # Serviços de áudio, armazenamento, WanaKana, sincronização Supabase e streak
+│   ├── types/                 # Definições de tipos TypeScript
+│   ├── App.tsx                # Roteamento e orquestrador principal de visualizações
+│   └── main.tsx               # Ponto de entrada React com provedores de tema e autenticação
+├── tailwind.config.js         # Configurações de cores, fontes japonesas e responsividade
+└── vite.config.ts             # Configuração do Vite, React plugin e PWA com Workbox
+```
+
+---
+
+## 📄 Licença e Uso
+
+Este projeto foi desenvolvido para fins educacionais e estudo prático da língua japonesa para a comunidade lusófona. Sinta-se à vontade para estudar, sugerir melhorias e expandir as lições!
